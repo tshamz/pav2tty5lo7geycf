@@ -4,10 +4,14 @@
   "version": "0.0.1",
   "workspaces": {
     "packages": [
-      "firebase/functions",
-      "firebase/functions/services",
       "servers",
-      "servers/*"
+      "servers/markets",
+      "servers/notifications",
+      "servers/server",
+      "servers/status",
+      "servers/websocket",
+      "firebase/functions",
+      "firebase/functions/services"
     ]
   },
   "scripts": {

@@ -1,5 +1,5 @@
 env: flex
-runtime: nodejs
+runtime: custom
 
 service: markets
 
