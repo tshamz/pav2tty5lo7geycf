@@ -7,7 +7,7 @@ module.exports = async (data, context) => {
         [data.ContractId]: null,
       };
 
-      await admin.database().ref(`contractPositions`).update(update);
+      await admin.setPath(`contractPositions`)(update);
 
       return { update };
     }
@@ -24,10 +24,7 @@ module.exports = async (data, context) => {
       _updatedAt: new Date().toUTCString(),
     };
 
-    await admin
-      .database()
-      .ref(`contractPositions/${data.ContractId}`)
-      .update(update);
+    await admin.setPath(`contractPositions/${data.ContractId}`)(update);
 
     return { update };
   } catch (error) {

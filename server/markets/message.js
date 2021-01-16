@@ -1,4 +1,4 @@
-const websocket = require('services/websocket');
+const websocket = require('../websocket');
 
 let r = 0;
 let t = 0;

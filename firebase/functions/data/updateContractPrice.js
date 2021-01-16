@@ -8,9 +8,9 @@ module.exports = async (data, context) => {
       _updatedAt: new Date().toUTCString(),
     };
 
-    await admin.database().ref(`prices/${data.id}`).update(update);
+    await admin.setPath(`prices/${data.id}`)(update);
 
-    return { update };
+    return update;
   } catch (error) {
     console.error(error);
     return { error };

@@ -42,10 +42,10 @@ module.exports = async (snapshot, res) => {
     };
 
     await Promise.all([
-      admin.database().ref().update(databaseUpdate),
-      admin.database(admin.priceHistory).ref().update(priceDatabaseUpdates),
-      admin.database(admin.priceInterval).ref().update(priceDatabaseUpdates),
-      admin.database(admin.priceOHLC).ref().update(priceDatabaseUpdates),
+      admin.setPath()(databaseUpdate),
+      admin.setPath({ db: admin.priceHistory })(priceDatabaseUpdates),
+      admin.setPath({ db: admin.priceInterval })(priceDatabaseUpdates),
+      admin.setPath({ db: admin.priceOHLC })(priceDatabaseUpdates),
     ]);
 
     if (res && res.status) {

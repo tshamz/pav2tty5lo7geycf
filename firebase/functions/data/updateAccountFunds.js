@@ -10,9 +10,9 @@ module.exports = async (data, context) => {
       _updatedAt: new Date().toUTCString(),
     };
 
-    await admin.database().ref('funds').update(update);
+    await admin.setPath('funds')(update);
 
-    return { update };
+    return update;
   } catch (error) {
     console.error(error);
     return { error };

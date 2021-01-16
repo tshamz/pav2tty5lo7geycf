@@ -1,9 +1,9 @@
+const wait = require('wait');
 const TinyURL = require('tinyurl');
 const isEqual = require('lodash/isEqual');
 const differenceWith = require('lodash/differenceWith');
 
 const log = require('services/logger');
-const utils = require('services/utils');
 const twilio = require('services/twilio');
 const admin = require('services/firebase');
 
@@ -16,7 +16,7 @@ module.exports = async (snapshot, context) => {
 
     if (!added.length && !removed.length) return;
 
-    await utils.pause(1500);
+    await wait(1500);
 
     const marketPath = `markets/${context.params.market}`;
     const market = await admin.getPath({ path: marketPath });

@@ -45,7 +45,7 @@ module.exports = async (data, context) => {
       },
     };
 
-    await admin.database().ref(openOrderPath).update(update);
+    await admin.setPath(openOrderPath)(update);
 
     return { update };
   } catch (error) {

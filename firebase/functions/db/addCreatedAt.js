@@ -7,7 +7,7 @@ module.exports = async (snapshot, context) => {
       _updatedAt: new Date().toUTCString(),
     };
 
-    await admin.database().ref(snapshot._path.slice(1)).update(update);
+    await admin.setPath(snapshot._path.slice(1))(update);
 
     return;
   } catch (error) {

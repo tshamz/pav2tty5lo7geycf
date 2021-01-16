@@ -1,5 +1,5 @@
-const express = require('services/express');
-const websocket = require('services/websocket');
+const express = require('../express');
+const websocket = require('../websocket');
 
 const connection = websocket.connect(require('./url'));
 

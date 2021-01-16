@@ -9,7 +9,6 @@
     "dev:status": "yarn workspace status dev",
     "dev:markets": "yarn workspace markets dev",
     "dev:notifications": "yarn workspace notifications dev",
-    "dev:services": "yarn workspace services dev",
     "dev": "run-p dev:*",
     "start:status": "yarn workspace status start",
     "start:markets": "yarn workspace markets start",
@@ -18,6 +17,6 @@
     "deploy:status": "yarn workspace status deploy",
     "deploy:markets": "yarn workspace markets deploy",
     "deploy:notifications": "yarn workspace notifications deploy",
-    "deploy": "run-p deploy:*"
+    "deploy": "gcloud app deploy markets notifications status"
   }
 }

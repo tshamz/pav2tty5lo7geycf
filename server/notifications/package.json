@@ -7,6 +7,7 @@
   },
   "workspaces": {
     "nohoist": [
+      "services",
       "services/**"
     ]
   },
@@ -17,7 +18,10 @@
   },
   "dependencies": {
     "node-fetch": "^2.6.1",
-    "services": "*"
+    "reconnecting-websocket": "^4.4.0",
+    "services": "*",
+    "wait": "^0.4.2",
+    "ws": "^7.4.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

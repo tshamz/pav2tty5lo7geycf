@@ -4,19 +4,16 @@
   "version": "0.0.1",
   "workspaces": {
     "packages": [
-      "firebase",
       "firebase/functions",
+      "firebase/functions/services",
       "server",
-      "server/markets",
-      "server/notifications",
-      "server/services",
-      "server/status"
+      "server/*"
     ]
   },
   "scripts": {
     "dev:server": "yarn workspace server dev",
     "dev:firebase": "yarn workspace firebase dev",
-    "dev": "firebase emulators:exec 'yarn dev:servers' --ui --export-on-exit ./data --import ./data",
+    "dev": "firebase emulators:exec 'yarn dev:server' --ui --export-on-exit ./firebase/functions/.data --import ./firebase/functions/.data",
     "deploy:firebase": "yarn workspace firebase deploy",
     "deploy:server": "yarn workspace server deploy",
     "deploy": "run-p deploy:server deploy:functions"

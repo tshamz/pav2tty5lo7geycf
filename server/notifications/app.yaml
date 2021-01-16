@@ -12,6 +12,4 @@ resources:
   disk_size_gb: 10
 
 env_variables:
-  GOOGLE_APPLICATION_CREDENTIALS: ../credentials.firebase.json
-  FIREBASE_PROJECT: kingmaker---firebase
-  FIREBASE_DATABASE_URL: https://kingmaker---firebase.firebaseio.com
+  # GOOGLE_APPLICATION_CREDENTIALS: ../credentials.firebase.json

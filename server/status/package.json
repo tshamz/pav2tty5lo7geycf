@@ -7,6 +7,7 @@
   },
   "workspaces": {
     "nohoist": [
+      "services",
       "services/**"
     ]
   },
@@ -16,7 +17,8 @@
     "deploy": "gcloud app deploy"
   },
   "dependencies": {
-    "services": "*"
+    "services": "*",
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

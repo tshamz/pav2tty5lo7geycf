@@ -2,7 +2,14 @@
   "private": true,
   "name": "functions",
   "version": "0.0.1",
+  "workspaces": {
+    "nohoist": [
+      "services",
+      "services/**"
+    ]
+  },
   "scripts": {
+    "dev": "firebase emulators:start --export-on-exit ./.data --import ./.data",
     "deploy": "firebase deploy --only functions"
   },
   "engines": {
@@ -10,6 +17,7 @@
   },
   "main": "index.js",
   "dependencies": {
+    "services": "file:./services",
     "chrono-node": "^2.1.10",
     "deep-equal": "^2.0.5",
     "firebase": "^8.1.2",
@@ -20,8 +28,8 @@
     "puppeteer": "^5.5.0",
     "puppeteer-extra": "^3.1.15",
     "puppeteer-extra-plugin-stealth": "^2.6.5",
-    "services": "file:./services",
     "tinyurl": "^1.1.7",
-    "twilio": "^3.53.0"
+    "twilio": "^3.53.0",
+    "wait": "^0.4.2"
   }
 }

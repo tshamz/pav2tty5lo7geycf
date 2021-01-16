@@ -10,7 +10,7 @@ const updateOpenOrders = require('./updateOpenOrders');
 const updateContractPosition = require('./updateContractPosition');
 const updateContractPrice = require('./updateContractPrice');
 const updatePriceHistory = require('./updatePriceHistory');
-const updatePriceInterval = require('./updatePriceInterval');
+// const updatePriceInterval = require('./updatePriceInterval');
 const updatePriceOHLC = require('./updatePriceOHLC');
 
 // prettier-ignore

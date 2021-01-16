@@ -10,7 +10,7 @@ module.exports = async (snapshot, res) => {
 
     const [prices, priceHistories] = await Promise.all([
       admin.getPath({ path: 'prices' }),
-      admin.getPath({ database: admin.priceHistory }),
+      admin.getPath({ db: admin.priceHistory }),
     ]);
 
     // prettier-ignore
@@ -25,8 +25,6 @@ module.exports = async (snapshot, res) => {
       const low = min([open, close, ...pricesInLastHour]);
       const high = max([open, close, ...pricesInLastHour]);
 
-
-
       return {
         prices: {
           ...updates.prices,
@@ -39,11 +37,9 @@ module.exports = async (snapshot, res) => {
       };
     }, { prices: {}, ohlc: {}});
 
-    console.log('admin.priceOHLC', admin.priceOHLC);
-
     await Promise.all([
-      admin.database().ref('prices').update(updates.prices),
-      // admin.database(admin.priceOHLC).ref().update(updates.ohlc),
+      admin.setPath('prices')(updates.prices),
+      admin.setPath({ db: admin.priceOHLC })(updates.ohlc),
     ]);
 
     if (res && res.status) {

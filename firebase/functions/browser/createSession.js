@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer-extra');
-const functions = require('firebase-functions');
 const stealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 const log = require('services/logger');
@@ -27,10 +26,10 @@ module.exports = async (...args) => {
     const _timestamp = Date.now();
     const _updatedAt = new Date().toUTCString();
 
-    await admin.database().ref('session').update({ _timestamp, _updatedAt });
+    await admin.setPath('session')({ _timestamp, _updatedAt });
 
     const page = await browser.newPage();
-    const config = functions.config().predictit;
+    const config = admin.config().predictit;
     const wssHostKey = 'firebase:host:predictit-f497e.firebaseio.com';
     const username = config.username.replace(/\"/g, '');
 
@@ -61,8 +60,7 @@ module.exports = async (...args) => {
       _updatedAt,
     };
 
-    await admin.database().ref('session').update(update);
-
+    await admin.setPath('session')(update);
     await page.close();
     await browser.close();
 

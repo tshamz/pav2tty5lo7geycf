@@ -1,7 +1,6 @@
 const functions = require('firebase-functions');
 
 const createSession = require('./createSession');
-const getServerStatus = require('./getServerStatus');
 
 // prettier-ignore
 exports.updateSession = functions
@@ -18,7 +17,3 @@ exports.createSession = functions
 exports.createSession__manual = functions
   .runWith({ timeoutSeconds: 120, memory: '2GB' })
   .https.onRequest(createSession);
-
-// prettier-ignore
-exports.getServerStatus = functions.https
-  .onRequest(getServerStatus);

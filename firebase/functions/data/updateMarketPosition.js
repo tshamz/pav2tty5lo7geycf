@@ -5,7 +5,7 @@ module.exports = async (data, context) => {
     if (!data.UserHasOwnership) {
       const update = { [data.MarketId]: null };
 
-      await admin.database().ref(`marketPositions`).update(update);
+      await admin.setPath(`marketPositions`)(update);
 
       return { update };
     }
@@ -17,10 +17,7 @@ module.exports = async (data, context) => {
       _updatedAt: new Date().toUTCString(),
     };
 
-    await admin
-      .database()
-      .ref(`marketPositions/${data.MarketId}`)
-      .update(update);
+    await admin.setPath(`marketPositions/${data.MarketId}`)(update);
 
     return { update };
   } catch (error) {

@@ -1,7 +1,11 @@
 const express = require('express');
 
+const log = require('services/logger');
+
 exports.create = (port) => {
   const app = express();
+
+  log.middleware().then((middleware) => app.use(middleware));
 
   app.get('/', (req, res) => {
     res.sendStatus(200);

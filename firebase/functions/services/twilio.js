@@ -1,10 +1,8 @@
 const twilio = require('twilio');
-const functions = require('firebase-functions');
+const admin = require('services/firebase');
 
-const config = functions.config().twilio;
+const config = admin.config().twilio;
 const client = twilio(config.sid, config.token);
-
-const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const formatMessage = (rawMessage = []) => {
   if (!Array.isArray(rawMessage)) {
@@ -43,7 +41,6 @@ const sendMessage = (args) => {
 };
 
 twilio.client = client;
-twilio.pause = pause;
 twilio.sendMessage = sendMessage;
 twilio.formatMessage = formatMessage;
 

@@ -3,21 +3,16 @@ const firebase = require('services/firebase');
 
 module.exports = async () => {
   try {
-    let session = await firebase
-      .database()
-      .ref('session')
-      .once('value')
-      .then((snapshot) => snapshot.val());
+    let wssHost = await firebase.getPath({ path: 'session/wssHost' });
 
-    if (!session || !session.wssHost) {
-      const newSession = await firebase
+    if (!wssHost) {
+      wssHost = await firebase
         .functions()
-        .httpsCallable('browser-createSession')();
-
-      session = newSession.data;
+        .httpsCallable('browser-createSession')()
+        .then(({ data }) => data.wssHost);
     }
 
-    const url = `wss://${session.wssHost}/.ws?v=5&ns=predictit-f497e`;
+    const url = `wss://${wssHost}/.ws?v=5&ns=predictit-f497e`;
 
     log.debug(`Trying: ${url}`, { status: 'connecting' });
 

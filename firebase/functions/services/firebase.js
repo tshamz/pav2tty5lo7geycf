@@ -1,27 +1,35 @@
 const firebase = require('firebase');
 const admin = require('firebase-admin');
+const functions = require('firebase-functions');
 
-const log = require('services/logger');
+const log = require('./logger');
+const path = require('path').resolve(__dirname, '../../../.env');
+
+require('dotenv').config({ path });
 
 const getDatabaseUrl = (name) => {
-  return !name
-    ? `https://kingmaker---firebase.firebaseio.com`
-    : `https://kingmaker---firebase--${name}.firebaseio.com`;
+  return `https://pav2tty5lo7geycf--${name}.firebaseio.com`;
 };
 
 const config = {
-  projectId: process.env.GCLOUD_PROJECT,
   credentials: admin.credential.applicationDefault(),
-  databaseURL: 'https://kingmaker---firebase.firebaseio.com',
+  projectId: process.env.FIREBASE_PROJECT,
+  databaseURL: process.env.FIREBASE_DEFAULT_DATABASE_URL,
 };
 
-const getPath = ({ path, database } = {}) => {
+const getPath = ({ path, db } = {}) => {
   return admin
-    .database(database)
+    .database(db)
     .ref(path)
     .once('value')
-    .then((snapshot) => snapshot.val())
-    .catch((error) => log.error(error));
+    .then((snapshot) => snapshot.val());
+};
+
+const setPath = (location) => (update) => {
+  return admin
+    .database(location.db)
+    .ref(location.path || location)
+    .update(update);
 };
 
 if (!firebase.apps.length) {
@@ -48,13 +56,15 @@ if (!firebase.apps.length) {
     'tradeHistory'
   );
 
-  if (process.env.npm_lifecycle_event === 'dev') {
+  if (process.env.NODE_ENV === 'development') {
     log.debug('Using emulator');
     firebase.functions().useEmulator('localhost', 5001);
   }
 }
 
 admin.getPath = getPath;
+admin.setPath = setPath;
 admin.functions = firebase.functions;
+admin.config = functions.config;
 
 module.exports = admin;

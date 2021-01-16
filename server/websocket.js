@@ -1,43 +1,44 @@
+const ws = require('ws');
 const wait = require('wait');
 const ReconnectingWs = require('reconnecting-websocket');
 
-const log = require('./logger');
+const log = require('services/logger');
 
-exports.isOpen = (connection) => {
-  return connection.readyState == connection.OPEN;
+const { OPEN, CLOSED } = ws;
+
+exports.isOpen = ({ readyState }) => {
+  return readyState == OPEN;
 };
 
-exports.send = (connection) => (msg) => {
+exports.send = ({ send }) => (message) => {
   log.silly(`Sending message`);
-  connection.send(msg);
+  send(message);
 };
 
-exports.open = (connection) => {
-  log.debug(`Opening connection`, { status: 'connecting' });
-
-  if (connection.readyState !== connection.OPEN) {
-    connection.reconnect(1000);
+exports.open = ({ readyState, reconnect }) => {
+  if (readyState !== OPEN) {
+    log.debug(`Opening connection`, { status: 'connecting' });
+    reconnect(1000);
   }
 };
 
-exports.close = (connection) => {
-  log.debug(`Closing connection`, { status: 'connecting' });
-
-  if (connection.readyState !== connection.CLOSED) {
-    connection.close(1000);
+exports.close = ({ readyState, close }) => {
+  if (readyState !== CLOSED) {
+    log.debug(`Closing connection`, { status: 'connecting' });
+    close(1000);
   }
 };
 
-exports.restart = async (connection) => {
+exports.restart = async ({ close, reconnect }) => {
   log.debug(`Restarting connection`, { status: 'connecting' });
-  connection.close(1000);
+  close(1000);
   await wait(2500);
-  connection.reconnect(1000);
+  reconnect(1000);
 };
 
 exports.connect = (url, options = {}) => {
   const connection = new ReconnectingWs(url, [], {
-    WebSocket: require('ws'),
+    WebSocket: ws,
     maxRetries: options.maxRetries || 3,
     startClosed: options.startClosed || true,
     minUptime: options.minUptime || 10000,
@@ -62,9 +63,7 @@ exports.connect = (url, options = {}) => {
   });
 
   const heartbeat = () => {
-    const status = connection.readyState == connection.OPEN ? 'open' : 'closed';
-    const icon = status === 'open' ? '✅' : '🚫';
-    log.debug(icon, { status });
+    log.debug(connection.readyState == OPEN ? '✅' : '🚫');
   };
 
   setInterval(heartbeat, 60000);

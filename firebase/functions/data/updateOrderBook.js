@@ -26,7 +26,7 @@ module.exports = async (snapshot, res) => {
       };
     }, {});
 
-    await admin.database().ref(`orderBooks`).update(update);
+    await admin.setPath(`orderBooks`)(update);
 
     if (res && res.status) {
       res.status(200).json({});

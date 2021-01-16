@@ -20,7 +20,7 @@ module.exports = async (context, res) => {
       ...getContractsAndPricesUpdate(data.markets, current),
     };
 
-    await admin.database().ref().update(update);
+    await admin.setPath()(update);
 
     if (res && res.status) {
       res.status(200).json({ update });

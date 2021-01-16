@@ -68,17 +68,14 @@ module.exports = async (...args) => {
       };
     }, {});
 
-    await admin
-      .database()
-      .ref()
-      .update({
-        ...marketsUpdates,
-        ...contractsUpdates,
-        ...pricesUpdate,
-        stats: null,
-        orderBook: null,
-        [`contracts/contracts`]: null,
-      });
+    await admin.setPath()({
+      ...marketsUpdates,
+      ...contractsUpdates,
+      ...pricesUpdate,
+      stats: null,
+      orderBook: null,
+      [`contracts/contracts`]: null,
+    });
 
     if (res && res.status) {
       res.status(200).json({});

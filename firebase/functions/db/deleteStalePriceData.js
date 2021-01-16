@@ -1,9 +1,9 @@
 const admin = require('services/firebase');
 
-const getUpdates = async (database) => {
+const getUpdates = async (db) => {
   const now = new Date();
   const then = now.setMonth(now.getMonth() - 1);
-  const snapshot = await admin.getPath({ database });
+  const snapshot = await admin.getPath({ db });
 
   return Object.entries(snapshot).reduce((updates, [id, prices]) => {
     const pathsToDelete = Object.keys(prices)
