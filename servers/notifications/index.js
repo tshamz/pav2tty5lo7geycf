@@ -1,12 +1,12 @@
-const express = require('../express');
-const websocket = require('../websocket');
+const server = require('server');
+const websocket = require('websocket');
 
 const connection = websocket.connect(require('./url'));
 
 connection.addEventListener('open', require('./onOpen'));
 connection.addEventListener('message', require('./onMessage'));
 
-const app = express.create(process.env.PORT || 8082);
+const app = server.create(process.env.PORT || 8082);
 
 app.get('/open', (req, res) => {
   websocket.open(connection);

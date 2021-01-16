@@ -7,6 +7,7 @@
   },
   "workspaces": {
     "nohoist": [
+      "**",
       "services",
       "services/**"
     ]
@@ -14,12 +15,15 @@
   "scripts": {
     "dev": "nodemon .",
     "start": "node .",
-    "deploy": "gcloud app deploy"
+    "gcp-build": "echo 'Starting Build...'",
+    "deploy": "gcloud app deploy --quiet"
   },
   "dependencies": {
+    "services": "*",
+    "server": "*",
+    "websocket": "*",
     "node-fetch": "^2.6.1",
     "reconnecting-websocket": "^4.4.0",
-    "services": "*",
     "wait": "^0.4.2",
     "ws": "^7.4.2"
   },

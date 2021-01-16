@@ -1,5 +1,5 @@
-const express = require('../express');
-const websocket = require('../websocket');
+const server = require('server');
+const websocket = require('websocket');
 
 const connection = websocket.connect(require('./url'), {
   maxRetries: 3,
@@ -11,7 +11,7 @@ connection.addEventListener('open', require('./onOpen')(connection));
 connection.addEventListener('close', require('./onClose')(connection));
 connection.addEventListener('message', require('./onMessage'));
 
-const app = express.create(process.env.PORT || 8081);
+const app = server.create(process.env.PORT || 8081);
 const message = require('./message')(connection);
 
 app.get('/open', (req, res) => {

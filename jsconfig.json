@@ -11,7 +11,7 @@
   // prettier-ignore
   "include": [
     "./",
-    "server/",
+    "servers/",
     "firebase/",
   ],
   // prettier-ignore

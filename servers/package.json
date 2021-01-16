@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "servers",
   "private": true,
   "version": "0.0.1",
   "engines": {
@@ -17,6 +17,6 @@
     "deploy:status": "yarn workspace status deploy",
     "deploy:markets": "yarn workspace markets deploy",
     "deploy:notifications": "yarn workspace notifications deploy",
-    "deploy": "gcloud app deploy markets notifications status"
+    "deploy": "gcloud app deploy markets notifications status --quiet"
   }
 }

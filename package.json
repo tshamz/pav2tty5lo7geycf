@@ -6,17 +6,26 @@
     "packages": [
       "firebase/functions",
       "firebase/functions/services",
-      "server",
-      "server/*"
+      "servers",
+      "servers/*"
     ]
   },
   "scripts": {
-    "dev:server": "yarn workspace server dev",
+    "dev:servers": "yarn workspace servers dev",
     "dev:firebase": "yarn workspace firebase dev",
-    "dev": "firebase emulators:exec 'yarn dev:server' --ui --export-on-exit ./firebase/functions/.data --import ./firebase/functions/.data",
+    "dev": "firebase emulators:exec 'yarn dev:servers' --ui --export-on-exit ./firebase/functions/.data --import ./firebase/functions/.data",
+    "start:servers": "yarn workspace servers start",
+    "start:status": "yarn workspace status start",
+    "start:markets": "yarn workspace markets start",
+    "start:notifications": "yarn workspace notifications start",
+    "start": "run-p start:*",
     "deploy:firebase": "yarn workspace firebase deploy",
-    "deploy:server": "yarn workspace server deploy",
-    "deploy": "run-p deploy:server deploy:functions"
+    "deploy:servers": "yarn workspace servers deploy",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:status": "yarn workspace status deploy",
+    "deploy:markets": "yarn workspace markets deploy",
+    "deploy:notifications": "yarn workspace notifications deploy",
+    "deploy": "run-p deploy:servers deploy:functions"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",

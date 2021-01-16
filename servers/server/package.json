@@ -1,0 +1,12 @@
+{
+  "name": "server",
+  "private": true,
+  "version": "0.0.1",
+  "engines": {
+    "node": "12.x"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "services": "^0.0.3"
+  }
+}
