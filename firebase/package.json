@@ -1,0 +1,14 @@
+{
+  "name": "firebase",
+  "private": true,
+  "version": "0.0.1",
+  "engines": {
+    "node": "12.x"
+  },
+  "scripts": {
+    "dev:functions": "firebase emulators:start --export-on-exit ./data --import ./data",
+    "dev": "firebase emulators:start --export-on-exit ./data --import ./data",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy": "firebase deploy"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es6",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "paths": {
+      "*": ["*"]
+    }
+  },
+  // prettier-ignore
+  "include": [
+    "./",
+    "server/",
+    "firebase/",
+  ],
+  // prettier-ignore
+  "exclude": [
+    ".*",
+    "node_modules",
+    "**/node_modules",
+  ]
+}

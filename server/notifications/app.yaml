@@ -1,0 +1,17 @@
+env: flex
+runtime: nodejs
+
+service: notifications
+
+manual_scaling:
+  instances: 1
+
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+
+env_variables:
+  GOOGLE_APPLICATION_CREDENTIALS: ../credentials.firebase.json
+  FIREBASE_PROJECT: kingmaker---firebase
+  FIREBASE_DATABASE_URL: https://kingmaker---firebase.firebaseio.com

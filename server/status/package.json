@@ -1,0 +1,24 @@
+{
+  "name": "status",
+  "private": true,
+  "version": "0.0.1",
+  "engines": {
+    "node": "12.x"
+  },
+  "workspaces": {
+    "nohoist": [
+      "services/**"
+    ]
+  },
+  "scripts": {
+    "dev": "nodemon .",
+    "start": "node .",
+    "deploy": "gcloud app deploy"
+  },
+  "dependencies": {
+    "services": "*"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

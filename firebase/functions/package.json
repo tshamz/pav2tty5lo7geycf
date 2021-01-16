@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "functions",
+  "version": "0.0.1",
+  "scripts": {
+    "deploy": "firebase deploy --only functions"
+  },
+  "engines": {
+    "node": "12"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "chrono-node": "^2.1.10",
+    "deep-equal": "^2.0.5",
+    "firebase": "^8.1.2",
+    "firebase-admin": "^9.4.1",
+    "firebase-functions": "^3.11.0",
+    "lodash": "^4.17.20",
+    "node-fetch": "^2.6.1",
+    "puppeteer": "^5.5.0",
+    "puppeteer-extra": "^3.1.15",
+    "puppeteer-extra-plugin-stealth": "^2.6.5",
+    "services": "file:./services",
+    "tinyurl": "^1.1.7",
+    "twilio": "^3.53.0"
+  }
+}

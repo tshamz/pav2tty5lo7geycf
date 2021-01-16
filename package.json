@@ -1,0 +1,41 @@
+{
+  "private": true,
+  "name": "pav2tty5lo7geycf",
+  "version": "0.0.1",
+  "workspaces": {
+    "packages": [
+      "firebase",
+      "firebase/functions",
+      "server",
+      "server/markets",
+      "server/notifications",
+      "server/services",
+      "server/status"
+    ]
+  },
+  "scripts": {
+    "dev:server": "yarn workspace server dev",
+    "dev:firebase": "yarn workspace firebase dev",
+    "dev": "firebase emulators:exec 'yarn dev:servers' --ui --export-on-exit ./data --import ./data",
+    "deploy:firebase": "yarn workspace firebase deploy",
+    "deploy:server": "yarn workspace server deploy",
+    "deploy": "run-p deploy:server deploy:functions"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9",
+    "@packdigital/babel-preset-ripperoni": "^2.0.3",
+    "@packdigital/eslint-config-ripperoni": "^1.0.26",
+    "@packdigital/prettier-config-ripperoni": "^1.0.13",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.15.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-import-resolver-node": "^0.3.4",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.2.0",
+    "eslint-plugin-react": "^7.21.5",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1"
+  }
+}

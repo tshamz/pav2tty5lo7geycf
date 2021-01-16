@@ -1,0 +1,25 @@
+{
+  "name": "markets",
+  "private": true,
+  "version": "0.0.1",
+  "engines": {
+    "node": "12.x"
+  },
+  "workspaces": {
+    "nohoist": [
+      "services/**"
+    ]
+  },
+  "scripts": {
+    "dev": "nodemon .",
+    "start": "node .",
+    "deploy": "gcloud app deploy"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "services": "*"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
