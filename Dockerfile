@@ -52,3 +52,4 @@ ENV PATH /opt/node_app/node_modules/.bin:$PATH
 HEALTHCHECK --interval=30s CMD node healthcheck.js
 
 ENTRYPOINT [ "yarn", "start:servers" ]
+
