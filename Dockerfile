@@ -40,7 +40,7 @@ COPY credentials.firebase.json ./
 COPY firebase/functions/services firebase/functions/services
 COPY servers/server servers/server
 COPY servers/websocket servers/websocket
-
+COPY servers/status servers/status
 COPY servers/markets servers/markets
 COPY servers/notifications servers/notifications
 
@@ -51,4 +51,4 @@ ENV PATH /opt/node_app/node_modules/.bin:$PATH
 # check every 30s to ensure this service returns HTTP 200
 HEALTHCHECK --interval=30s CMD node healthcheck.js
 
-ENTRYPOINT [ "yarn", "start:markets" ]
+ENTRYPOINT [ "yarn", "start:servers" ]
