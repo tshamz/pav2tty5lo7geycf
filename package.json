@@ -22,7 +22,7 @@
     "start:status": "yarn workspace status start",
     "start:markets": "yarn workspace markets start",
     "start:notifications": "yarn workspace notifications start",
-    "start": "run-p start:*",
+    "start": "start:servers",
     "deploy:firebase": "yarn workspace firebase deploy",
     "deploy:functions": "firebase deploy --only functions",
     "deploy:servers": "gcloud app deploy --quiety",
