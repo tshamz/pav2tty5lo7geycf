@@ -45,24 +45,25 @@ ENV FIREBASE_DEFAULT_DATABASE_URL $FIREBASE_DEFAULT_DATABASE_URL
 ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
 ENV NPM_TOKEN $NPM_TOKEN
 
-RUN printf 'registry=https://registry.npmjs.org\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
-
-RUN pwd
-RUN ls
-RUN echo 4
+# RUN printf 'registry=https://registry.npmjs.org\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
 
 # Only copy the packages that I need
-# COPY .npmrc ./
-COPY package.json yarn.lock* ./
-COPY .firebaserc ./
-COPY credentials.firebase.json ./
-COPY ./firebase/functions/services firebase/functions/services
-COPY ./servers/markets servers/markets
-COPY ./servers/server servers/server
-COPY ./servers/websocket servers/websocket
+COPY ../../.npmrc ./
+COPY ../../package.json yarn.lock* ./
+COPY ../../.firebaserc ./
+COPY ../../credentials.firebase.json ./
+COPY ../../firebase/functions/services firebase/functions/services
+COPY ../../servers/markets servers/markets
+COPY ../../servers/server servers/server
+COPY ../../servers/websocket servers/websocket
 
 RUN yarn install --no-optional --production && yarn cache clean --force
 # ENV PATH /opt/node_app/node_modules/.bin:$PATH
+
+RUN cd ../../
+RUN pwd
+RUN ls
+RUN echo 4
 
 
 # check every 30s to ensure this service returns HTTP 200
