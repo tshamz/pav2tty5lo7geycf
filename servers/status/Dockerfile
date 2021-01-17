@@ -40,16 +40,16 @@ RUN pwd
 RUN echo 3
 
 # Only copy the packages that I need
-COPY /app/.npmrc ./
-COPY /app/package.json yarn.lock* ./
-COPY /app/firebase/functions/services firebase/functions/services
-COPY /app/servers/status servers/status
+COPY .npmrc ./
+COPY package.json yarn.lock* ./
+COPY firebase/functions/services firebase/functions/services
+COPY servers/status servers/status
 
 RUN yarn install --no-optional --production && yarn cache clean --force
 ENV PATH /opt/node_app/node_modules/.bin:$PATH
 
-COPY /app/.firebaserc ./
-COPY /app/credentials.firebase.json ./
+COPY .firebaserc ./
+COPY credentials.firebase.json ./
 
 RUN pwd
 RUN echo 4

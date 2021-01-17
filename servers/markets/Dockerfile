@@ -47,18 +47,18 @@ RUN pwd
 RUN echo 4
 
 # Only copy the packages that I need
-COPY /app/.npmrc ./
-COPY /app/package.json yarn.lock* ./
-COPY /app/firebase/functions/services firebase/functions/services
-COPY /app/servers/markets servers/markets
-COPY /app/servers/server servers/server
-COPY /app/servers/websocket servers/websocket
+COPY .npmrc ./
+COPY package.json yarn.lock* ./
+COPY firebase/functions/services firebase/functions/services
+COPY servers/markets servers/markets
+COPY servers/server servers/server
+COPY servers/websocket servers/websocket
 
 RUN yarn install --no-optional --production && yarn cache clean --force
 ENV PATH /opt/node_app/node_modules/.bin:$PATH
 
-COPY /app/.firebaserc ./
-COPY /app/credentials.firebase.json ./
+COPY .firebaserc ./
+COPY credentials.firebase.json ./
 
 # check every 30s to ensure this service returns HTTP 200
 HEALTHCHECK --interval=30s CMD node healthcheck.js
