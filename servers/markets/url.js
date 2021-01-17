@@ -1,5 +1,5 @@
-const log = require('services/logger');
-const firebase = require('services/firebase');
+const log = require('services').logger;
+const firebase = require('services').firebase;
 
 module.exports = async () => {
   try {

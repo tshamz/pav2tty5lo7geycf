@@ -1,10 +1,20 @@
+const fs = require('fs');
+require('dotenv').config();
 require('@google-cloud/trace-agent').start();
+
+console.log(fs.existsSync('./services/websocket'));
+if (fs.existsSync('./services/websocket')) {
+  console.log('ding');
+  exports.websocket = require('./services/websocket');
+}
 
 const debug = require('@google-cloud/debug-agent');
 
-const log = require('services/logger');
-const express = require('services/express');
-const websocket = require('services/websocket');
+const log = require('services').logger;
+const express = require('services').express;
+const websocket = require('services').websocket;
+const services = require('services');
+console.log('services', services);
 
 debug.start({ serviceContext: { enableCanary: true } });
 
