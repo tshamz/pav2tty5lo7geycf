@@ -1,16 +1,44 @@
 FROM gcr.io/google-appengine/nodejs
 
-WORKDIR /app
+# set our node environment, either development or production
+# defaults to production, compose overrides this to development on build and run
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
 
-ENV NODE_ENV=production
+# default to port 8080 for node
+ARG PORT=8080
+ENV PORT $PORT
+EXPOSE $PORT 8080
 
-ADD yarn.lock /app/
-ADD package.json /app/
+# you'll likely want the latest npm, regardless of node version, for speed and fixes
+# but pin this version for the best stability
+RUN npm i npm@latest -g
+
+# install dependencies first, in a different location for easier app bind mounting for local development
+# due to default /opt permissions we have to create the dir with root and change perms
+RUN mkdir /opt/node_app
+WORKDIR /opt/node_app
+
+ARG GOOGLE_APPLICATION_CREDENTIALS="/opt/node_app/credentials.firebase.json"
+ENV GOOGLE_APPLICATION_CREDENTIALS $GOOGLE_APPLICATION_CREDENTIALS
+
+ARG FIREBASE_PROJECT="pav2tty5lo7geycf"
+ENV FIREBASE_PROJECT $FIREBASE_PROJECT
+ENV GCLOUD_PROJECT $FIREBASE_PROJECT
 
 # Only copy the packages that I need
-ADD firebase/functions/services /app/services
-ADD servers/status /app/status
+COPY .npmrc ./
+COPY package.json yarn.lock* ./
+COPY firebase/functions/services firebase/functions/services
+COPY servers/status servers/status
 
-RUN cd /app && yarn install --frozen-lockfile
+RUN yarn install --no-optional --production && yarn cache clean --force
+ENV PATH /opt/node_app/node_modules/.bin:$PATH
 
-EXPOSE 8080
+COPY .firebaserc ./
+COPY credentials.firebase.json ./
+
+# check every 30s to ensure this service returns HTTP 200
+HEALTHCHECK --interval=30s CMD node healthcheck.js
+
+ENTRYPOINT [ "yarn", "start:status" ]

@@ -2,12 +2,13 @@
   "name": "websocket",
   "private": true,
   "version": "0.0.1",
+  "main": "index.js",
   "engines": {
     "node": "12.x"
   },
   "dependencies": {
+    "services": "*",
     "reconnecting-websocket": "^4.4.0",
-    "services": "^0.0.3",
     "wait": "^0.4.2",
     "ws": "^7.4.2"
   }

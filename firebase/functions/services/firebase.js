@@ -7,6 +7,8 @@ const path = require('path').resolve(__dirname, '../../../.env');
 
 require('dotenv').config({ path });
 
+console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
 const getDatabaseUrl = (name) => {
   return `https://pav2tty5lo7geycf--${name}.firebaseio.com`;
 };

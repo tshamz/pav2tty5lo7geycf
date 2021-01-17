@@ -12,9 +12,9 @@
     "deploy": "gcloud app deploy --quiet"
   },
   "dependencies": {
-    "services": "*",
-    "server": "*",
-    "websocket": "*",
+    "services": "0.0.1",
+    "server": "0.0.1",
+    "websocket": "0.0.1",
     "node-fetch": "^2.6.1",
     "reconnecting-websocket": "^4.4.0",
     "wait": "^0.4.2",
