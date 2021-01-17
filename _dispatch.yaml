@@ -1,0 +1,9 @@
+dispatch:
+  - url: "*/m/*"
+    service: markets
+
+  - url: "*/n/*"
+    service: notifications
+
+  - url: "*/s/*"
+    service: default
