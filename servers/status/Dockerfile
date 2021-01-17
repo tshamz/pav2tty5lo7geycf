@@ -29,9 +29,10 @@ ENV GCLOUD_PROJECT $FIREBASE_PROJECT
 ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
 ENV NPM_TOKEN $NPM_TOKEN
 
-RUN printf 'registry=https://registry.npmjs.org\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
+# RUN printf 'registry=https://registry.npmjs.org\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
 
 # Only copy the packages that I need
+COPY /workspace/.npmrc ./
 COPY /workspace/package.json yarn.lock* ./
 COPY /workspace/firebase/functions/services firebase/functions/services
 COPY /workspace/servers/status servers/status
