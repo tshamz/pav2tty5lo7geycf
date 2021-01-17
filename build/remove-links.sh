@@ -1,17 +1,15 @@
 #!/bin/bash
 
-function removeLinks() {
-  PROJECT_ROOT=/Users/tylershambora/Code/Personal/pav2tty5lo7geycf;
+WORKSPACE_PATH=$1;
 
-  rm -rf $PROJECT_ROOT/servers/{markets,notifications,status}/services 2> /dev/null;
-  rm $(find $PROJECT_ROOT -name 'credentials.firebase.json' -mindepth 2) 2> /dev/null;
-  rm $PROJECT_ROOT/firebase/functions/services/{firebase.js,logger.js,package.json,index.js} 2> /dev/null;
+if [ ! $WORKSPACE_PATH ]; then
+  echo 'No workspace path provided as the first argument';
+  exit 1;
+fi
 
-  SYMLINKS=$(find $PROJECT_ROOT -type l -maxdepth 5 -not \( -path '*node_modules*' \));
+PROJECT_ROOT=/Users/tylershambora/Code/Personal/pav2tty5lo7geycf;
+WORKSPACE_ROOT=$PROJECT_ROOT/$WORKSPACE_PATH;
+WORKSPACE_SERVICES=$WORKSPACE_ROOT/services;
 
-  for FILE in $SYMLINKS; do
-    rm $FILE 2> /dev/null;
-  done
-}
-
-removeLinks;
+rm -rf $WORKSPACE_SERVICES;
+rm $WORKSPACE_ROOT/.env $WORKSPACE_ROOT/credentials.firebase.json;

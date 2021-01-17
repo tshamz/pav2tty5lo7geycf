@@ -1,35 +1,28 @@
 #!/bin/bash
 
-function createLinks() {
-  PROJECT_ROOT=/Users/tylershambora/Code/Personal/pav2tty5lo7geycf;
-  SERVICES_ROOT=$PROJECT_ROOT/services;
-  SERVER_SERVICES=$PROJECT_ROOT/servers/services;
-  CREDENTIALS_PATH=$PROJECT_ROOT/credentials.firebase.json;
+WORKSPACE_PATH=$1;
 
-  mkdir $PROJECT_ROOT/servers/{markets,notifications,status}/services 2> /dev/null;
+if [ ! $WORKSPACE_PATH ]; then
+  echo 'No workspace path provided as the first argument';
+  exit 1;
+fi
 
-  for FILE in $SERVICES_ROOT/*; do
-    if [ -f "$FILE" ]; then
-      ln -s $FILE $PROJECT_ROOT/servers/markets/services 2> /dev/null;
-      ln -s $FILE $PROJECT_ROOT/servers/notifications/services 2> /dev/null;
-      ln -s $FILE $PROJECT_ROOT/servers/status/services 2> /dev/null;
-      ln -s $FILE $PROJECT_ROOT/firebase/functions/services 2> /dev/null;
-    fi
-  done
+PROJECT_ROOT=/Users/tylershambora/Code/Personal/pav2tty5lo7geycf;
+SERVICES_ROOT=$PROJECT_ROOT/services;
+WORKSPACE_ROOT=$PROJECT_ROOT/$WORKSPACE_PATH;
 
-  for FILE in $SERVER_SERVICES/*; do
-    if [ -f "$FILE" ]; then
-      ln -s $FILE $PROJECT_ROOT/servers/markets/services 2> /dev/null;
-      ln -s $FILE $PROJECT_ROOT/servers/notifications/services 2> /dev/null;
-      ln -s $FILE $PROJECT_ROOT/servers/status/services 2> /dev/null;
-    fi
-  done
+SERVICES=$(find $SERVICES_ROOT -type f -not \( -name 'package.json' \));
+WORKSPACE_SERVICES=$WORKSPACE_ROOT/services;
+LOCAL_SERVICES=$WORKSPACE_ROOT/../services;
 
-  for dir in markets notifications status; do
-    if [ -f "$CREDENTIALS_PATH" ]; then
-      ln -s $CREDENTIALS_PATH $PROJECT_ROOT/servers/${dir} 2> /dev/null;
-    fi
-  done
-}
+mkdir $WORKSPACE_SERVICES;
 
-createLinks
+cp $PROJECT_ROOT/.env $WORKSPACE_ROOT;
+cp $PROJECT_ROOT/credentials.firebase.json $WORKSPACE_ROOT;
+cp $PROJECT_ROOT/services/package.json $WORKSPACE_SERVICES;
+
+ln -s $SERVICES $WORKSPACE_SERVICES;
+
+if [ -d $LOCAL_SERVICES ]; then
+  ln -s $LOCAL_SERVICES/* $WORKSPACE_SERVICES;
+fi

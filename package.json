@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "workspaces": {
     "packages": [
-      "services",
       "servers/markets",
       "servers/notifications",
       "servers/status",
