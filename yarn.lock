@@ -1905,9 +1905,9 @@ camelcase@^5.3.1:
   integrity sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
 
 caniuse-lite@^1.0.30001173:
-  version "1.0.30001177"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001177.tgz#2c3b384933aafda03e29ccca7bb3d8c3389e1ece"
-  integrity sha512-6Ld7t3ifCL02jTj3MxPMM5wAYjbo4h/TAQGFTgv1inihP1tWnWp8mxxT4ut4JBEHLbpFXEXJJQ119JCJTBkYDw==
+  version "1.0.30001178"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001178.tgz#3ad813b2b2c7d585b0be0a2440e1e233c6eabdbc"
+  integrity sha512-VtdZLC0vsXykKni8Uztx45xynytOi71Ufx9T8kHptSw9AL4dpqailUJJHavttuzUe1KYuBYtChiWv+BAb7mPmQ==
 
 chalk@^2.0.0, chalk@^2.4.1:
   version "2.4.2"
@@ -2939,7 +2939,7 @@ find-up@^4.0.0:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
 
-firebase-admin@^9.4.1, firebase-admin@^9.4.2:
+firebase-admin@^9.4.2:
   version "9.4.2"
   resolved "https://registry.yarnpkg.com/firebase-admin/-/firebase-admin-9.4.2.tgz#190d5d7ca5e3f251d99503feb6e05e7ab1623851"
   integrity sha512-mRnBJbW6BAz6DJkZ0GOUTkmnmCrwVzMreMc6O+RXWukFydOzi5Xr6TKSiPKxoOQw41r9IluP2AZ3Qzvlx2SR+g==
@@ -2954,7 +2954,7 @@ firebase-admin@^9.4.1, firebase-admin@^9.4.2:
     "@google-cloud/firestore" "^4.5.0"
     "@google-cloud/storage" "^5.3.0"
 
-firebase-functions@^3.11.0, firebase-functions@^3.13.0:
+firebase-functions@^3.13.1:
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/firebase-functions/-/firebase-functions-3.13.1.tgz#a34e61ab328903fe88a9532d267f031d9a0d9e23"
   integrity sha512-tmYHN9OWWIij/8xO72AD2sKHm9T8pdLPYXy5RWk9VidP8+LDOUZ68vq1g1WKeSkRR7WyVYQ3scU2QoMDfe9T8g==
@@ -2964,7 +2964,7 @@ firebase-functions@^3.11.0, firebase-functions@^3.13.0:
     express "^4.17.1"
     lodash "^4.17.14"
 
-firebase@^8.1.2, firebase@^8.2.2:
+firebase@^8.2.3:
   version "8.2.3"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-8.2.3.tgz#93db7a42715a714b4d8f64c2c870eea4918bc36d"
   integrity sha512-WdbcGSiLxiW/kGZT+EyqD9z3Md7kR35+k9qMjDn/twiIrm6Hh7Qi/Z69cqxhKW6+4uK5ghXIF28CjK67OyD9Qw==
@@ -5318,16 +5318,40 @@ serve-static@1.14.1:
   dependencies:
     "@google-cloud/logging-winston" "^4.0.2"
     chalk "^4.1.0"
-    chrono-node "^2.1.10"
-    dotenv "^8.2.0"
-    express "^4.17.1"
-    firebase "^8.2.2"
+    firebase "^8.2.3"
     firebase-admin "^9.4.2"
-    firebase-functions "^3.13.0"
-    twilio "^3.54.2"
-    uuid "^8.3.2"
+    firebase-functions "^3.13.1"
     winston "^3.3.3"
-    ws "^7.4.2"
+
+"services@file:./servers/markets/services":
+  version "0.0.1"
+  dependencies:
+    "@google-cloud/logging-winston" "^4.0.2"
+    chalk "^4.1.0"
+    firebase "^8.2.3"
+    firebase-admin "^9.4.2"
+    firebase-functions "^3.13.1"
+    winston "^3.3.3"
+
+"services@file:./servers/notifications/services":
+  version "0.0.1"
+  dependencies:
+    "@google-cloud/logging-winston" "^4.0.2"
+    chalk "^4.1.0"
+    firebase "^8.2.3"
+    firebase-admin "^9.4.2"
+    firebase-functions "^3.13.1"
+    winston "^3.3.3"
+
+"services@file:./servers/status/services":
+  version "0.0.1"
+  dependencies:
+    "@google-cloud/logging-winston" "^4.0.2"
+    chalk "^4.1.0"
+    firebase "^8.2.3"
+    firebase-admin "^9.4.2"
+    firebase-functions "^3.13.1"
+    winston "^3.3.3"
 
 set-value@^2.0.0, set-value@^2.0.1:
   version "2.0.1"
@@ -5859,7 +5883,7 @@ tslib@^1.11.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-twilio@^3.53.0, twilio@^3.54.2:
+twilio@^3.53.0:
   version "3.55.0"
   resolved "https://registry.yarnpkg.com/twilio/-/twilio-3.55.0.tgz#26cdedb38c5da1f1e280dd39ce2be42ddf69427a"
   integrity sha512-CQpe4Hv1Bd7miaLXMlWmN28eVO3NOzPDokBXIVTfPFOUhx+RPsmvxrn3MVEYgNLUFbKwps7LKib0DWm3i0sbVA==
@@ -6084,7 +6108,7 @@ uuid@^3.0.1:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
-uuid@^8.0.0, uuid@^8.3.2:
+uuid@^8.0.0:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
@@ -6130,6 +6154,11 @@ websocket-extensions@>=0.1.1:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.4.tgz#7f8473bc839dfd87608adb95d7eb075211578a42"
   integrity sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==
+
+websocket@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/websocket/-/websocket-0.0.1.tgz#67a8c53140d29a5e52f3ea881ee813a18df7dca0"
+  integrity sha1-Z6jFMUDSml5S8+qIHugToY333KA=
 
 whatwg-fetch@2.0.4:
   version "2.0.4"

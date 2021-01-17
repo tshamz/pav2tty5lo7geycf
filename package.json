@@ -4,29 +4,27 @@
   "version": "0.0.1",
   "workspaces": {
     "packages": [
-      "servers",
+      "services",
       "servers/markets",
       "servers/notifications",
-      "servers/server",
       "servers/status",
-      "servers/websocket",
-      "firebase/functions",
-      "firebase/functions/services"
+      "firebase/functions"
     ]
   },
   "scripts": {
-    "dev:servers": "yarn workspace servers dev",
-    "dev:firebase": "yarn workspace firebase dev",
-    "dev": "firebase emulators:exec 'yarn dev:servers' --ui --export-on-exit ./firebase/functions/.data --import ./firebase/functions/.data",
-    "start:servers": "yarn workspace servers start",
+    "dev:status": "yarn workspace status dev",
+    "dev:markets": "yarn workspace markets dev",
+    "dev:notifications": "yarn workspace notifications dev",
+    "dev": "firebase emulators:exec 'run-p dev:*' --ui --export-on-exit ./firebase/functions/.data --import ./firebase/functions/.data",
     "start:status": "yarn workspace status start",
     "start:markets": "yarn workspace markets start",
     "start:notifications": "yarn workspace notifications start",
-    "start": "start:servers",
-    "deploy:firebase": "yarn workspace firebase deploy",
-    "deploy:functions": "firebase deploy --only functions",
-    "deploy:servers": "gcloud app deploy --quiety",
-    "deploy": "run-p deploy:servers deploy:functions"
+    "start": "run-p start:*",
+    "deploy:functions": "yarn workspace functions deploy",
+    "deploy:status": "yarn workspace status deploy",
+    "deploy:markets": "yarn workspace markets deploy",
+    "deploy:notifications": "yarn workspace notifications deploy",
+    "deploy": "run-p deploy:*"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",

@@ -32,24 +32,16 @@ ENV FIREBASE_DEFAULT_DATABASE_URL $FIREBASE_DEFAULT_DATABASE_URL
 ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
 ENV NPM_TOKEN $NPM_TOKEN
 
-# Only copy the packages that I need
-COPY .npmrc ./
-COPY package.json yarn.lock* ./
-COPY .firebaserc ./
-COPY credentials.firebase.json ./
-COPY firebase/functions/services firebase/functions/services
-COPY servers/server servers/server
-COPY servers/websocket servers/websocket
-COPY servers/status servers/status
-COPY servers/markets servers/markets
-COPY servers/notifications servers/notifications
-
+COPY package.json ./
+RUN touch yarn.lock ./
 
 RUN yarn install --no-optional --production && yarn cache clean --force
+
 ENV PATH /opt/node_app/node_modules/.bin:$PATH
+
+COPY . .
 
 # check every 30s to ensure this service returns HTTP 200
 HEALTHCHECK --interval=30s CMD node healthcheck.js
 
-ENTRYPOINT [ "yarn", "start ]
-
+ENTRYPOINT [ "yarn", "start" ]

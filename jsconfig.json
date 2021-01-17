@@ -11,8 +11,8 @@
   // prettier-ignore
   "include": [
     "./",
-    "servers/",
-    "firebase/",
+    "servers/**/*",
+    "firebase/**/*",
   ],
   // prettier-ignore
   "exclude": [

@@ -1,32 +1,24 @@
 {
-  "name": "notifications",
+  "name": "services",
   "private": true,
   "version": "0.0.1",
   "engines": {
     "node": "12.x"
   },
-  "scripts": {
-    "dev": "nodemon .",
-    "start": "node .",
-    "gcp-build": "echo 'Starting Build...'",
-    "deploy": "gcloud app deploy --quiet"
-  },
   "dependencies": {
-    "services": "file:./services",
     "@google-cloud/logging-winston": "^4.0.2",
     "chalk": "^4.1.0",
     "express": "^4.17.1",
     "firebase": "^8.2.3",
     "firebase-admin": "^9.4.2",
     "firebase-functions": "^3.13.1",
-    "node-fetch": "^2.6.1",
     "reconnecting-websocket": "^4.4.0",
     "wait": "^0.4.2",
-    "websocket": "0.0.1",
     "winston": "^3.3.3",
+    "chrono-node": "^2.1.10",
+    "dotenv": "^8.2.0",
+    "twilio": "^3.54.2",
+    "uuid": "^8.3.2",
     "ws": "^7.4.2"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
   }
 }

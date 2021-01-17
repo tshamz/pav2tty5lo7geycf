@@ -1,8 +1,7 @@
 const express = require('express');
-
 const log = require('services/logger');
 
-exports.create = (port) => {
+exports.create = () => {
   const app = express();
 
   log.middleware().then((middleware) => app.use(middleware));
@@ -14,10 +13,6 @@ exports.create = (port) => {
   app.get('/kill', (req, res) => {
     res.sendStatus(503);
     process.exit(1);
-  });
-
-  app.listen(port, () => {
-    log.debug(`Server started, listening on ${port}`);
   });
 
   return app;

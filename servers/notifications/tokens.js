@@ -26,21 +26,15 @@ const headers = {
   'User-Agent': `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36`,
 };
 
-const refreshSessionAndBearerToken = (retry) => async () => {
+const refreshSessionAndBearerToken = async () => {
   try {
     log.warn(`Refreshing session and bearer token`);
 
-    const session = await firebase
+    return firebase
       .functions()
-      .httpsCallable('browser-createSession')();
-
-    if (!session.data) {
-      throw new Error('No session');
-    }
-
-    return retry();
+      .httpsCallable('browser-createSession')()
+      .then(setBearerToken);
   } catch (error) {
-    log.error(error);
     throw error;
   }
 };
@@ -52,7 +46,7 @@ const setBearerToken = async () => {
     const token = await firebase
       .getPath({ path: 'session/token' })
       .then((snapshot) => JSON.parse(snapshot).value)
-      .catch(refreshSessionAndBearerToken(setBearerToken));
+      .catch(refreshSessionAndBearerToken);
 
     params.set('bearer', token);
 
@@ -72,7 +66,7 @@ const setConnectionToken = async () => {
     const token = await fetch(url, { headers })
       .then((response) => response.json())
       .then((data) => data.ConnectionToken)
-      .catch(refreshSessionAndBearerToken(setConnectionToken));
+      .catch(refreshSessionAndBearerToken);
 
     params.set('connectionToken', token);
 

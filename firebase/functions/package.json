@@ -2,12 +2,6 @@
   "private": true,
   "name": "functions",
   "version": "0.0.1",
-  "workspaces": {
-    "nohoist": [
-      "services",
-      "services/**"
-    ]
-  },
   "scripts": {
     "dev": "firebase emulators:start --export-on-exit ./.data --import ./.data",
     "deploy": "firebase deploy --only functions"
@@ -18,11 +12,14 @@
   "main": "index.js",
   "dependencies": {
     "services": "file:./services",
+    "@google-cloud/logging-winston": "^4.0.2",
+    "chalk": "^4.1.0",
     "chrono-node": "^2.1.10",
     "deep-equal": "^2.0.5",
-    "firebase": "^8.1.2",
-    "firebase-admin": "^9.4.1",
-    "firebase-functions": "^3.11.0",
+    "dotenv": "^8.2.0",
+    "firebase": "^8.2.3",
+    "firebase-admin": "^9.4.2",
+    "firebase-functions": "^3.13.1",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
     "puppeteer": "^5.5.0",
@@ -30,6 +27,7 @@
     "puppeteer-extra-plugin-stealth": "^2.6.5",
     "tinyurl": "^1.1.7",
     "twilio": "^3.53.0",
-    "wait": "^0.4.2"
+    "wait": "^0.4.2",
+    "winston": "^3.3.3"
   }
 }

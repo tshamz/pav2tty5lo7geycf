@@ -10,30 +10,30 @@ exports.isOpen = ({ readyState }) => {
   return readyState == OPEN;
 };
 
-exports.send = ({ send }) => (message) => {
+exports.send = (connection) => (message) => {
   log.silly(`Sending message`);
-  send(message);
+  connection.send(message);
 };
 
-exports.open = ({ readyState, reconnect }) => {
-  if (readyState !== OPEN) {
+exports.open = (connection) => {
+  if (connection.readyState !== OPEN) {
     log.debug(`Opening connection`, { status: 'connecting' });
-    reconnect(1000);
+    connection.reconnect(1000);
   }
 };
 
-exports.close = ({ readyState, close }) => {
-  if (readyState !== CLOSED) {
+exports.close = (connection) => {
+  if (connection.readyState !== CLOSED) {
     log.debug(`Closing connection`, { status: 'connecting' });
-    close(1000);
+    connection.close(1000);
   }
 };
 
-exports.restart = async ({ close, reconnect }) => {
+exports.restart = async (connection) => {
   log.debug(`Restarting connection`, { status: 'connecting' });
-  close(1000);
+  connection.close(1000);
   await wait(2500);
-  reconnect(1000);
+  connection.reconnect(1000);
 };
 
 exports.connect = (url, options = {}) => {

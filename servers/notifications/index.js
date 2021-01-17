@@ -1,12 +1,14 @@
-const server = require('server');
-const websocket = require('websocket');
+const log = require('services/logger');
+const express = require('services/express');
+const websocket = require('services/websocket');
 
 const connection = websocket.connect(require('./url'));
 
 connection.addEventListener('open', require('./onOpen'));
 connection.addEventListener('message', require('./onMessage'));
 
-const app = server.create(process.env.PORT || 8082);
+const app = express.create();
+const port = process.env.PORT || 8082;
 
 app.get('/open', (req, res) => {
   websocket.open(connection);
@@ -37,6 +39,11 @@ app.get('/status', (req, res) => {
     color: isOpen ? 'green' : 'red',
     message: isOpen ? 'connected' : 'down',
   });
+});
+
+app.listen(port, () => {
+  log.debug(`Server started, listening on ${port}`);
+  websocket.open(connection);
 });
 
 module.exports = app;

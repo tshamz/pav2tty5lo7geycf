@@ -1,4 +1,4 @@
-const websocket = require('../websocket');
+const websocket = require('../shared/websocket');
 
 let r = 0;
 let t = 0;
