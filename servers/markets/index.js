@@ -59,7 +59,7 @@ app.get('/status', (req, res) => {
 
 app.listen(port, () => {
   log.debug(`Server started, listening on ${port}`);
-  websocket.open(connection);
+  // websocket.open(connection);
 });
 
 module.exports = app;
