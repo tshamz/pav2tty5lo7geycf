@@ -24,9 +24,9 @@
     "deploy:markets": "yarn workspace markets deploy",
     "deploy:notifications": "yarn workspace notifications deploy",
     "deploy": "run-p deploy:*",
-    "links:create": "./build/create-links.sh",
+    "links:create": "../../build/create-links.sh",
     "links:replace": "./build/replace-links.sh",
-    "links:remove": "./build/remove-links.sh",
+    "links:remove": "../../build/remove-links.sh",
     "links:refresh": "run-s links:remove links:create"
   },
   "devDependencies": {

@@ -11,7 +11,7 @@
   "scripts": {
     "links:create": "./build/create-links.sh servers/status",
     "links:remove": "./build/remove-links.sh servers/status",
-    "preinstall": "yarn links:remove && yarn links:create",
+    "preinstall": "yarn -cwd ../../ links:remove && yarn -cwd ../../ links:create",
     "dev": "nodemon .",
     "start": "node .",
     "gcp-build": "./build/replace-links.sh servers/status",

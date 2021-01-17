@@ -11,5 +11,5 @@ PROJECT_ROOT=/Users/tylershambora/Code/Personal/pav2tty5lo7geycf;
 WORKSPACE_ROOT=$PROJECT_ROOT/$WORKSPACE_PATH;
 WORKSPACE_SERVICES=$WORKSPACE_ROOT/services;
 
-rm -rf $WORKSPACE_SERVICES;
-rm $WORKSPACE_ROOT/.env $WORKSPACE_ROOT/credentials.firebase.json;
+rm -rf $WORKSPACE_SERVICES 2> /dev/null 2> /dev/null;
+rm $WORKSPACE_ROOT/.env $WORKSPACE_ROOT/credentials.firebase.json 2> /dev/null;
