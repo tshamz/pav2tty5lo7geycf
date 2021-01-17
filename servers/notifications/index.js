@@ -1,8 +1,14 @@
+require('@google-cloud/trace-agent').start();
+
+const debug = require('@google-cloud/debug-agent');
+
 const log = require('services/logger');
 const express = require('services/express');
 const websocket = require('services/websocket');
 
 const connection = websocket.connect(require('./url'));
+
+debug.start({ serviceContext: { enableCanary: true } });
 
 connection.addEventListener('open', require('./onOpen'));
 connection.addEventListener('message', require('./onMessage'));
