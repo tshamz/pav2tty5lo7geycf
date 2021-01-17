@@ -5,6 +5,11 @@
   "engines": {
     "node": "12.x"
   },
+  "workspaces" {
+    "nohoist": [
+      "**"
+    ]
+  },
   "scripts": {
     "dev": "nodemon .",
     "start": "node .",
