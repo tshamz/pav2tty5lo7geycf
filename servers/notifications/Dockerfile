@@ -19,6 +19,9 @@ RUN npm i npm@latest -g
 RUN mkdir /opt/node_app
 WORKDIR /opt/node_app
 
+ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
+ENV NPM_TOKEN $NPM_TOKEN
+
 ARG GOOGLE_APPLICATION_CREDENTIALS="/opt/node_app/credentials.firebase.json"
 ENV GOOGLE_APPLICATION_CREDENTIALS $GOOGLE_APPLICATION_CREDENTIALS
 
