@@ -40,13 +40,13 @@ ENV FIREBASE_DEFAULT_DATABASE_URL $FIREBASE_DEFAULT_DATABASE_URL
 ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
 ENV NPM_TOKEN $NPM_TOKEN
 
-# RUN printf 'registry=https://registry.npmjs.org\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
+RUN printf 'registry=https://registry.npmjs.org\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
 
 RUN pwd
 RUN echo 3
 
 # Only copy the packages that I need
-COPY .npmrc ./
+# COPY .npmrc ./
 COPY package.json yarn.lock* ./
 COPY firebase/functions/services firebase/functions/services
 COPY servers/notifications servers/notifications
