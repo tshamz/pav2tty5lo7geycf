@@ -1,4 +1,3 @@
-const wait = require('wait');
 const TinyURL = require('tinyurl');
 const isEqual = require('lodash/isEqual');
 const differenceWith = require('lodash/differenceWith');
@@ -16,7 +15,7 @@ module.exports = async (snapshot, context) => {
 
     if (!added.length && !removed.length) return;
 
-    await wait(1500);
+    await require('wait')(1500);
 
     const marketPath = `markets/${context.params.market}`;
     const market = await admin.getPath({ path: marketPath });

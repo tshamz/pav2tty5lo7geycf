@@ -12,6 +12,7 @@
     ]
   },
   "scripts": {
+    "gcp-build": "./build/replace-links.sh",
     "dev:status": "yarn workspace status dev",
     "dev:markets": "yarn workspace markets dev",
     "dev:notifications": "yarn workspace notifications dev",
@@ -24,7 +25,8 @@
     "deploy:status": "yarn workspace status deploy",
     "deploy:markets": "yarn workspace markets deploy",
     "deploy:notifications": "yarn workspace notifications deploy",
-    "deploy": "run-p deploy:*"
+    "deploy": "run-p deploy:*",
+    "postdeploy": "./build/remove-links.sh && ./build/create-links.sh"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",

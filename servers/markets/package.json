@@ -13,7 +13,6 @@
   "scripts": {
     "dev": "nodemon .",
     "start": "node .",
-    "gcp-build": "echo 'Starting Build...'",
     "deploy": "gcloud app deploy --quiet"
   },
   "dependencies": {
