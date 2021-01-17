@@ -1,5 +1,8 @@
 FROM gcr.io/google-appengine/nodejs
 
+RUN pwd
+RUN echo 1
+
 # set our node environment, either development or production
 # defaults to production, compose overrides this to development on build and run
 ARG NODE_ENV=production
@@ -14,10 +17,16 @@ EXPOSE $PORT 8080
 # but pin this version for the best stability
 RUN npm i npm@latest -g
 
+RUN pwd
+RUN echo 2
+
 # install dependencies first, in a different location for easier app bind mounting for local development
 # due to default /opt permissions we have to create the dir with root and change perms
 RUN mkdir /opt/node_app
 WORKDIR /opt/node_app
+
+RUN pwd
+RUN echo 3
 
 ARG GOOGLE_APPLICATION_CREDENTIALS="/opt/node_app/credentials.firebase.json"
 ENV GOOGLE_APPLICATION_CREDENTIALS $GOOGLE_APPLICATION_CREDENTIALS
@@ -33,6 +42,9 @@ ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
 ENV NPM_TOKEN $NPM_TOKEN
 
 # RUN printf 'registry=https://registry.npmjs.org\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
+
+RUN pwd
+RUN echo 4
 
 # Only copy the packages that I need
 COPY /workspace/.npmrc ./

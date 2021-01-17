@@ -5,6 +5,9 @@ FROM gcr.io/google-appengine/nodejs
 ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
 
+RUN pwd
+RUN echo 1
+
 # default to port 8080 for node
 ARG PORT=8080
 ENV PORT $PORT
@@ -19,6 +22,9 @@ RUN npm i npm@latest -g
 RUN mkdir /opt/node_app
 WORKDIR /opt/node_app
 
+RUN pwd
+RUN echo 2
+
 ARG GOOGLE_APPLICATION_CREDENTIALS="/opt/node_app/credentials.firebase.json"
 ENV GOOGLE_APPLICATION_CREDENTIALS $GOOGLE_APPLICATION_CREDENTIALS
 
@@ -30,6 +36,8 @@ ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
 ENV NPM_TOKEN $NPM_TOKEN
 
 # RUN printf 'registry=https://registry.npmjs.org\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
+RUN pwd
+RUN echo 3
 
 # Only copy the packages that I need
 COPY /workspace/.npmrc ./
@@ -42,6 +50,9 @@ ENV PATH /opt/node_app/node_modules/.bin:$PATH
 
 COPY /workspace/.firebaserc ./
 COPY /workspace/credentials.firebase.json ./
+
+RUN pwd
+RUN echo 4
 
 # check every 30s to ensure this service returns HTTP 200
 HEALTHCHECK --interval=30s CMD node healthcheck.js
