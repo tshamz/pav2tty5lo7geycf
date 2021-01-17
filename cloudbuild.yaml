@@ -1,11 +1,3 @@
 steps:
   - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      [
-        'app',
-        'deploy',
-        'servers/markets',
-        'servers/notifications',
-        'servers/status',
-        '--quiet',
-      ]
+    args: ['app', 'deploy', '--quiet']

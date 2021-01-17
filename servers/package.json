@@ -13,10 +13,6 @@
     "start:status": "yarn workspace status start",
     "start:markets": "yarn workspace markets start",
     "start:notifications": "yarn workspace notifications start",
-    "start": "run-p start:*",
-    "deploy:status": "yarn workspace status deploy",
-    "deploy:markets": "yarn workspace markets deploy",
-    "deploy:notifications": "yarn workspace notifications deploy",
-    "deploy": "gcloud app deploy markets notifications status --quiet"
+    "start": "run-p start:*"
   }
 }

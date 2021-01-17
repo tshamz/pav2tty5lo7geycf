@@ -24,11 +24,8 @@
     "start:notifications": "yarn workspace notifications start",
     "start": "run-p start:*",
     "deploy:firebase": "yarn workspace firebase deploy",
-    "deploy:servers": "yarn workspace servers deploy",
     "deploy:functions": "firebase deploy --only functions",
-    "deploy:status": "yarn workspace status deploy",
-    "deploy:markets": "yarn workspace markets deploy",
-    "deploy:notifications": "yarn workspace notifications deploy",
+    "deploy:servers": "gcloud app deploy --quiety",
     "deploy": "run-p deploy:servers deploy:functions"
   },
   "devDependencies": {
