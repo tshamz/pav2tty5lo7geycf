@@ -5,7 +5,7 @@ function removeLinks() {
 
   rm -rf $PROJECT_ROOT/servers/{markets,notifications,status}/services 2> /dev/null;
   rm $(find $PROJECT_ROOT -name 'credentials.firebase.json' -mindepth 2) 2> /dev/null;
-  rm $PROJECT_ROOT/firebase/functions/services/{firebase.js,logger.js,package.json} 2> /dev/null;
+  rm $PROJECT_ROOT/firebase/functions/services/{firebase.js,logger.js,package.json,index.js} 2> /dev/null;
 
   SYMLINKS=$(find $PROJECT_ROOT -type l -maxdepth 5 -not \( -path '*node_modules*' \));
 

@@ -30,7 +30,8 @@
     "postdeploy": "./build/remove-links.sh && ./build/create-links.sh",
     "links:create": "./build/create-links.sh",
     "links:replace": "./build/replace-links.sh",
-    "links:remove": "./build/remove-links.s"
+    "links:remove": "./build/remove-links.sh",
+    "links:refresh": "run-s links:remove links:create"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",

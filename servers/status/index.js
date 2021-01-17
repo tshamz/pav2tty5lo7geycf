@@ -5,7 +5,7 @@ const debug = require('@google-cloud/debug-agent');
 debug.start({ serviceContext: { enableCanary: true } });
 
 const express = require('express');
-const log = require('services/logger');
+const log = require('services').logger;
 
 const app = express();
 const port = process.env.PORT || 8080;
