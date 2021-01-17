@@ -51,5 +51,5 @@ ENV PATH /opt/node_app/node_modules/.bin:$PATH
 # check every 30s to ensure this service returns HTTP 200
 HEALTHCHECK --interval=30s CMD node healthcheck.js
 
-ENTRYPOINT [ "yarn", "start:servers" ]
+ENTRYPOINT [ "yarn", "start ]
 
