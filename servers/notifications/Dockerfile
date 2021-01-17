@@ -2,6 +2,7 @@ FROM gcr.io/google-appengine/nodejs
 
 RUN pwd
 RUN echo 1
+RUN ls
 
 # set our node environment, either development or production
 # defaults to production, compose overrides this to development on build and run
@@ -44,18 +45,18 @@ RUN pwd
 RUN echo 3
 
 # Only copy the packages that I need
-COPY /workspace/.npmrc ./
-COPY /workspace/package.json yarn.lock* ./
-COPY /workspace/firebase/functions/services firebase/functions/services
-COPY /workspace/servers/notifications servers/notifications
-COPY /workspace/servers/server servers/server
-COPY /workspace/servers/websocket servers/websocket
+COPY /app/.npmrc ./
+COPY /app/package.json yarn.lock* ./
+COPY /app/firebase/functions/services firebase/functions/services
+COPY /app/servers/notifications servers/notifications
+COPY /app/servers/server servers/server
+COPY /app/servers/websocket servers/websocket
 
 RUN yarn install --no-optional --production && yarn cache clean --force
 ENV PATH /opt/node_app/node_modules/.bin:$PATH
 
-COPY /workspace/.firebaserc ./
-COPY /workspace/credentials.firebase.json ./
+COPY /app/.firebaserc ./
+COPY /app/credentials.firebase.json ./
 
 RUN pwd
 RUN echo 4
