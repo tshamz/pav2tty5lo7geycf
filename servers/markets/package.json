@@ -9,6 +9,9 @@
     "services"
   ],
   "scripts": {
+    "links:create": "./build/create-links.sh servers/markets",
+    "links:remove": "./build/remove-links.sh servers/markets",
+    "preinstall": "yarn links:remove && yarn links:create",
     "dev": "nodemon .",
     "start": "node .",
     "gcp-build": "./build/replace-links.sh servers/markets",

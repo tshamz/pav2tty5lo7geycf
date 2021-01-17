@@ -9,6 +9,9 @@
     "node": "12"
   },
   "scripts": {
+    "links:create": "./build/create-links.sh firebase/functions",
+    "links:remove": "./build/remove-links.sh firebase/functions",
+    "preinstall": "yarn links:remove && yarn links:create",
     "gcp-build": "./build/replace-links.sh firebase/functions",
     "dev": "firebase emulators:start --export-on-exit ./.data --import ./.data",
     "deploy": "firebase deploy --only functions"
