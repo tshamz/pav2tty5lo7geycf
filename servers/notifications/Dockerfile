@@ -1,6 +1,7 @@
 FROM gcr.io/google-appengine/nodejs
 
 RUN pwd
+RUN ls
 RUN echo 1
 RUN ls
 
@@ -25,6 +26,7 @@ RUN npm i npm@latest -g
 WORKDIR /app/
 
 RUN pwd
+RUN ls
 RUN echo 2
 
 ARG GOOGLE_APPLICATION_CREDENTIALS="/opt/node_app/credentials.firebase.json"
@@ -43,6 +45,7 @@ ENV NPM_TOKEN $NPM_TOKEN
 RUN printf 'registry=https://registry.npmjs.org\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
 
 RUN pwd
+RUN ls
 RUN echo 3
 
 # Only copy the packages that I need
@@ -60,6 +63,7 @@ RUN yarn install --no-optional --production && yarn cache clean --force
 
 
 RUN pwd
+RUN ls
 RUN echo 4
 
 # check every 30s to ensure this service returns HTTP 200

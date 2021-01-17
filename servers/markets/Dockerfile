@@ -1,6 +1,7 @@
 FROM gcr.io/google-appengine/nodejs
 
 RUN pwd
+RUN ls
 RUN echo 1
 
 # set our node environment, either development or production
@@ -18,6 +19,7 @@ EXPOSE $PORT 8080
 RUN npm i npm@latest -g
 
 RUN pwd
+RUN ls
 RUN echo 2
 
 # install dependencies first, in a different location for easier app bind mounting for local development
@@ -27,6 +29,7 @@ RUN echo 2
 WORKDIR /app/
 
 RUN pwd
+RUN ls
 RUN echo 3
 
 ARG GOOGLE_APPLICATION_CREDENTIALS="/opt/node_app/credentials.firebase.json"
@@ -45,6 +48,7 @@ ENV NPM_TOKEN $NPM_TOKEN
 RUN printf 'registry=https://registry.npmjs.org\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
 
 RUN pwd
+RUN ls
 RUN echo 4
 
 # Only copy the packages that I need
