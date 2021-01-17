@@ -19,9 +19,6 @@ RUN npm i npm@latest -g
 RUN mkdir /opt/node_app
 WORKDIR /opt/node_app
 
-ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
-ENV NPM_TOKEN $NPM_TOKEN
-
 ARG GOOGLE_APPLICATION_CREDENTIALS="/opt/node_app/credentials.firebase.json"
 ENV GOOGLE_APPLICATION_CREDENTIALS $GOOGLE_APPLICATION_CREDENTIALS
 
@@ -29,8 +26,15 @@ ARG FIREBASE_PROJECT="pav2tty5lo7geycf"
 ENV FIREBASE_PROJECT $FIREBASE_PROJECT
 ENV GCLOUD_PROJECT $FIREBASE_PROJECT
 
+ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
+ENV NPM_TOKEN $NPM_TOKEN
+
+RUN printf 'registry=https://registry.npmjs.org\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
+
+RUN ls
+RUN cat .npmrc
+
 # Only copy the packages that I need
-COPY .npmrc ./
 COPY package.json yarn.lock* ./
 COPY firebase/functions/services firebase/functions/services
 COPY servers/status servers/status
