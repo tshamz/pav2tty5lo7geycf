@@ -3,7 +3,7 @@
 WORKSPACE_PATH=$1;
 
 if [ ! $WORKSPACE_PATH ]; then
-  echo 'No workspace path provided as the first argument';
+  echo 'ERROR: No workspace path provided as the first argument';
   exit 1;
 fi
 
