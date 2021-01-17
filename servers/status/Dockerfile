@@ -33,6 +33,8 @@ ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
 ENV NPM_TOKEN $NPM_TOKEN
 
 COPY package.json ./
+COPY services/ ./
+
 RUN touch yarn.lock ./
 
 RUN yarn install --no-optional --production && yarn cache clean --force
