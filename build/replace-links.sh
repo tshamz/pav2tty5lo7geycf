@@ -6,9 +6,9 @@ function replaceLinks () {
 
   for FILE in $SYMLINKS; do
     if [ ! -d $FILE ]; then
-      ORIGINAL=$(realpath "$FILE")
-      rm $FILE;
-      cp $ORIGINAL "$FILE";
+      ORIGINAL=$(realpath "$FILE") 2> /dev/null;
+      rm $FILE 2> /dev/null;
+      cp $ORIGINAL "$FILE" 2> /dev/null;
     fi
   done
 }

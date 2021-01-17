@@ -12,7 +12,8 @@
     ]
   },
   "scripts": {
-    "gcp-build": "./build/replace-links.sh",
+    "preinstall": "./build/remove-links.sh && ./build/create-links.sh",
+    "gcp-build": "./build/remove-links.sh && ./build/create-links.sh && ./build/replace-links.sh",
     "dev:status": "yarn workspace status dev",
     "dev:markets": "yarn workspace markets dev",
     "dev:notifications": "yarn workspace notifications dev",
