@@ -22,8 +22,9 @@ RUN echo 2
 
 # install dependencies first, in a different location for easier app bind mounting for local development
 # due to default /opt permissions we have to create the dir with root and change perms
-RUN mkdir /opt/node_app
-WORKDIR /opt/node_app
+# RUN mkdir /opt/node_app
+# WORKDIR /opt/node_app
+WORKDIR /app/
 
 RUN pwd
 RUN echo 3
@@ -55,7 +56,7 @@ COPY servers/server servers/server
 COPY servers/websocket servers/websocket
 
 RUN yarn install --no-optional --production && yarn cache clean --force
-ENV PATH /opt/node_app/node_modules/.bin:$PATH
+# ENV PATH /opt/node_app/node_modules/.bin:$PATH
 
 COPY .firebaserc ./
 COPY credentials.firebase.json ./

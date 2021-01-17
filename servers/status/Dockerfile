@@ -19,8 +19,9 @@ RUN npm i npm@latest -g
 
 # install dependencies first, in a different location for easier app bind mounting for local development
 # due to default /opt permissions we have to create the dir with root and change perms
-RUN mkdir /opt/node_app
-WORKDIR /opt/node_app
+# RUN mkdir /opt/node_app
+# WORKDIR /opt/node_app
+WORKDIR /app/
 
 RUN pwd
 RUN echo 2
@@ -46,7 +47,7 @@ COPY firebase/functions/services firebase/functions/services
 COPY servers/status servers/status
 
 RUN yarn install --no-optional --production && yarn cache clean --force
-ENV PATH /opt/node_app/node_modules/.bin:$PATH
+# ENV PATH /opt/node_app/node_modules/.bin:$PATH
 
 COPY .firebaserc ./
 COPY credentials.firebase.json ./
