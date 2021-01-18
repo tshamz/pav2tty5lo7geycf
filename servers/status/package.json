@@ -1,26 +1,25 @@
 {
-  "name": "status",
   "private": true,
+  "name": "status",
   "version": "0.0.1",
   "engines": {
     "node": "12.x"
   },
-  "workspaces": [
-    "services"
-  ],
+  "workspaces": {
+    "nohoist": []
+  },
   "scripts": {
-    "links:create": "./build/create-links.sh servers/status",
-    "links:remove": "./build/remove-links.sh servers/status",
-    "preinstall": "yarn -cwd ../../ links:remove && yarn -cwd ../../ links:create",
     "dev": "nodemon .",
     "start": "node .",
-    "gcp-build": "./build/replace-links.sh servers/status",
     "deploy": "gcloud app deploy --quiet"
   },
   "dependencies": {
-    "services": "0.0.1"
+    "@local/services": "0.0.1",
+    "@google-cloud/debug-agent": "^5.1.3",
+    "@google-cloud/trace-agent": "^5.1.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5"
   }
 }

@@ -2,28 +2,31 @@
   "private": true,
   "name": "functions",
   "version": "0.0.1",
-  "workspaces": [
-    "services"
-  ],
   "engines": {
-    "node": "12"
+    "node": "12.x"
+  },
+  "workspaces": {
+    "nohoist": []
   },
   "scripts": {
-    "links:create": "./build/create-links.sh firebase/functions",
-    "links:remove": "./build/remove-links.sh firebase/functions",
-    "preinstall": "yarn -cwd ../../ links:remove && yarn -cwd ../../ links:create",
-    "gcp-build": "./build/replace-links.sh firebase/functions",
-    "dev": "firebase emulators:start --export-on-exit ./.data --import ./.data",
-    "deploy": "firebase deploy --only functions"
+    "deploy": "firebase deploy --only functions",
+    "dev": "firebase emulators:start --export-on-exit ./.data --import ./.data"
   },
-  "main": "index.js",
   "dependencies": {
-    "services": "0.0.1",
+    "@local/services": "0.0.1",
+    "chrono-node": "^2.1.11",
     "deep-equal": "^2.0.5",
     "lodash": "^4.17.20",
+    "node-fetch": "^2.6.1",
     "puppeteer": "^5.5.0",
     "puppeteer-extra": "^3.1.15",
     "puppeteer-extra-plugin-stealth": "^2.6.5",
-    "tinyurl": "^1.1.7"
+    "tinyurl": "^1.1.7",
+    "wait": "^0.4.2"
+  },
+  "devDependencies": {
+    "firebase-admin": "^9.4.2",
+    "firebase-functions": "^3.13.1",
+    "npm-run-all": "^4.1.5"
   }
 }

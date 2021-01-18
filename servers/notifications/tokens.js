@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
-const log = require('services/logger');
-const firebase = require('services/firebase');
+const log = require('@local/services/logger');
+const firebase = require('@local/services/firebase');
 
 const params = new URLSearchParams({
   _: Date.now(),

@@ -1,4 +1,4 @@
-const admin = require('services/firebase');
+const admin = require('@local/services/firebase');
 
 module.exports = async (data, context) => {
   try {

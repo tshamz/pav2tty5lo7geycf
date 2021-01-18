@@ -1,7 +1,7 @@
 const min = require('lodash/min');
 const max = require('lodash/max');
 
-const admin = require('services/firebase');
+const admin = require('@local/services/firebase');
 
 module.exports = async (snapshot, res) => {
   try {

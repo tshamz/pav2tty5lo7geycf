@@ -4,30 +4,30 @@
   "version": "0.0.1",
   "workspaces": {
     "packages": [
+      "services",
       "servers/markets",
       "servers/notifications",
       "servers/status",
       "firebase/functions"
+    ],
+    "nohoist": [
+      "**/@local/services",
+      "**/@local/services/**"
     ]
   },
   "scripts": {
-    "dev:status": "yarn workspace status dev",
-    "dev:markets": "yarn workspace markets dev",
-    "dev:notifications": "yarn workspace notifications dev",
     "dev": "firebase emulators:exec 'run-p dev:*' --ui --export-on-exit ./firebase/functions/.data --import ./firebase/functions/.data",
+    "start": "run-p start:*",
     "start:status": "yarn workspace status start",
     "start:markets": "yarn workspace markets start",
     "start:notifications": "yarn workspace notifications start",
-    "start": "run-p start:*",
     "deploy:functions": "yarn workspace functions deploy",
     "deploy:status": "yarn workspace status deploy",
     "deploy:markets": "yarn workspace markets deploy",
     "deploy:notifications": "yarn workspace notifications deploy",
-    "deploy": "run-p deploy:*",
-    "links:create": "../../build/create-links.sh",
-    "links:replace": "./build/replace-links.sh",
-    "links:remove": "../../build/remove-links.sh",
-    "links:refresh": "run-s links:remove links:create"
+    "reset": "yarn reset-modules && yarn reset-yarn",
+    "reset-yarn": "yarn cache clean",
+    "reset-modules": "rm -rf node_modules/ yarn.lock packages/*/node_modules"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
@@ -43,7 +43,6 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.2.0",
     "eslint-plugin-react": "^7.21.5",
-    "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1"
   }
 }

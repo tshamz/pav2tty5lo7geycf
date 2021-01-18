@@ -3,9 +3,12 @@ require('@google-cloud/trace-agent').start();
 
 const debug = require('@google-cloud/debug-agent');
 
-const log = require('services/logger');
-const express = require('services/express');
-const websocket = require('services/websocket');
+const services = require('@local/services');
+console.log('services', services);
+
+const log = require('@local/services/logger');
+const express = require('@local/services/express');
+const websocket = require('@local/services/websocket');
 
 debug.start({ serviceContext: { enableCanary: true } });
 

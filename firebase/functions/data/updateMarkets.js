@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
 const equals = require('deep-equal');
 
-const log = require('services/logger');
-const admin = require('services/firebase');
+const log = require('@local/services/logger');
+const admin = require('@local/services/firebase');
 
 module.exports = async (context, res) => {
   try {

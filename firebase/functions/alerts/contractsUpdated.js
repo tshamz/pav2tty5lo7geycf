@@ -2,9 +2,9 @@ const TinyURL = require('tinyurl');
 const isEqual = require('lodash/isEqual');
 const differenceWith = require('lodash/differenceWith');
 
-const log = require('services/logger');
-const twilio = require('services/twilio');
-const admin = require('services/firebase');
+const log = require('@local/services/logger');
+const twilio = require('@local/services/twilio');
+const admin = require('@local/services/firebase');
 
 module.exports = async (snapshot, context) => {
   try {

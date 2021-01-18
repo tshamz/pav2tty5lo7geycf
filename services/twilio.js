@@ -1,5 +1,5 @@
 const twilio = require('twilio');
-const admin = require('services/firebase');
+const admin = require('@local/services/firebase');
 
 const config = admin.config().twilio;
 const client = twilio(config.sid, config.token);

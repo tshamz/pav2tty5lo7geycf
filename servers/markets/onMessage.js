@@ -1,4 +1,4 @@
-const firebase = require('services').firebase;
+const firebase = require('@local/services/firebase');
 
 module.exports = ({ data: rawMessage }) => {
   const m = JSON.parse(rawMessage);

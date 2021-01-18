@@ -1,0 +1,14 @@
+"dev:status": "yarn workspace status dev",
+"dev:markets": "yarn workspace markets dev",
+"dev:notifications": "yarn workspace notifications dev",
+
+"links:create": "../../build/create-links.sh",
+"links:replace": "../../build/replace-links.sh",
+"links:remove": "../../build/remove-links.sh",
+"links:refresh": "run-s links:remove links:create",
+
+
+"links:create": "../../build/create-links.sh firebase/functions",
+"links:remove": "../../build/remove-links.sh firebase/functions",
+"preinstall": "run-s links:remove links:create",
+"gcp-build": "../../build/replace-links.sh firebase/functions",

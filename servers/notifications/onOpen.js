@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const log = require('services/logger');
+const log = require('@local/services/logger');
 
 const { headers, params } = require('./tokens');
 

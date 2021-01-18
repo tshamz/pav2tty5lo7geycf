@@ -2,7 +2,7 @@ const ws = require('ws');
 const wait = require('wait');
 const ReconnectingWs = require('reconnecting-websocket');
 
-const log = require('services/logger');
+const log = require('@local/services/logger');
 
 const { OPEN, CLOSED } = ws;
 

@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const admin = require('services/firebase');
+const admin = require('@local/services/firebase');
 
 module.exports = async (snapshot, res) => {
   try {

@@ -1,29 +1,25 @@
 {
-  "name": "markets",
   "private": true,
+  "name": "markets",
   "version": "0.0.1",
   "engines": {
     "node": "12.x"
   },
-  "workspaces": [
-    "services"
-  ],
+  "workspaces": {
+    "nohoist": []
+  },
   "scripts": {
-    "links:create": "./build/create-links.sh servers/markets",
-    "links:remove": "./build/remove-links.sh servers/markets",
-    "preinstall": "yarn -cwd ../../ links:remove && yarn -cwd ../../ links:create",
     "dev": "nodemon .",
     "start": "node .",
-    "gcp-build": "./build/replace-links.sh servers/markets",
     "deploy": "gcloud app deploy --quiet"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "reconnecting-websocket": "^4.4.0",
-    "services": "0.0.1",
-    "ws": "^7.4.2"
+    "@local/services": "0.0.1",
+    "@google-cloud/debug-agent": "^5.1.3",
+    "@google-cloud/trace-agent": "^5.1.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5"
   }
 }

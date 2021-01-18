@@ -1,5 +1,5 @@
 const express = require('express');
-const log = require('services/logger');
+const log = require('@local/services/logger');
 
 exports.create = () => {
   const app = express();

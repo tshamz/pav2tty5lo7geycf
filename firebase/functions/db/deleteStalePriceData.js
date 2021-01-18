@@ -1,4 +1,4 @@
-const admin = require('services/firebase');
+const admin = require('@local/services/firebase');
 
 const getUpdates = async (db) => {
   const now = new Date();

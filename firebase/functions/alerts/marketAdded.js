@@ -1,8 +1,8 @@
 const TinyURL = require('tinyurl');
 const fetch = require('node-fetch');
 
-const log = require('services/logger');
-const twilio = require('services/twilio');
+const log = require('@local/services/logger');
+const twilio = require('@local/services/twilio');
 
 module.exports = async (snapshot, context) => {
   try {
