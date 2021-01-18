@@ -1,9 +1,9 @@
 const puppeteer = require('puppeteer-extra');
 const stealthPlugin = require('puppeteer-extra-plugin-stealth');
 
-const log = require('@local/services/logger');
-const utils = require('@local/services/utils');
-const admin = require('@local/services/firebase');
+const log = require('@services/logger');
+const utils = require('@services/utils');
+const admin = require('@services/firebase');
 
 puppeteer.use(stealthPlugin());
 

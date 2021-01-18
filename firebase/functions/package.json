@@ -5,28 +5,22 @@
   "engines": {
     "node": "12.x"
   },
-  "workspaces": {
-    "nohoist": []
-  },
   "scripts": {
     "deploy": "firebase deploy --only functions",
     "dev": "firebase emulators:start --export-on-exit ./.data --import ./.data"
   },
   "dependencies": {
-    "@local/services": "0.0.1",
-    "chrono-node": "^2.1.11",
+    "@services/firebase": "0.0.1",
+    "@services/logger": "0.0.1",
+    "@services/twilio": "0.0.1",
+    "@services/utils": "0.0.1",
     "deep-equal": "^2.0.5",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
     "puppeteer": "^5.5.0",
-    "puppeteer-extra": "^3.1.15",
+    "puppeteer-extra": "^3.1.16",
     "puppeteer-extra-plugin-stealth": "^2.6.5",
     "tinyurl": "^1.1.7",
     "wait": "^0.4.2"
-  },
-  "devDependencies": {
-    "firebase-admin": "^9.4.2",
-    "firebase-functions": "^3.13.1",
-    "npm-run-all": "^4.1.5"
   }
 }

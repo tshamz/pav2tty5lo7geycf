@@ -1,8 +1,8 @@
 const TinyURL = require('tinyurl');
 
-const log = require('@local/services/logger');
-const twilio = require('@local/services/twilio');
-const admin = require('@local/services/firebase');
+const log = require('@services/logger');
+const twilio = require('@services/twilio');
+const admin = require('@services/firebase');
 
 module.exports = async (snapshot, context) => {
   try {

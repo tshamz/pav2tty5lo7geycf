@@ -1,4 +1,4 @@
-const log = require('@local/services/logger');
+const log = require('@services/logger');
 
 const tokens = require('./tokens');
 

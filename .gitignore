@@ -1,25 +1,21 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Dependency directories
-/node_modules
-*node_modules**
-!servers/*/node_modules
-
-
 # Yarn
 *.log
+
+# Zero Install
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
 
 # Mac files
 *.DS_Store*
 
 # Environment Variables
 .env*
-
-# Firebase
-data/*
 .runtimeconfig.json
+.data/*
 
-# Misc.
-.trash
-.ideas
-.yarn

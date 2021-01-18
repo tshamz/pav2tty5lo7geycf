@@ -2,38 +2,32 @@
   "private": true,
   "name": "pav2tty5lo7geycf",
   "version": "0.0.1",
-  "workspaces": {
-    "packages": [
-      "services",
-      "servers/markets",
-      "servers/notifications",
-      "servers/status",
-      "firebase/functions"
-    ]
-  },
+  "workspaces": [
+    "services/*",
+    "servers/markets",
+    "servers/notifications",
+    "servers/status",
+    "firebase/functions"
+  ],
   "scripts": {
     "dev": "firebase emulators:exec 'run-p dev:*' --ui --export-on-exit ./firebase/functions/.data --import ./firebase/functions/.data",
-    "start": "run-p start:*",
     "start:status": "yarn workspace status start",
     "start:markets": "yarn workspace markets start",
     "start:notifications": "yarn workspace notifications start",
     "deploy:functions": "yarn workspace functions deploy",
     "deploy:status": "yarn workspace status deploy",
     "deploy:markets": "yarn workspace markets deploy",
-    "deploy:notifications": "yarn workspace notifications deploy",
-    "reset": "yarn reset-modules && yarn reset-yarn",
-    "reset-yarn": "yarn cache clean",
-    "reset-modules": "rm -rf node_modules/ yarn.lock servers/{markets,status,notifications}/node_modules"
+    "deploy:notifications": "yarn workspace notifications deploy"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
     "@babel/core": "^7.12.9",
     "@packdigital/babel-preset-ripperoni": "^2.0.3",
-    "@packdigital/eslint-config-ripperoni": "^1.0.26",
+    "@packdigital/eslint-config-ripperoni": "^1.0.27",
     "@packdigital/prettier-config-ripperoni": "^1.0.13",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.15.0",
-    "eslint-config-prettier": "^7.0.0",
+    "eslint-config-prettier": "6.11.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-node": "^0.3.4",
     "eslint-plugin-import": "^2.22.1",

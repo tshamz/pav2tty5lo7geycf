@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "@services/utils",
+  "version": "0.0.1",
+  "engines": {
+    "node": "12.x"
+  },
+  "dependencies": {
+    "chrono-node": "0.0.1"
+  }
+}

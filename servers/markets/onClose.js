@@ -1,4 +1,4 @@
-const firebase = require('@local/services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = () => async (event) => {
   const { wasClean, code } = event;

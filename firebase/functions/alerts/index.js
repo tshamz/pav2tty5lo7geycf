@@ -1,17 +1,17 @@
-const functions = require('firebase-functions');
+const firebase = require('@services/firebase');
 
 const marketAdded = require('./marketAdded');
 const marketClosing = require('./marketClosing');
 const contractsUpdated = require('./contractsUpdated');
 
-exports.contractsUpdated = functions.database
+exports.contractsUpdated = firebase.functions.database
   .ref('markets/{market}/contracts')
   .onUpdate(contractsUpdated);
 
-exports.marketAdded = functions.database
+exports.marketAdded = firebase.functions.database
   .ref('markets/{market}')
   .onCreate(marketAdded);
 
-exports.marketClosing = functions.database
+exports.marketClosing = firebase.functions.database
   .ref('markets/{market}/daysLeft')
   .onUpdate(marketClosing);

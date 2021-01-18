@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "@services/twilio",
+  "version": "0.0.1",
+  "engines": {
+    "node": "12.x"
+  },
+  "dependencies": {
+    "@services/firebase": "0.0.1",
+    "@types/express": "^4.17.11",
+    "@types/qs": "6.9.4",
+    "twilio": "^3.53.0"
+  }
+}
