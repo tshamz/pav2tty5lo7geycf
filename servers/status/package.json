@@ -6,7 +6,10 @@
     "node": "12.x"
   },
   "workspaces": {
-    "nohoist": []
+    "nohoist": [
+      "**/@local/services",
+      "**/@local/services/**"
+    ]
   },
   "scripts": {
     "dev": "nodemon .",

@@ -1,3 +1,9 @@
+,
+"nohoist": [
+  "**/@local/services",
+  "**/@local/services/**"
+]
+
 "dev:status": "yarn workspace status dev",
 "dev:markets": "yarn workspace markets dev",
 "dev:notifications": "yarn workspace notifications dev",

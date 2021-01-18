@@ -3,6 +3,8 @@
 # Dependency directories
 /node_modules
 *node_modules**
+!servers/*/node_modules
+
 
 # Yarn
 *.log

@@ -9,10 +9,6 @@
       "servers/notifications",
       "servers/status",
       "firebase/functions"
-    ],
-    "nohoist": [
-      "**/@local/services",
-      "**/@local/services/**"
     ]
   },
   "scripts": {
@@ -27,7 +23,7 @@
     "deploy:notifications": "yarn workspace notifications deploy",
     "reset": "yarn reset-modules && yarn reset-yarn",
     "reset-yarn": "yarn cache clean",
-    "reset-modules": "rm -rf node_modules/ yarn.lock packages/*/node_modules"
+    "reset-modules": "rm -rf node_modules/ yarn.lock servers/*/*/node_modules"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",

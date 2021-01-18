@@ -12,7 +12,7 @@ EXPOSE $PORT 8080
 
 # you'll likely want the latest npm, regardless of node version, for speed and fixes
 # but pin this version for the best stability
-RUN npm i npm@latest -g
+# RUN npm i npm@latest -g
 
 # install dependencies first, in a different location for easier app bind mounting for local development
 # due to default /opt permissions we have to create the dir with root and change perms
@@ -29,15 +29,15 @@ ENV GCLOUD_PROJECT $FIREBASE_PROJECT
 ARG FIREBASE_DEFAULT_DATABASE_URL="https://pav2tty5lo7geycf-default-rtdb.firebaseio.com"
 ENV FIREBASE_DEFAULT_DATABASE_URL $FIREBASE_DEFAULT_DATABASE_URL
 
-ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
-ENV NPM_TOKEN $NPM_TOKEN
+# ARG NPM_TOKEN="3566d6c9-6a0b-4de3-8567-8c81efd2cd48"
+# ENV NPM_TOKEN $NPM_TOKEN
 
-COPY package.json ./
-COPY services/ ./
+# COPY package.json ./
+# COPY services/ ./
+# RUN touch yarn.lock ./
 
-RUN touch yarn.lock ./
-
-RUN yarn install --no-optional --production && yarn cache clean --force
+# Copy over node_modules instead
+# RUN yarn install --no-optional --production && yarn cache clean --force
 
 ENV PATH /opt/node_app/node_modules/.bin:$PATH
 
