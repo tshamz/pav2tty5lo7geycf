@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "functions",
+  "version": "0.0.1",
+  "engines": {
+    "node": "12.x"
+  },
+  "scripts": {
+    "deploy": "firebase deploy --only functions",
+    "dev": "firebase emulators:start --export-on-exit ./.data --import ./.data"
+  },
+  "dependencies": {
+    "@services/firebase": "workspace:^0.0.1",
+    "@services/logger": "workspace:^0.0.1",
+    "@services/twilio": "workspace:^0.0.1",
+    "@services/utils": "workspace:^0.0.1",
+    "deep-equal": "^2.0.5",
+    "lodash": "^4.17.20",
+    "node-fetch": "^2.6.1",
+    "puppeteer": "^5.5.0",
+    "puppeteer-extra": "^3.1.16",
+    "puppeteer-extra-plugin-stealth": "^2.6.5",
+    "tinyurl": "^1.1.7",
+    "wait": "^0.4.2"
+  }
+}

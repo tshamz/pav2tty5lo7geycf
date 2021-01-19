@@ -1,0 +1,55 @@
+version: "2.4"
+services:
+  base:
+    image: $BASE_IMAGE_NAME
+    build:
+      args:
+        REPO_MOUNT_POINT: $REPO_MOUNT_POINT
+        REPO_MOUNT_POINT_PARENT: $REPO_MOUNT_POINT_PARENT
+        MAIN_YARN_DIR: $MAIN_YARN_DIR
+        MAIN_YARN_VERSION: $MAIN_YARN_VERSION
+      context: .
+    scale: 0
+
+  status:
+    init: true
+    image: $BASE_IMAGE_NAME
+    command: ["yarn", "workspace", "status", "start"]
+    ports:
+      - $STATUS_HOST_PORT:$PORT
+    environment:
+      PORT: $PORT
+    volumes:
+      - .:$REPO_MOUNT_POINT:delegated
+      - main_yarn_dir:$MAIN_YARN_DIR:delegated
+
+  markets:
+    init: true
+    image: $BASE_IMAGE_NAME
+    command: ["yarn", "workspace", "markets", "start"]
+    depends_on:
+      - status
+    volumes_from:
+      - status
+    ports:
+      - $MARKETS_HOST_PORT:$PORT
+    environment:
+      PORT: $PORT
+
+  notifications:
+    init: true
+    image: $BASE_IMAGE_NAME
+    command: ["yarn", "workspace", "notifications", "start"]
+    depends_on:
+      - status
+    volumes_from:
+      - status
+    ports:
+      - $NOTIFICATIONS_HOST_PORT:$PORT
+    environment:
+      PORT: $PORT
+
+volumes:
+  # Anonymous volume containing Yarn configurations and Yarn-produced
+  # files/directories:
+  main_yarn_dir:

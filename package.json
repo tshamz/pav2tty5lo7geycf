@@ -1,16 +1,14 @@
 {
   "private": true,
   "name": "pav2tty5lo7geycf",
-  "version": "0.0.1",
+  "version": "2.4.0",
   "workspaces": [
-    "services/*",
-    "servers/markets",
-    "servers/notifications",
-    "servers/status",
-    "firebase/functions"
+    "packages/firebase/*",
+    "packages/servers*",
+    "packages/services/*"
   ],
   "scripts": {
-    "dev": "firebase emulators:exec 'run-p dev:*' --ui --export-on-exit ./firebase/functions/.data --import ./firebase/functions/.data",
+    "dev": "firebase emulators:exec 'run-p dev:*' --ui --export-on-exit ./.data --import ./.data",
     "start:status": "yarn workspace status start",
     "start:markets": "yarn workspace markets start",
     "start:notifications": "yarn workspace notifications start",

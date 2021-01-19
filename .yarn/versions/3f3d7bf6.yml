@@ -1,0 +1,8 @@
+undecided:
+  - functions
+  - "@services/express"
+  - "@services/firebase"
+  - "@services/logger"
+  - "@services/twilio"
+  - "@services/utils"
+  - "@services/websocket"
