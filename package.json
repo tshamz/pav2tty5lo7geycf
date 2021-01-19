@@ -4,7 +4,7 @@
   "version": "2.4.0",
   "workspaces": [
     "packages/firebase/*",
-    "packages/servers*",
+    "packages/servers/*",
     "packages/services/*"
   ],
   "scripts": {

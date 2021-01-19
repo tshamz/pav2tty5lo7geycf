@@ -20,7 +20,8 @@ RUN \
   # Note: need to exclude `.vscode` directory because the `package.json` file
   # it contains is not a dependency manifest:
   find . -name 'package.json' \! -path '*\.vscode*' | xargs cp --parents -t ../manifests/ && \
-  cp yarn.lock ../manifests/ 2>/dev/null || :
+  cp yarn.lock ../manifests/;
+  # cp yarn.lock ../manifests/ 2>/dev/null || :
 
 # Second build stage:
 FROM node:12.18.0
@@ -50,7 +51,7 @@ RUN mkdir $REPO_MOUNT_POINT && \
   mkdir ${MAIN_YARN_DIR}/unplugged && \
   chown -R node:node ${MAIN_YARN_DIR}/unplugged
 
-WORKDIR ${REPO_MOUNT_POINT_PARENT}
+WORKDIR ${REPO_MOUNT_POINT}
 
 USER node
 
@@ -104,10 +105,7 @@ COPY --from=manifests --chown=node:node /tmp/manifests  ./
 # This is to prevent `yarn.lock` from going out-of-sync with the `package.json`
 # files inside each workspace, which can happen if npm is used as the package
 # manager on the host side.
-
-# ➤ YN0001: │ Error: EACCES: permission denied, open '/srv/.pnp.js'
-# ➤ YN0001: Error: EACCES: permission denied, open '/srv/yarn.lock'
-# RUN yarn install --inline-builds
+RUN yarn install --immutable;
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # `
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
