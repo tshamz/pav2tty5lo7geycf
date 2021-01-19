@@ -15,7 +15,12 @@
     "deploy:functions": "yarn workspace functions deploy",
     "deploy:status": "yarn workspace status deploy",
     "deploy:markets": "yarn workspace markets deploy",
-    "deploy:notifications": "yarn workspace notifications deploy"
+    "deploy:notifications": "yarn workspace notifications deploy",
+    "docker:up": "docker-compose up -d",
+    "docker:logs": "docker-compose logs --tail=all -f",
+    "docker:kill": "docker volume rm $$(docker volume ls -f 'name=pav2tty5lo7geycf' --format '{{.Name}}')",
+    "docker:generate-lock": "docker-compose run --rm -v $(pwd):/srv/app:delegated base yarn",
+    "docker:build": "docker-compose build base"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",

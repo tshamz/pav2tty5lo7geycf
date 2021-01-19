@@ -20,8 +20,8 @@ RUN \
   # Note: need to exclude `.vscode` directory because the `package.json` file
   # it contains is not a dependency manifest:
   find . -name 'package.json' \! -path '*\.vscode*' | xargs cp --parents -t ../manifests/ && \
-  cp yarn.lock ../manifests/;
-  # cp yarn.lock ../manifests/ 2>/dev/null || :
+  # cp yarn.lock ../manifests/;
+  cp yarn.lock ../manifests/ 2>/dev/null || :
 
 # Second build stage:
 FROM node:12.18.0
@@ -105,7 +105,8 @@ COPY --from=manifests --chown=node:node /tmp/manifests  ./
 # This is to prevent `yarn.lock` from going out-of-sync with the `package.json`
 # files inside each workspace, which can happen if npm is used as the package
 # manager on the host side.
-RUN yarn install --immutable;
+# RUN yarn install --immutable;
+RUN yarn install;
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # `
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #

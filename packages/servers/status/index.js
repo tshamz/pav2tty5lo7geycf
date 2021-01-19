@@ -1,16 +1,16 @@
-const trace = require('@google-cloud/trace-agent');
-const debug = require('@google-cloud/debug-agent');
+// const trace = require('@google-cloud/trace-agent');
+// const debug = require('@google-cloud/debug-agent');
 
-const express = require('@services/express');
-const log = require('@services/logger');
+const express = require("@services/express");
+const log = require("@services/logger");
 
-trace.start();
-debug.start({ serviceContext: { enableCanary: true } });
+// trace.start();
+// debug.start({ serviceContext: { enableCanary: true } });
 
 const app = express.create();
 const port = process.env.PORT || 8080;
 
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
