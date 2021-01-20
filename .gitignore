@@ -22,9 +22,16 @@ dist
 .meta
 *.log
 
-# Because we're not using zero installs, these are the files that should be
-# ignored per https://yarnpkg.com/advanced/qa#which-files-should-be-gitignored
-# Patterns mentioned in that link that are under the `.yarn` directory are not
-# added here because they are "lifted" up into the parent directory inside the
-# Docker container.
-.pnp.*
+# Yarn
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+# .pnp.*
+
+
+
+
+

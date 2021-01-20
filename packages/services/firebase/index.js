@@ -1,70 +1,31 @@
-const firebase = require('firebase');
+require('@services/dotenv');
+
 const admin = require('firebase-admin');
-const functions = require('firebase-functions');
+const firebase = require('firebase');
 
-const log = require('@services/logger');
-const path = require('path').resolve(__dirname, '../.env');
+const database = require('./database');
+const functions = require('./functions');
 
-require('dotenv').config({ path });
-
-const getDatabaseUrl = (name) => {
-  return `https://pav2tty5lo7geycf--${name}.firebaseio.com`;
-};
-
-const config = {
-  credentials: admin.credential.applicationDefault(),
-  projectId: process.env.FIREBASE_PROJECT,
-  databaseURL: process.env.FIREBASE_DEFAULT_DATABASE_URL,
-};
-
-const getPath = ({ path, db } = {}) => {
-  return admin
-    .database(db)
-    .ref(path)
-    .once('value')
-    .then((snapshot) => snapshot.val());
-};
-
-const setPath = (location) => (update) => {
-  return admin
-    .database(location.db)
-    .ref(location.path || location)
-    .update(update);
-};
+const projectId = process.env.GCLOUD_PROJECT;
+const credentials = admin.credential.applicationDefault();
+const databaseURL = process.env.FIREBASE_DEFAULT_DATABASE_URL;
 
 if (!firebase.apps.length) {
-  admin.initializeApp(config);
-  firebase.initializeApp(config);
-
-  admin.priceHistory = admin.initializeApp(
-    { ...config, databaseURL: getDatabaseUrl('price-history') },
-    'priceHistory'
-  );
-
-  admin.priceInterval = admin.initializeApp(
-    { ...config, databaseURL: getDatabaseUrl('price-interval') },
-    'priceInterval'
-  );
-
-  admin.priceOHLC = admin.initializeApp(
-    { ...config, databaseURL: getDatabaseUrl('price-ohlc') },
-    'priceOHLC'
-  );
-
-  admin.tradeHistory = admin.initializeApp(
-    { ...config, databaseURL: getDatabaseUrl('trade-history') },
-    'tradeHistory'
-  );
-
-  if (process.env.NODE_ENV === 'development') {
-    log.debug('Using emulator');
-    firebase.functions().useEmulator('localhost', 5001);
-  }
+  admin.initializeApp({ projectId, credentials, databaseURL });
+  firebase.initializeApp({ projectId, credentials, databaseURL });
 }
 
-admin.getPath = getPath;
-admin.setPath = setPath;
-admin.functions = firebase.functions;
-admin.config = functions.config;
+if (process.env.NODE_ENV === 'development') {
+  admin.database.enableLogging(false);
+  firebase.functions().useEmulator('localhost', 5001);
+}
 
-module.exports = admin;
+module.exports = {
+  ...database,
+  ...functions,
+  sdk: {
+    admin,
+    firebase,
+    functions,
+  },
+};

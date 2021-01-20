@@ -1,4 +1,4 @@
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 // Trade Types:
 // • 0 - Buy No
@@ -13,7 +13,7 @@ const getTradeType = async (data) => {
     const tradeTypes = [[0, 1], [2, 3]];
     const action = data.Cash < 0 ? 0 : 1;
     const predictionPath = `positions/contracts/${data.contract}/prediction`;
-    const prediction = await admin.getPath({ path: predictionPath });
+    const prediction = await firebase.db.get(predictionPath);
 
     return tradeTypes[action][prediction];
   } catch (error) {
@@ -33,8 +33,8 @@ module.exports = async (data, context) => {
     const changeInQuantity =
       data.Offer.RemainingQuantity || data.Offer.Quantity * -1;
     const newQuantityPath = `${openOrderPath}/${priceInCents}/quantity`;
-    const newQuantity = await admin
-      .getPath({ path: newQuantityPath })
+    const newQuantity = await firebase.db
+      .get(newQuantityPath)
       .then((quantity) => quantity + changeInQuantity);
 
     const update = {
@@ -45,7 +45,7 @@ module.exports = async (data, context) => {
       },
     };
 
-    await admin.setPath(openOrderPath)(update);
+    await firebase.db.set(openOrderPath, update);
 
     return { update };
   } catch (error) {

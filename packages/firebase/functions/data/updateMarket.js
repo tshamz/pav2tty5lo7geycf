@@ -1,7 +1,8 @@
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (data, context) => {
   try {
+    const path = `markets/${data.id}`;
     const update = {
       active: data.Status === 'Open',
       totalSharesTraded: data.TotalSharesTraded,
@@ -9,7 +10,7 @@ module.exports = async (data, context) => {
       _updatedAt: new Date().toUTCString(),
     };
 
-    await admin.setPath(`markets/${data.id}`)(update);
+    await firebase.db.set(path, update);
 
     return update;
   } catch (error) {

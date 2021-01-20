@@ -1,9 +1,9 @@
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
-const getUpdates = async (db) => {
+const getUpdates = async (database) => {
   const now = new Date();
   const then = now.setMonth(now.getMonth() - 1);
-  const snapshot = await admin.getPath({ db });
+  const snapshot = await database.get();
 
   return Object.entries(snapshot).reduce((updates, [id, prices]) => {
     const pathsToDelete = Object.keys(prices)
@@ -20,26 +20,21 @@ const getUpdates = async (db) => {
 
 module.exports = async (snapshot, res) => {
   try {
-    const historyUpdates = getUpdates(admin.priceHistory);
-    const intervalUpdates = getUpdates(admin.priceInterval);
+    const historyUpdates = getUpdates(firebase.priceHistory);
+    const intervalUpdates = getUpdates(firebase.priceInterval);
 
     await Promise.all([
-      admin.database(admin.priceHistory).ref().update(historyUpdates),
-      admin.database(admin.priceInterval).ref().update(intervalUpdates),
+      firebase.priceHistory.set(historyUpdates),
+      firebase.priceInterval.set(intervalUpdates),
     ]);
-
-    if (res && res.status) {
-      res.status(200).json({});
-    }
 
     return;
   } catch (error) {
     console.error(error);
-
-    if (res && res.status) {
-      res.status(500).json({});
-    }
-
     return { error };
+  } finally {
+    if (res && res.status) {
+      res.status(200).json({});
+    }
   }
 };

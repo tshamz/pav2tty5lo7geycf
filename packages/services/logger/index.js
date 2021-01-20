@@ -2,8 +2,10 @@ const chalk = require('chalk');
 const winston = require('winston');
 const { LoggingWinston, express } = require('@google-cloud/logging-winston');
 
-const service = process.env.GAE_SERVICE || process.env.npm_package_name;
-const version = process.env.GAE_VERSION || process.env.npm_package_version;
+const version = process.env.GAE_VERSION;
+const service = process.env.GAE_SERVICE
+  ? process.env.GAE_SERVICE
+  : process.env.INIT_CWD.split('/').reverse()[0];
 
 const colors = {
   last: 'red',

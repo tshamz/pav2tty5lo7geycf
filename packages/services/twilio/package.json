@@ -3,7 +3,7 @@
   "name": "@services/twilio",
   "version": "0.0.1",
   "engines": {
-    "node": "12.x"
+    "node": "12"
   },
   "dependencies": {
     "@services/firebase": "workspace:^0.0.1",

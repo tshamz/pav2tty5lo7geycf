@@ -1,20 +1,18 @@
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (snapshot, context) => {
   try {
-    const isSame = snapshot.before.val() === snapshot.after.val();
+    const before = snapshot.before.val();
+    const after = snapshot.after.val();
+    const isSame = before === after;
     const wasDeleted = snapshot.after.val() === null;
 
-    if (isSame || wasDeleted) {
-      return;
-    }
+    if (isSame || wasDeleted) return;
 
-    await admin
-      .database(admin.priceHistory)
-      .ref(context.params.contract)
-      .update({
-        [Date.now()]: snapshot.after.val(),
-      });
+    const path = context.params.contract;
+    const update = { [Date.now()]: after };
+
+    await firebase.priceHistory.set(path, update);
 
     return;
   } catch (error) {

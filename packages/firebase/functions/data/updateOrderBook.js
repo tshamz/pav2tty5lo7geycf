@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (snapshot, res) => {
   try {
@@ -10,7 +10,8 @@ module.exports = async (snapshot, res) => {
     const userAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36`;
     const headers = { Accept, Host, 'User-Agent': userAgent };
     const url = `https://predictit-f497e.firebaseio.com/contractOrderBook.json`;
-    const orderBooks = await fetch(url, { headers }).then((res) => res.json());
+    const response = await fetch(url, { headers });
+    const orderBooks = await response.json();
 
     const update = Object.entries(orderBooks).reduce((updates, [id, data]) => {
       const timestamp = Math.floor(parseFloat(data.timestamp) * 1000);
@@ -26,20 +27,16 @@ module.exports = async (snapshot, res) => {
       };
     }, {});
 
-    await admin.setPath(`orderBooks`)(update);
-
-    if (res && res.status) {
-      res.status(200).json({});
-    }
+    await firebase.db.set(`orderBooks`, update);
 
     return;
   } catch (error) {
     console.error(error);
 
-    if (res && res.status) {
-      res.status(500).json({});
-    }
-
     return { error };
+  } finally {
+    if (res && res.status) {
+      res.status(200).json({});
+    }
   }
 };

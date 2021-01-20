@@ -1,20 +1,17 @@
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (data, context) => {
   try {
     if (data.UserPrediction === -1) {
-      const update = {
-        [data.ContractId]: null,
-      };
+      const update = { [data.ContractId]: null };
 
-      await admin.setPath(`contractPositions`)(update);
+      await firebase.db.set(`contractPositions`, update);
 
       return { update };
     }
 
-    const path = `contracts/${data.ContractId}/market`;
     const update = {
-      market: await admin.getPath({ path }),
+      market: await firebase.db.get(`contracts/${data.ContractId}/market`),
       prediction: data.UserPrediction,
       quantity: data.UserQuantity,
       openBuyOrders: data.UserOpenOrdersBuyQuantity,
@@ -24,7 +21,7 @@ module.exports = async (data, context) => {
       _updatedAt: new Date().toUTCString(),
     };
 
-    await admin.setPath(`contractPositions/${data.ContractId}`)(update);
+    await firebase.db.set(`contractPositions/${data.ContractId}`, update);
 
     return { update };
   } catch (error) {

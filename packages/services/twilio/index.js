@@ -1,7 +1,7 @@
 const twilio = require('twilio');
 const firebase = require('@services/firebase');
 
-const config = firebase.config().twilio;
+const config = firebase.config('twilio');
 const client = twilio(config.sid, config.token);
 
 const formatMessage = (rawMessage = []) => {

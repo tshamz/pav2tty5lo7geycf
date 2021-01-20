@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const equals = require('deep-equal');
 
 const log = require('@services/logger');
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (context, res) => {
   try {
@@ -10,9 +10,9 @@ module.exports = async (context, res) => {
     const Host = 'www.predictit.org';
     const headers = { Accept, Host, 'User-Agent': 'curl/7.64.1' };
     const url = `https://www.predictit.org/api/marketdata/all`;
-    const response = await fetch(url, { headers }).then((res) => res.json());
+    const response = await fetch(url, { headers });
     const data = await response.json();
-    const current = (await admin.getPath()) || {};
+    const current = (await firebase.db.get()) || {};
     const currentMarkets = current.markets || {};
     const update = {
       ...(await getInactiveMarkets(data.markets, currentMarkets)),
@@ -20,21 +20,17 @@ module.exports = async (context, res) => {
       ...getContractsAndPricesUpdate(data.markets, current),
     };
 
-    await admin.setPath()(update);
-
-    if (res && res.status) {
-      res.status(200).json({ update });
-    }
+    await firebase.db.set(update);
 
     return update;
   } catch (error) {
     log.error(error);
 
-    if (res && res.status) {
-      res.status(500).json({});
-    }
-
     return { error };
+  } finally {
+    if (res && res.status) {
+      res.status(200).json({});
+    }
   }
 };
 

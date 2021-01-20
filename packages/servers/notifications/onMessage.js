@@ -13,32 +13,32 @@ module.exports = ({ data, target, type }) => {
       const [type, data] = rawData.A;
 
       if (type === 'market_status') {
-        // firebase.functions().httpsCallable('')(data);
+        // firebase.call.???(data);
       }
 
       if (type === 'site_status') {
-        // firebase.functions().httpsCallable('')(data);
+        // firebase.call.???(data);
       }
 
       if (type === 'accountfunds_data') {
-        firebase.functions().httpsCallable('data-updateAccountFunds')(data);
+        firebase.call.updateAccountFunds(data);
       }
 
       if (type === 'tradeConfirmed_data') {
-        firebase.functions().httpsCallable('data-updateTradeHistory')(data);
-        // firebase.functions().httpsCallable('data-updateOpenOrders')(data);
+        firebase.call.updateTradeHistory(data);
+        // firebase.call.updateOpenOrders(data);
       }
 
       if (type === 'marketOwnershipUpdate_data') {
-        firebase.functions().httpsCallable('data-updateMarketPosition')(data);
+        firebase.firebase.call.updateMarketPosition(data);
       }
 
       if (type === 'contractOwnershipUpdate_data') {
-        firebase.functions().httpsCallable('data-updateContractPosition')(data);
+        firebase.firebase.call.updateContractPosition(data);
       }
 
       if (type === 'notification_shares_traded') {
-        // firebase.functions().httpsCallable('data-updateOpenOrders')(data);
+        // firebase.call.updateOpenOrders(data);
       }
     } catch (error) {
       log.error(error);

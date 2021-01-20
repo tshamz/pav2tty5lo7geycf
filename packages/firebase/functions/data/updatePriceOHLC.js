@@ -1,7 +1,7 @@
 const min = require('lodash/min');
 const max = require('lodash/max');
 
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (snapshot, res) => {
   try {
@@ -9,12 +9,20 @@ module.exports = async (snapshot, res) => {
     const oneHourAgo = new Date().setHours(now.getHours() - 1);
 
     const [prices, priceHistories] = await Promise.all([
-      admin.getPath({ path: 'prices' }),
-      admin.getPath({ db: admin.priceHistory }),
+      firebase.db.get('prices'),
+      firebase.priceHistory.get(),
     ]);
 
-    // prettier-ignore
-    const updates = Object.entries(prices).reduce((updates, [id, data]) => {
+    const priceEntries = Object.entries(prices);
+
+    const priceUpdates = priceEntries.reduce((updates, [id, data]) => {
+      return {
+        ...updates,
+        [`${id}/open`]: data.lastTrade || null,
+      };
+    }, {});
+
+    const ohlcUpdates = priceEntries.reduce((updates, [id, data]) => {
       const open = data.open || null;
       const close = data.lastTrade || null;
       const priceHistory = priceHistories[id] || {};
@@ -24,36 +32,24 @@ module.exports = async (snapshot, res) => {
         .map((entry) => entry[1]);
       const low = min([open, close, ...pricesInLastHour]);
       const high = max([open, close, ...pricesInLastHour]);
+      const key = `${id}/${now.getTime()}`;
 
-      return {
-        prices: {
-          ...updates.prices,
-          [`${id}/open`]: close,
-        },
-        ohlc: {
-          ...updates.ohlc,
-          [`${id}/${now.getTime()}`]: { open, high, low, close },
-        },
-      };
-    }, { prices: {}, ohlc: {}});
+      return { ...updates.ohlc, [key]: { open, high, low, close } };
+    }, {});
 
     await Promise.all([
-      admin.setPath('prices')(updates.prices),
-      admin.setPath({ db: admin.priceOHLC })(updates.ohlc),
+      firebase.db.set('prices', priceUpdates),
+      firebase.priceOhlc.set(ohlcUpdates),
     ]);
-
-    if (res && res.status) {
-      res.status(200).json({});
-    }
 
     return;
   } catch (error) {
     console.error(error);
 
-    if (res && res.status) {
-      res.status(500).json({});
-    }
-
     return { error };
+  } finally {
+    if (res && res.status) {
+      res.status(200).json({});
+    }
   }
 };

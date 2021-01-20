@@ -1,11 +1,11 @@
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (data, context) => {
   try {
     if (!data.UserHasOwnership) {
       const update = { [data.MarketId]: null };
 
-      await admin.setPath(`marketPositions`)(update);
+      await firebase.db.set(`marketPositions`, update);
 
       return { update };
     }
@@ -17,7 +17,7 @@ module.exports = async (data, context) => {
       _updatedAt: new Date().toUTCString(),
     };
 
-    await admin.setPath(`marketPositions/${data.MarketId}`)(update);
+    await firebase.db.set(`marketPositions/${data.MarketId}`, update);
 
     return { update };
   } catch (error) {

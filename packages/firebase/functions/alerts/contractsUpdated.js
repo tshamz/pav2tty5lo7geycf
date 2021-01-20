@@ -4,7 +4,7 @@ const differenceWith = require('lodash/differenceWith');
 
 const log = require('@services/logger');
 const twilio = require('@services/twilio');
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (snapshot, context) => {
   try {
@@ -17,10 +17,12 @@ module.exports = async (snapshot, context) => {
 
     await require('wait')(1500);
 
-    const marketPath = `markets/${context.params.market}`;
-    const market = await admin.getPath({ path: marketPath });
-    const contracts = await admin.getPath({ path: 'contracts' });
+    const id = context.params.market;
+    const market = await firebase.db.get(`markets/${id}`);
+    const contracts = await firebase.db.get('contracts');
+
     const getContractName = (id) => `• ${contracts[id].shortName}`;
+
     const addedContracts = added.map(getContractName);
     const removedContracts = removed.map(getContractName);
 

@@ -1,11 +1,13 @@
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (snapshot, res) => {
   try {
-    const marketsSnapshot = await admin.getPath({ path: 'markets' });
+    const marketsSnapshot = await firebase.db.get('markets');
+
     const closedIds = Object.entries(marketsSnapshot)
       .filter(([id, { active }]) => active === false)
       .map(([market, { contracts }]) => ({ market, contracts }));
+
     const closedMarkets = closedIds.map(({ market }) => parseInt(market));
     const closedContracts = closedIds.map(({ contracts }) => contracts).flat();
 
@@ -42,24 +44,20 @@ module.exports = async (snapshot, res) => {
     };
 
     await Promise.all([
-      admin.setPath()(databaseUpdate),
-      admin.setPath({ db: admin.priceHistory })(priceDatabaseUpdates),
-      admin.setPath({ db: admin.priceInterval })(priceDatabaseUpdates),
-      admin.setPath({ db: admin.priceOHLC })(priceDatabaseUpdates),
+      firebase.db.set(databaseUpdate),
+      firebase.priceHistory.set(priceDatabaseUpdates),
+      firebase.priceInterval.set(priceDatabaseUpdates),
+      firebase.priceOhlc.set(priceDatabaseUpdates),
     ]);
-
-    if (res && res.status) {
-      res.status(200).json({});
-    }
 
     return;
   } catch (error) {
     console.error(error);
 
-    if (res && res.status) {
-      res.status(500).json({});
-    }
-
     return { error };
+  } finally {
+    if (res && res.status) {
+      res.status(200).json({});
+    }
   }
 };

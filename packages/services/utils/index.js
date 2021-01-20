@@ -1,5 +1,7 @@
 const chrono = require('chrono-node');
 
+const log = require('@services/logger');
+
 const was = (datelike) => {
   const date = new Date(datelike);
 
@@ -11,6 +13,12 @@ const was = (datelike) => {
   return { over, under };
 };
 
+const raise = (error) => {
+  log.error(error);
+  throw error;
+};
+
 module.exports = {
   was,
+  raise,
 };

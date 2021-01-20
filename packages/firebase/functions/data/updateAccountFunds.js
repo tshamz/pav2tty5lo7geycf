@@ -1,4 +1,4 @@
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (data, context) => {
   try {
@@ -10,7 +10,7 @@ module.exports = async (data, context) => {
       _updatedAt: new Date().toUTCString(),
     };
 
-    await admin.setPath('funds')(update);
+    await firebase.db.set('funds', update);
 
     return update;
   } catch (error) {

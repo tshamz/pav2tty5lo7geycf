@@ -30,49 +30,35 @@ const refreshSessionAndBearerToken = async () => {
   try {
     log.warn(`Refreshing session and bearer token`);
 
-    return firebase
-      .functions()
-      .httpsCallable('browser-createSession')()
-      .then(setBearerToken);
+    return await firebase.call.createSession();
   } catch (error) {
+    console.log('error', error);
     throw error;
   }
 };
 
-const setBearerToken = async () => {
+const setTokens = async (newSession) => {
   try {
+    console.log('newSession', newSession);
+
     log.debug('Setting bearer token');
-
-    const token = await firebase
-      .getPath({ path: 'session/token' })
-      .then((snapshot) => JSON.parse(snapshot).value)
-      .catch(refreshSessionAndBearerToken);
-
-    params.set('bearer', token);
-
+    const bearerToken = await firebase.db.get('session/token/value');
+    params.set('bearer', bearerToken);
     log.debug(`Bearer token set`);
-  } catch (error) {
-    log.error(error);
-    throw error;
-  }
-};
 
-const setConnectionToken = async () => {
-  try {
     log.debug('Setting connection token');
-
     const url = `https://hub.predictit.org/signalr/negotiate?${params.toString()}`;
+    const response = await fetch(url, { headers });
+    const data = await response.json();
+    console.log('data', data);
 
-    const token = await fetch(url, { headers })
-      .then((response) => response.json())
-      .then((data) => data.ConnectionToken)
-      .catch(refreshSessionAndBearerToken);
-
-    params.set('connectionToken', token);
-
+    params.set('connectionToken', data.ConnectionToken);
     log.debug(`Connection token set`);
   } catch (error) {
-    log.error(error);
+    if (!newSession) {
+      return refreshSessionAndBearerToken().then(setTokens);
+    }
+
     throw error;
   }
 };
@@ -80,6 +66,5 @@ const setConnectionToken = async () => {
 module.exports = {
   params,
   headers,
-  setBearer: setBearerToken,
-  setConnection: setConnectionToken,
+  setTokens,
 };

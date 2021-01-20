@@ -3,13 +3,12 @@ const firebase = require('@services/firebase');
 
 module.exports = async () => {
   try {
-    let wssHost = await firebase.getPath({ path: 'session/wssHost' });
+    let wssHost = await firebase.db.get('session/wssHost');
 
     if (!wssHost) {
-      wssHost = await firebase
-        .functions()
-        .httpsCallable('browser-createSession')()
-        .then(({ data }) => data.wssHost);
+      const response = await firebase.call.createSession();
+
+      wssHost = response.data.wssHost;
     }
 
     const url = `wss://${wssHost}/.ws?v=5&ns=predictit-f497e`;

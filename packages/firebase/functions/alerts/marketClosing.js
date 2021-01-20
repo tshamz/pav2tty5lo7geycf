@@ -2,17 +2,19 @@ const TinyURL = require('tinyurl');
 
 const log = require('@services/logger');
 const twilio = require('@services/twilio');
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (snapshot, context) => {
   try {
-    if (snapshot.after.val() !== 1) return;
+    if (snapshot.after.val() !== 1) {
+      return;
+    }
 
-    const path = `markets/${context.params.market}`;
-    const market = await admin.getPath({ path });
+    const id = context.params.market;
+    const market = await firebase.db.get(`markets/${id}`);
     const getContract = async (id) => ({
-      ...(await admin.getPath({ path: `contracts/${id}` })),
-      ...(await admin.getPath({ path: `prices/${id}` })),
+      ...(await firebase.db.get(`prices/${id}`)),
+      ...(await firebase.db.get(`contracts/${id}`)),
     });
     const contracts = await Promise.all(market.contracts.map(getContract));
     const contractsAndPrices = contracts

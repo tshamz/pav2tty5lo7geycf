@@ -3,16 +3,16 @@
   "name": "markets",
   "version": "0.0.1",
   "engines": {
-    "node": "12.x"
+    "node": "12"
   },
   "scripts": {
-    "dev": "nodemon .",
+    "dev": "nodemon --watch . --watch ../../services/",
     "start": "node .",
     "deploy": "gcloud app deploy --quiet"
   },
   "dependencies": {
-    "@google-cloud/debug-agent": "^5.1.3",
-    "@google-cloud/trace-agent": "^5.1.1",
+    "@services/debug": "workspace:^0.0.1",
+    "@services/dotenv": "workspace:^0.0.1",
     "@services/express": "workspace:^0.0.1",
     "@services/firebase": "workspace:^0.0.1",
     "@services/logger": "workspace:^0.0.1",

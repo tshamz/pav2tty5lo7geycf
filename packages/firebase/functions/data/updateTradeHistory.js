@@ -1,9 +1,9 @@
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (data, context) => {
   try {
-    const completedQuantity =
-      data.Offer.Quantity - data.Offer.RemainingQuantity;
+    const { Quantity, RemainingQuantity } = data.Offer;
+    const completedQuantity = Quantity - RemainingQuantity;
 
     if (completedQuantity === 0) return;
 
@@ -20,7 +20,7 @@ module.exports = async (data, context) => {
       _createdAt: Date.now(),
     };
 
-    await admin.database(admin.tradeHistory).ref().push(update);
+    await firebase.tradeHistory.push(update);
 
     return { update };
   } catch (error) {

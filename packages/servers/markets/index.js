@@ -1,12 +1,9 @@
-require('@google-cloud/trace-agent').start();
-
-const debug = require('@google-cloud/debug-agent');
+require('@services/dotenv');
+require('@services/debug');
 
 const log = require('@services/logger');
 const express = require('@services/express');
 const websocket = require('@services/websocket');
-
-debug.start({ serviceContext: { enableCanary: true } });
 
 const connection = websocket.connect(require('./url'), {
   maxRetries: 3,
@@ -65,7 +62,7 @@ app.get('/status', (req, res) => {
 
 app.listen(port, () => {
   log.debug(`Server started, listening on ${port}`);
-  // websocket.open(connection);
+  websocket.open(connection);
 });
 
 module.exports = app;

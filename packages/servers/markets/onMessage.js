@@ -12,10 +12,10 @@ module.exports = ({ data: rawMessage }) => {
   const data = { id, ...body };
 
   if (path.startsWith('marketStats')) {
-    firebase.functions().httpsCallable('data-updateMarket')(data);
+    firebase.call.updateMarket(data);
   }
 
   if (path.startsWith('contractStats')) {
-    firebase.functions().httpsCallable('data-updateContractPrice')(data);
+    firebase.call.updateContractPrice(data);
   }
 };

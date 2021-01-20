@@ -4,10 +4,9 @@ const tokens = require('./tokens');
 
 module.exports = async () => {
   try {
-    const { params, setBearer, setConnection } = tokens;
+    const { params, setTokens } = tokens;
 
-    await setBearer();
-    await setConnection();
+    await setTokens();
 
     params.set('tid', Math.floor(Math.random() * (10 - 1 + 1)) + 1);
     params.set('transport', 'webSockets');

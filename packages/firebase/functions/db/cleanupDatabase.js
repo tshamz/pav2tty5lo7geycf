@@ -1,94 +1,56 @@
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (...args) => {
   const res = args[1];
 
   try {
-    const dbSnapshot = await admin.getPath();
-    const marketEntries = Object.entries(dbSnapshot.markets);
-    const contractEntries = Object.entries(dbSnapshot.contracts);
-    const pricesEntries = Object.entries(dbSnapshot.prices);
+    const database = await firebase.db.get();
 
-    const marketsUpdates = marketEntries.reduce((updates, [id, value]) => {
+    // prettier-ignore
+    const marketsUpdates = Object.keys(database.markets).reduce((updates, id) => {
       return {
         ...updates,
-        [`markets/${id}/_id`]: null,
-        [`markets/${id}/_type`]: null,
-        [`markets/${id}/_updateSource`]: null,
-        [`markets/${id}/id`]: null,
-        [`markets/${id}/updatedAt`]: null,
-        [`markets/${id}/status`]: null,
+        // Put paths in here that you want to remove
+        // [`markets/${id}/_updateSource`]: null,
       };
     }, {});
 
-    const contractsUpdates = contractEntries.reduce((updates, [id, value]) => {
+    // prettier-ignore
+    const contractsUpdates = Object.keys(database.contracts).reduce((updates, id) => {
       return {
         ...updates,
-        [`contracts/${id}/id`]: null,
-        [`contracts/${id}/_id`]: null,
-        [`contracts/${id}/_type`]: null,
-        [`contracts/${id}/_updateSource`]: null,
-        [`contracts/${id}/bestBuyNoCost`]: null,
-        [`contracts/${id}/bestBuyYesCost`]: null,
-        [`contracts/${id}/bestSellNoCost`]: null,
-        [`contracts/${id}/bestSellYesCost`]: null,
-        [`contracts/${id}/bestNoPrice`]: null,
-        [`contracts/${id}/bestYesPrice`]: null,
-        [`contracts/${id}/lastClosePrice`]: null,
-        [`contracts/${id}/lastTradePrice`]: null,
-        [`contracts/${id}/updatedAt`]: null,
-        [`contracts/${id}/buyNo`]: null,
-        [`contracts/${id}/buyYes`]: null,
-        [`contracts/${id}/lastTrade`]: null,
-        [`contracts/${id}/sellNo`]: null,
-        [`contracts/${id}/sellYes`]: null,
-        [`contracts/${id}/status`]: null,
+        // Put paths in here that you want to remove
+        // [`contracts/${id}/_updateSource`]: null,
       };
     }, {});
 
-    const pricesUpdate = pricesEntries.reduce((updates, [id, value]) => {
+    // prettier-ignore
+    const pricesUpdate = Object.keys(database.prices).reduce((updates, id) => {
       return {
         ...updates,
-        [`prices/${id}/history`]: null,
-        [`prices/${id}/interval`]: null,
-        [`prices/${id}/id`]: null,
-        [`prices/${id}/_id`]: null,
-        [`prices/${id}/_type`]: null,
-        [`prices/${id}/_updateSource`]: null,
-        [`prices/${id}/bestBuyNoCost`]: null,
-        [`prices/${id}/bestBuyYesCost`]: null,
-        [`prices/${id}/bestSellNoCost`]: null,
-        [`prices/${id}/bestSellYesCost`]: null,
-        [`prices/${id}/bestNoPrice`]: null,
-        [`prices/${id}/bestYesPrice`]: null,
-        [`prices/${id}/lastClosePrice`]: null,
-        [`prices/${id}/lastTradePrice`]: null,
-        [`prices/${id}/updatedAt`]: null,
-        [`prices/${id}/close`]: null,
+        // Put paths in here that you want to remove
+        // [`prices/${id}/_updateSource`]: null,
       };
     }, {});
 
-    await admin.setPath()({
+    const update = {
       ...marketsUpdates,
       ...contractsUpdates,
       ...pricesUpdate,
-      stats: null,
-      orderBook: null,
-      [`contracts/contracts`]: null,
-    });
+      // Put paths in here that you want to remove
+      // stats: null,
+    };
 
-    if (res && res.status) {
-      res.status(200).json({});
-    }
+    await firebase.db.set(update);
 
     return;
   } catch (error) {
     console.error(error);
 
-    if (res && res.status) {
-      res.status(500).json({});
-    }
-
     return { error };
+  } finally {
+    if (res && res.status) {
+      res.status(200).json({});
+    }
   }
 };

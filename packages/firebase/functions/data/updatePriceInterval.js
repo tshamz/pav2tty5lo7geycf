@@ -1,9 +1,9 @@
-const admin = require('@services/firebase');
+const firebase = require('@services/firebase');
 
 module.exports = async (snapshot, res) => {
   try {
     const now = Date.now();
-    const prices = await admin.getPath({ path: 'prices' });
+    const prices = await firebase.db.get('prices');
     const updates = Object.entries(prices).reduce((updates, [id, data]) => {
       return {
         ...updates,
@@ -11,20 +11,16 @@ module.exports = async (snapshot, res) => {
       };
     }, {});
 
-    await admin.database(admin.priceInterval).ref().update(updates);
-
-    if (res && res.status) {
-      res.status(200).json({});
-    }
+    await firebase.priceInterval.set(updates);
 
     return;
   } catch (error) {
     console.error(error);
 
-    if (res && res.status) {
-      res.status(500).json({});
-    }
-
     return { error };
+  } finally {
+    if (res && res.status) {
+      res.status(200).json({});
+    }
   }
 };
