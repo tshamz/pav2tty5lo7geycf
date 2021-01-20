@@ -1,12 +1,4 @@
-.DS_Store
-
-# Yarn
-.yarn/*
-!.yarn/cache
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
+*.DS_Store*
 
 # Build artifacts:
 dist
@@ -30,8 +22,3 @@ dist
 !.yarn/sdks
 !.yarn/versions
 # .pnp.*
-
-
-
-
-

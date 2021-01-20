@@ -10,6 +10,10 @@
     "start": "node .",
     "deploy": "gcloud app deploy --quiet"
   },
+  "yarn.build": {
+    "input": ".",
+    "output": "dist"
+  },
   "dependencies": {
     "@services/debug": "workspace:^0.0.1",
     "@services/dotenv": "workspace:^0.0.1",

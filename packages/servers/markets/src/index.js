@@ -11,13 +11,13 @@ const connection = websocket.connect(require('./url'), {
   minReconnectionDelay: 20000,
 });
 
-connection.addEventListener('open', require('./onOpen')(connection));
-connection.addEventListener('close', require('./onClose')(connection));
-connection.addEventListener('message', require('./onMessage'));
+connection.addEventListener('open', require('../onOpen')(connection));
+connection.addEventListener('close', require('../onClose')(connection));
+connection.addEventListener('message', require('../onMessage'));
 
 const app = express.create();
 const port = process.env.PORT || 8081;
-const message = require('./message')(connection);
+const message = require('../message')(connection);
 
 app.get('/open', (req, res) => {
   websocket.open(connection);
