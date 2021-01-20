@@ -48,6 +48,7 @@ const logger = winston.createLogger(options);
 
 if (process.env.NODE_ENV === 'production') {
   logger.add(googleTransport);
+  logger.add(consoleTransport);
 }
 
 if (process.env.NODE_ENV === 'development') {
