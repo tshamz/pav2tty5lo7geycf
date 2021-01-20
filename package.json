@@ -25,7 +25,7 @@
     "g:build": "cd $INIT_CWD && yarn bundle -a app.zip",
     "g:gcp-build": "cd $INIT_CWD && yarn g:build",
     "g:predeploy": "cd $INIT_CWD && yarn g:build",
-    "g:deploy": "cd $INIT_CWD && yarn g:predeploy && gcloud app deploy --quiet --stop-previous-version && yarn g:postdeploy",
+    "g:deploy": "cd $INIT_CWD && yarn g:predeploy && gcloud beta app deploy --quiet --stop-previous-version && yarn g:postdeploy",
     "g:postdeploy": "cd $INIT_CWD && rm app.zip",
     "g:start": "cd $INIT_CWD && yarn node ."
   },
