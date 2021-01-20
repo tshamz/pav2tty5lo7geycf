@@ -3,11 +3,13 @@
   "name": "markets",
   "version": "0.0.1",
   "engines": {
-    "node": "12"
+    "node": "12",
+    "yarn": "2.4.0"
   },
   "scripts": {
     "dev": "nodemon --watch . --watch ../../services/",
     "start": "node .",
+    "gcp-build": "yarn bundle",
     "deploy": "gcloud app deploy --quiet"
   },
   "yarn.build": {
