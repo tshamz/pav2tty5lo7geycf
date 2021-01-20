@@ -3,18 +3,13 @@
   "name": "markets",
   "version": "0.0.1",
   "engines": {
-    "node": "12",
-    "yarn": "2.4.0"
+    "node": "12"
   },
   "scripts": {
-    "dev": "nodemon --watch . --watch ../../services/",
-    "start": "node .",
-    "gcp-build": "yarn bundle",
-    "deploy": "gcloud app deploy --quiet"
-  },
-  "yarn.build": {
-    "input": ".",
-    "output": "dist"
+    "dev": "yarn g:dev",
+    "build": "yarn g:build",
+    "start": "yarn g:start",
+    "deploy": "yarn g:deploy"
   },
   "dependencies": {
     "@services/debug": "workspace:^0.0.1",

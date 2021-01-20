@@ -6,13 +6,9 @@
     "node": "12"
   },
   "scripts": {
-    "dev": "nodemon --watch . --watch ../../services/",
-    "start": "node .",
-    "deploy": "gcloud app deploy --quiet"
-  },
-  "yarn.build": {
-    "input": ".",
-    "output": "dist"
+    "dev": "yarn g:dev",
+    "start": "yarn g:start",
+    "deploy": "yarn g:deploy"
   },
   "dependencies": {
     "@services/debug": "workspace:^0.0.1",
