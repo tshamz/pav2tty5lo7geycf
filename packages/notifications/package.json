@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "notifications",
+  "version": "0.0.1",
+  "main": "index.js",
+  "engines": {
+    "node": "12"
+  },
+  "scripts": {
+    "dev": "yarn g:dev",
+    "watch": "yarn nodemon $INIT_CWD --watch $INIT_CWD --watch ../../",
+    "build": "yarn bundle -a .build.zip",
+    "deploy": "yarn build && gcloud beta app deploy --quiet --stop-previous-version",
+    "start": "unzip -o -qq .build.zip && cd bundle && yarn node entrypoint.js"
+  },
+  "dependencies": {
+    "@services/debug": "workspace:packages/@services/debug",
+    "@services/env": "workspace:packages/@services/env",
+    "@services/express": "workspace:packages/@services/express",
+    "@services/firebase": "workspace:packages/@services/firebase",
+    "@services/logger": "workspace:packages/@services/logger",
+    "@services/websocket": "workspace:packages/@services/websocket",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

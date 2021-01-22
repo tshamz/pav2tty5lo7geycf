@@ -1210,14 +1210,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/app-types@npm:0.6.1, @firebase/app-types@npm:^0.6.1":
+"@firebase/app-types@npm:*, @firebase/app-types@npm:0.6.1":
   version: 0.6.1
   resolution: "@firebase/app-types@npm:0.6.1"
   checksum: 464c9073b19a110fd7d07d3d6773934ea9a2c0e714f7ab33f98f85032419e7de0386ebf339c93301ed3074e62cfb84bc3b65a2e75513d4fcb2bd8ad60a4e0464
   languageName: node
   linkType: hard
 
-"@firebase/app@npm:0.6.13":
+"@firebase/app@npm:*, @firebase/app@npm:0.6.13":
   version: 0.6.13
   resolution: "@firebase/app@npm:0.6.13"
   dependencies:
@@ -1491,7 +1491,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/util@npm:0.3.4, @firebase/util@npm:^0.3.4":
+"@firebase/util@npm:*, @firebase/util@npm:0.3.4":
   version: 0.3.4
   resolution: "@firebase/util@npm:0.3.4"
   dependencies:
@@ -1674,23 +1674,23 @@ __metadata:
   linkType: hard
 
 "@grpc/grpc-js@npm:^1.0.0, @grpc/grpc-js@npm:~1.2.0":
-  version: 1.2.3
-  resolution: "@grpc/grpc-js@npm:1.2.3"
+  version: 1.2.4
+  resolution: "@grpc/grpc-js@npm:1.2.4"
   dependencies:
     "@types/node": ^12.12.47
     google-auth-library: ^6.1.1
     semver: ^6.2.0
-  checksum: b23e62378f482481592b16feca57ca7dd0692676d3cdcbf11789229a11ca7640c7bdee9578239d147dbde280e58ee18d85eca2e46e85d506b5e14679b65f0a05
+  checksum: d6fe5ae1b20913c001c39a1d460a209e740ac0e51e162a66c22aabdc33cc691627bc87579d34b4d93a85b7723721441281dda5b65eef400bc1172e70dc21a1b9
   languageName: node
   linkType: hard
 
 "@grpc/proto-loader@npm:^0.5.0, @grpc/proto-loader@npm:^0.5.1":
-  version: 0.5.5
-  resolution: "@grpc/proto-loader@npm:0.5.5"
+  version: 0.5.6
+  resolution: "@grpc/proto-loader@npm:0.5.6"
   dependencies:
     lodash.camelcase: ^4.3.0
     protobufjs: ^6.8.6
-  checksum: fa1441779e1cf8ec395e1eb0792ca7bcb6d4a61f8be27498c4c67e84e54db9c2e58870c7c99284d722487e3af81a7b9617432af8b28ca347cae0e2922891d87d
+  checksum: c1c6c91d86e1d0867d2b3f7d6c2f95afadfe3c4c1c2150f32f9db9b2e066052b49398c38e5ababf40dee6a2cb6ebf6450aa28b0773d8745c8a47fe6f9698aa4c
   languageName: node
   linkType: hard
 
@@ -1846,47 +1846,43 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@services/debug@workspace:^0.0.1, @services/debug@workspace:packages/services/debug":
+"@services/debug@workspace:packages/@services/debug":
   version: 0.0.0-use.local
-  resolution: "@services/debug@workspace:packages/services/debug"
+  resolution: "@services/debug@workspace:packages/@services/debug"
   dependencies:
     "@google-cloud/debug-agent": ^5.1.3
     "@google-cloud/trace-agent": ^5.1.1
   languageName: unknown
   linkType: soft
 
-"@services/dotenv@workspace:^0.0.1, @services/dotenv@workspace:packages/services/dotenv":
+"@services/env@workspace:packages/@services/env":
   version: 0.0.0-use.local
-  resolution: "@services/dotenv@workspace:packages/services/dotenv"
+  resolution: "@services/env@workspace:packages/@services/env"
   dependencies:
     dotenv: ^8.2.0
   languageName: unknown
   linkType: soft
 
-"@services/express@workspace:^0.0.1, @services/express@workspace:packages/services/express":
+"@services/express@workspace:packages/@services/express":
   version: 0.0.0-use.local
-  resolution: "@services/express@workspace:packages/services/express"
+  resolution: "@services/express@workspace:packages/@services/express"
   dependencies:
-    "@services/logger": "workspace:^0.0.1"
+    "@services/logger": "workspace:packages/@services/logger"
     express: ^4.17.1
   languageName: unknown
   linkType: soft
 
-"@services/firebase@workspace:^0.0.1, @services/firebase@workspace:packages/services/firebase":
+"@services/firebase@workspace:packages/@services/firebase":
   version: 0.0.0-use.local
-  resolution: "@services/firebase@workspace:packages/services/firebase"
+  resolution: "@services/firebase@workspace:packages/@services/firebase"
   dependencies:
-    "@firebase/app-types": ^0.6.1
-    "@firebase/util": ^0.3.4
-    "@services/dotenv": "workspace:packages/services/dotenv"
-    "@services/logger": "workspace:^0.0.1"
+    "@services/env": "workspace:packages/@services/env"
+    "@services/logger": "workspace:packages/@services/logger"
     camelcase: ^6.2.0
-    dotenv: ^8.2.0
     firebase: ^8.2.3
     firebase-admin: ^9.4.2
     firebase-functions: ^3.13.1
     lodash: ^4.17.20
-    puppeteer-extra-plugin-stealth: ^2.6.6
   peerDependencies:
     firebase: "*"
     firebase-admin: "*"
@@ -1894,9 +1890,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@services/logger@workspace:^0.0.1, @services/logger@workspace:packages/services/logger":
+"@services/logger@workspace:packages/@services/logger":
   version: 0.0.0-use.local
-  resolution: "@services/logger@workspace:packages/services/logger"
+  resolution: "@services/logger@workspace:packages/@services/logger"
   dependencies:
     "@google-cloud/logging-winston": ^4.0.2
     chalk: ^4.1.0
@@ -1904,31 +1900,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@services/twilio@workspace:^0.0.1, @services/twilio@workspace:packages/services/twilio":
+"@services/twilio@workspace:packages/@services/twilio":
   version: 0.0.0-use.local
-  resolution: "@services/twilio@workspace:packages/services/twilio"
+  resolution: "@services/twilio@workspace:packages/@services/twilio"
   dependencies:
-    "@services/firebase": "workspace:^0.0.1"
-    "@types/express": ^4.17.11
-    "@types/qs": 6.9.4
+    "@services/firebase": "workspace:packages/@services/firebase"
     twilio: ^3.53.0
   languageName: unknown
   linkType: soft
 
-"@services/utils@workspace:^0.0.1, @services/utils@workspace:packages/services/utils":
+"@services/utils@workspace:packages/@services/utils":
   version: 0.0.0-use.local
-  resolution: "@services/utils@workspace:packages/services/utils"
+  resolution: "@services/utils@workspace:packages/@services/utils"
   dependencies:
-    "@services/logger": "workspace:packages/services/logger"
+    "@services/logger": "workspace:packages/@services/logger"
     chrono-node: ^2.1.11
   languageName: unknown
   linkType: soft
 
-"@services/websocket@workspace:^0.0.1, @services/websocket@workspace:packages/services/websocket":
+"@services/websocket@workspace:packages/@services/websocket":
   version: 0.0.0-use.local
-  resolution: "@services/websocket@workspace:packages/services/websocket"
+  resolution: "@services/websocket@workspace:packages/@services/websocket"
   dependencies:
-    "@services/logger": "workspace:^0.0.1"
+    "@services/logger": "workspace:packages/@services/logger"
     reconnecting-websocket: 4.4.0
     wait: ^0.4.2
     ws: ^7.4.2
@@ -1995,18 +1989,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:4.17.3":
-  version: 4.17.3
-  resolution: "@types/express@npm:4.17.3"
-  dependencies:
-    "@types/body-parser": "*"
-    "@types/express-serve-static-core": "*"
-    "@types/serve-static": "*"
-  checksum: aeb57af48f97f334e8611b9b2f87a993e3de267b7836b15774575fc75ff6be424b61435076927ed34007c713792d632625b83a3b556e4b2d928f990d2a77f3fe
-  languageName: node
-  linkType: hard
-
-"@types/express@npm:^4.17.11":
+"@types/express@npm:*":
   version: 4.17.11
   resolution: "@types/express@npm:4.17.11"
   dependencies:
@@ -2015,6 +1998,17 @@ __metadata:
     "@types/qs": "*"
     "@types/serve-static": "*"
   checksum: 2818120a0fd8b7982215864929cdc6cd14942dd44849f93054fe2a90b4233dff67aadc34c73b5937922a02c688b0263d00a4807aa2e59307ac859a1458d73669
+  languageName: node
+  linkType: hard
+
+"@types/express@npm:4.17.3":
+  version: 4.17.3
+  resolution: "@types/express@npm:4.17.3"
+  dependencies:
+    "@types/body-parser": "*"
+    "@types/express-serve-static-core": "*"
+    "@types/serve-static": "*"
+  checksum: aeb57af48f97f334e8611b9b2f87a993e3de267b7836b15774575fc75ff6be424b61435076927ed34007c713792d632625b83a3b556e4b2d928f990d2a77f3fe
   languageName: node
   linkType: hard
 
@@ -2049,9 +2043,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 14.14.21
-  resolution: "@types/node@npm:14.14.21"
-  checksum: b659823ffa01684ff2cb4edf0b70ea76d7eae6cd86af43de62ae6b460c174161850fb75a1be50ab60c4519c14babd4ec430ddbbe6689e341073ba10ff106311c
+  version: 14.14.22
+  resolution: "@types/node@npm:14.14.22"
+  checksum: e46e32685b4d0261779c13c10ba3ff220cfa714b5c12f8f571fd52cc309546bdbc8ffc86cbad20559ad88e7b17e66fc51c98b067d8c3766597092c05df157b9b
   languageName: node
   linkType: hard
 
@@ -2063,9 +2057,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^12.12.47":
-  version: 12.19.14
-  resolution: "@types/node@npm:12.19.14"
-  checksum: 084643b0c0b55e47618d40eaec62f95de83faa1d952227ce558c5aa892ca150649770325c8d8540bba80580ad6b8a1bcbdc1c862b98ef495a8d1ac2911904770
+  version: 12.19.15
+  resolution: "@types/node@npm:12.19.15"
+  checksum: 873f273c89dab44232a366b995a642aaed63c6be5ef9939b98f5beffeb301749afecd29c2ebfbd9dab4b10cb8a3c972752e902829e4515b0c9a5a166b895234c
   languageName: node
   linkType: hard
 
@@ -2089,13 +2083,6 @@ __metadata:
   version: 6.9.5
   resolution: "@types/qs@npm:6.9.5"
   checksum: afe4721a802a4b5fa874a7d6d9fd33c9e812bb0ef90dabb050e8072be4ab2e5e817c0feacb9b4e0771d875de99f4d9738217976aeb8d36b81ccd82ded5e9fdc0
-  languageName: node
-  linkType: hard
-
-"@types/qs@npm:6.9.4":
-  version: 6.9.4
-  resolution: "@types/qs@npm:6.9.4"
-  checksum: 152d2431f7d3ff20bb1525e40a4074aadc8dcde9368b0b1c153014f84cd49ef87218119e7e9d4a2ccd8a4a71c94523361fb4796d90b4328c2222816c0e422483
   languageName: node
   linkType: hard
 
@@ -2819,9 +2806,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001173":
-  version: 1.0.30001178
-  resolution: "caniuse-lite@npm:1.0.30001178"
-  checksum: 313a8c784ac57db4423f90a19987ca6f9ad3ed51dc240264f6786c9b8f99a96b193c5b8ffb0a43fc6a85ca79b75ed8ed7c8c6e8cc221bdb50d86c89e496bd225
+  version: 1.0.30001179
+  resolution: "caniuse-lite@npm:1.0.30001179"
+  checksum: 04707a2d8a37796a9abb6b0d7d7466818cbe968d1cff133a6d355989c0c683065c64403716e69c13e9cd23c6eb346711a51e9b067b831b2564fbc0ef64f63645
   languageName: node
   linkType: hard
 
@@ -3565,9 +3552,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.3.634":
-  version: 1.3.641
-  resolution: "electron-to-chromium@npm:1.3.641"
-  checksum: d2b89bab4e7e8a3328c7e1da7dc9d3eea522920c9f7410d486ca3ddc496a64113dbb5283f91c493e123cd8787b536db11afd2441839ce21171ebc6e3045d3728
+  version: 1.3.642
+  resolution: "electron-to-chromium@npm:1.3.642"
+  checksum: 099c14b929f267f5cf91667c69367b3578f8c9887e8e73b02d56f4ccf742e9fb068bd55a24a9098a2f8e1bcf89988f9f73aa3182c438f7e5c1681550a2ddae74
   languageName: node
   linkType: hard
 
@@ -4498,14 +4485,14 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"functions@workspace:packages/firebase/functions":
+"functions@workspace:packages/functions":
   version: 0.0.0-use.local
-  resolution: "functions@workspace:packages/firebase/functions"
+  resolution: "functions@workspace:packages/functions"
   dependencies:
-    "@services/firebase": "workspace:^0.0.1"
-    "@services/logger": "workspace:^0.0.1"
-    "@services/twilio": "workspace:^0.0.1"
-    "@services/utils": "workspace:^0.0.1"
+    "@services/firebase": "workspace:packages/@services/firebase"
+    "@services/logger": "workspace:packages/@services/logger"
+    "@services/twilio": "workspace:packages/@services/twilio"
+    "@services/utils": "workspace:packages/@services/utils"
     deep-equal: ^2.0.5
     firebase: ^8.2.3
     firebase-admin: ^9.4.2
@@ -5978,7 +5965,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"long@npm:^4.0.0":
+"long@npm:*, long@npm:^4.0.0":
   version: 4.0.0
   resolution: "long@npm:4.0.0"
   checksum: 9cebc1ee8b9ea15278c977f61250ac41becdf7216104905f0d198c147ed2a7a090a2d83bb212878d3dc3ccb0199e6428862f848ec4b0ecfeab4dfe24eccf21b3
@@ -6061,16 +6048,16 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"markets@workspace:packages/servers/markets":
+"markets@workspace:packages/markets":
   version: 0.0.0-use.local
-  resolution: "markets@workspace:packages/servers/markets"
+  resolution: "markets@workspace:packages/markets"
   dependencies:
-    "@services/debug": "workspace:^0.0.1"
-    "@services/dotenv": "workspace:^0.0.1"
-    "@services/express": "workspace:^0.0.1"
-    "@services/firebase": "workspace:^0.0.1"
-    "@services/logger": "workspace:^0.0.1"
-    "@services/websocket": "workspace:^0.0.1"
+    "@services/debug": "workspace:packages/@services/debug"
+    "@services/env": "workspace:packages/@services/env"
+    "@services/express": "workspace:packages/@services/express"
+    "@services/firebase": "workspace:packages/@services/firebase"
+    "@services/logger": "workspace:packages/@services/logger"
+    "@services/websocket": "workspace:packages/@services/websocket"
     nodemon: ^2.0.7
   languageName: unknown
   linkType: soft
@@ -6447,16 +6434,16 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"notifications@workspace:packages/servers/notifications":
+"notifications@workspace:packages/notifications":
   version: 0.0.0-use.local
-  resolution: "notifications@workspace:packages/servers/notifications"
+  resolution: "notifications@workspace:packages/notifications"
   dependencies:
-    "@services/debug": "workspace:^0.0.1"
-    "@services/dotenv": "workspace:^0.0.1"
-    "@services/express": "workspace:^0.0.1"
-    "@services/firebase": "workspace:^0.0.1"
-    "@services/logger": "workspace:^0.0.1"
-    "@services/websocket": "workspace:^0.0.1"
+    "@services/debug": "workspace:packages/@services/debug"
+    "@services/env": "workspace:packages/@services/env"
+    "@services/express": "workspace:packages/@services/express"
+    "@services/firebase": "workspace:packages/@services/firebase"
+    "@services/logger": "workspace:packages/@services/logger"
+    "@services/websocket": "workspace:packages/@services/websocket"
     node-fetch: ^2.6.1
     nodemon: ^2.0.7
   languageName: unknown
@@ -6880,7 +6867,9 @@ fsevents@~2.3.1:
     eslint-plugin-react: ^7.21.5
     npm-run-all: ^4.1.5
     prettier: ^2.2.1
-    puppeteer-extra-plugin-stealth: ^2.6.6
+  dependenciesMeta:
+    firebase-admin@9.4.2:
+      unplugged: true
   languageName: unknown
   linkType: soft
 
@@ -7123,7 +7112,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"puppeteer-extra-plugin-stealth@npm:^2.6.5, puppeteer-extra-plugin-stealth@npm:^2.6.6":
+"puppeteer-extra-plugin-stealth@npm:*, puppeteer-extra-plugin-stealth@npm:^2.6.5":
   version: 2.6.6
   resolution: "puppeteer-extra-plugin-stealth@npm:2.6.6"
   dependencies:
@@ -7146,7 +7135,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"puppeteer-extra@npm:^3.1.16":
+"puppeteer-extra@npm:*, puppeteer-extra@npm:^3.1.16":
   version: 3.1.16
   resolution: "puppeteer-extra@npm:3.1.16"
   dependencies:
@@ -7160,7 +7149,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"puppeteer@npm:^5.5.0":
+"puppeteer@npm:*, puppeteer@npm:^5.5.0":
   version: 5.5.0
   resolution: "puppeteer@npm:5.5.0"
   dependencies:
@@ -8044,14 +8033,14 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"status@workspace:packages/servers/status":
+"status@workspace:packages/status":
   version: 0.0.0-use.local
-  resolution: "status@workspace:packages/servers/status"
+  resolution: "status@workspace:packages/status"
   dependencies:
-    "@services/debug": "workspace:^0.0.1"
-    "@services/dotenv": "workspace:^0.0.1"
-    "@services/express": "workspace:^0.0.1"
-    "@services/logger": "workspace:^0.0.1"
+    "@services/debug": "workspace:packages/@services/debug"
+    "@services/env": "workspace:packages/@services/env"
+    "@services/express": "workspace:packages/@services/express"
+    "@services/logger": "workspace:packages/@services/logger"
     nodemon: ^2.0.7
   languageName: unknown
   linkType: soft

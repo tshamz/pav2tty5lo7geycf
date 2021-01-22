@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "@services/logger",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "@google-cloud/logging-winston": "^4.0.2",
+    "chalk": "^4.1.0",
+    "winston": "^3.3.3"
+  }
+}

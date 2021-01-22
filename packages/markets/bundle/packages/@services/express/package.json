@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "@services/express",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "@services/logger": "workspace:packages/@services/logger",
+    "express": "^4.17.1"
+  }
+}

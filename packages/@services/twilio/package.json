@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "@services/twilio",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "@services/firebase": "workspace:packages/@services/firebase",
+    "twilio": "^3.53.0"
+  }
+}
