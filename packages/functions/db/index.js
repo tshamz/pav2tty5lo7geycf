@@ -6,6 +6,10 @@ const deleteClosedMarkets = require('./deleteClosedMarkets');
 const deleteStalePriceData = require('./deleteStalePriceData');
 
 // prettier-ignore
+exports.deleteClosedMarkets__manual = firebase.functions.https
+  .onRequest(deleteClosedMarkets);
+
+// prettier-ignore
 exports.addCreatedAtToMarket = firebase.functions.database
   .ref('markets/{market}')
   .onCreate(addCreatedAt);
@@ -29,7 +33,3 @@ exports.deleteClosedMarkets = firebase.functions.pubsub
 exports.deleteStalePriceData = firebase.functions.pubsub
   .schedule('every 24 hours')
   .onRun(deleteStalePriceData);
-
-// prettier-ignore
-exports.deleteClosedMarkets__manual = firebase.functions.https
-  .onRequest(deleteClosedMarkets);

@@ -1,9 +1,7 @@
 const fetch = require('node-fetch');
 
 const log = require('@services/logger');
-const utils = require('@services/logger');
 const firebase = require('@services/firebase');
-const raise = utils.raise;
 
 const headers = {
   Accept: `text/plain, */*; q=0.01`,
@@ -30,31 +28,35 @@ const params = new URLSearchParams({
   tid: Math.floor(Math.random() * (10 - 1 + 1) + 1),
 });
 
-const setBearerToken = () => {
-  log.debug('Setting bearer token', { status: 'connecting' });
+const setBearerToken = async () => {
+  try {
+    log.debug('Setting bearer token', { status: 'connecting' });
 
-  return firebase.db
-    .get('session/token/value')
-    .then((token) => params.set('bearer', token));
+    const token = await firebase.db.get('session/token/value');
+
+    params.set('bearer', token);
+  } catch (error) {
+    await firebase.call.createSession();
+    throw new Error(`Refreshing session and trying again`);
+  }
 };
 
-const setConnectionToken = () => {
-  log.debug('Setting connection token', { status: 'connecting' });
+const setConnectionToken = async () => {
+  try {
+    log.debug('Setting connection token', { status: 'connecting' });
 
-  const url = `https://hub.predictit.org/signalr/negotiate?${params.toString()}`;
+    const url = `https://hub.predictit.org/signalr/negotiate?${params.toString()}`;
+    const response = await fetch(url, { headers });
+    const data = await response.json();
 
-  return fetch(url, { headers })
-    .then((response) => response.json())
-    .then((data) => params.set('connectionToken', data.ConnectionToken));
+    params.set('connectionToken', data.ConnectionToken);
+  } catch (error) {
+    await firebase.call.createSession();
+    throw new Error(`Refreshing session and trying again`);
+  }
 };
 
-const refreshSession = (attempt) => {
-  log.warn(`Refreshing session and trying again (attempt: ${attempt})`);
-
-  return firebase.call.createSession().then(() => getUrl(attempt));
-};
-
-const getUrl = async (attempt = 1) => {
+const getUrl = async () => {
   try {
     await setBearerToken();
     await setConnectionToken();
@@ -65,11 +67,8 @@ const getUrl = async (attempt = 1) => {
 
     return url;
   } catch (error) {
-    if (attempt < 3) {
-      return refreshSession(++attempt);
-    }
-
-    raise(error);
+    log.error(error);
+    return null;
   }
 };
 

@@ -6,8 +6,7 @@ const express = require('@services/express');
 const websocket = require('@services/websocket');
 
 const url = require('./url');
-const options = { minReconnectionDelay: 5 * 60 * 1000 };
-const connection = websocket.connect(url.get, options);
+const connection = websocket.connect(url.get, { reconnectionDelay: 300000 });
 
 connection.addEventListener('open', require('./onOpen'));
 connection.addEventListener('message', require('./onMessage'));

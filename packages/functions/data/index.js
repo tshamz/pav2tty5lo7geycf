@@ -11,7 +11,11 @@ const updateContractPosition = require('./updateContractPosition');
 const updateContractPrice = require('./updateContractPrice');
 const updatePriceHistory = require('./updatePriceHistory');
 const updatePriceOHLC = require('./updatePriceOHLC');
-// const updatePriceInterval = require('./updatePriceInterval');
+const updatePriceInterval = require('./updatePriceInterval');
+
+// prettier-ignore
+exports.updateMarkets__manual = firebase.functions.https
+  .onRequest(updateMarkets);
 
 // prettier-ignore
 exports.updateAccountFunds = firebase.functions.https
@@ -39,10 +43,6 @@ exports.updateMarkets = firebase.functions.pubsub
   .onRun(updateMarkets);
 
 // prettier-ignore
-exports.updateMarkets__manual = firebase.functions.https
-  .onRequest(updateMarkets);
-
-// prettier-ignore
 exports.updateOpenOrders = firebase.functions.https
   .onCall(updateOpenOrders);
 
@@ -52,27 +52,19 @@ exports.updateOrderBook = firebase.functions.pubsub
   .onRun(updateOrderBook);
 
 // prettier-ignore
-exports.updateOrderBook__manual = firebase.functions.https
-  .onRequest(updateOrderBook);
-
-// prettier-ignore
 exports.updatePriceHistory = firebase.functions.database
   .ref('prices/{contract}/lastTrade')
   .onWrite(updatePriceHistory);
 
 // prettier-ignore
-// exports.updatePriceInterval = firebase.functions.pubsub
-//   .schedule('*/10 * * * *')
-//   .onRun(updatePriceInterval);
+exports.updatePriceInterval = firebase.functions.pubsub
+  .schedule('*/10 * * * *')
+  .onRun(updatePriceInterval);
 
 // prettier-ignore
-// exports.updatePriceOHLC = firebase.functions.pubsub
-//   .schedule('00 * * * *')
-//   .onRun(updatePriceOHLC);
-
-// prettier-ignore
-exports.updatePriceOHLC__manual = firebase.functions.https
-  .onRequest(updatePriceOHLC);
+exports.updatePriceOHLC = firebase.functions.pubsub
+  .schedule('00 * * * *')
+  .onRun(updatePriceOHLC);
 
 // prettier-ignore
 exports.updateTradeHistory = firebase.functions.https

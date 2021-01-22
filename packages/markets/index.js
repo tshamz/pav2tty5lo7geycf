@@ -7,11 +7,7 @@ const websocket = require('@services/websocket');
 
 const url = require('./url');
 
-const connection = websocket.connect(url, {
-  maxRetries: 3,
-  maxReconnectionDelay: 20000,
-  minReconnectionDelay: 20000,
-});
+const connection = websocket.connect(url.get);
 
 connection.addEventListener('open', require('./onOpen')(connection));
 connection.addEventListener('close', require('./onClose')(connection));

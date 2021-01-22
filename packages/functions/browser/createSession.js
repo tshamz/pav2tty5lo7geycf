@@ -1,6 +1,7 @@
 const stealthPlugin = require('puppeteer-extra-plugin-stealth');
 const puppeteer = require('puppeteer-extra').use(stealthPlugin());
 
+const log = require('@services/logger');
 const firebase = require('@services/firebase');
 const { was, now, raise } = require('@services/utils');
 
@@ -21,9 +22,10 @@ const checkLastRan = async () => {
     if (was(lastRan).under('5 minutes ago')) {
       const code = 'resource-exhausted';
       const details = { timeLeft, lastRan };
-      const message = `createSession run less than 5 minutes ago (${timeLeft} seconds left)`;
-      log.debug(`time left: ${timeLeft}`);
-      log.debug(`last ran: ${lastRan}`);
+      const message = `createSession run less than 5 minutes ago`;
+      log.debug(message);
+      log.debug(`time left: ${timeLeft} seconds`);
+      log.debug(`last ran: ${lastRan.toLocaleString()}`);
       throw new firebase.HttpsError(code, message, details);
     }
 
@@ -59,15 +61,14 @@ const createNewSession = async () => {
 
 const parseSession = async (session) => {
   const wssHostKey = 'firebase:host:predictit-f497e.firebaseio.com';
+  const wssHost = JSON.parse(session[wssHostKey] || null);
 
   delete session[wssHostKey];
 
-  console.log('session', session);
-
   return {
     ...session,
+    wssHost,
     username: config.username,
-    wssHost: JSON.parse(session[wssHostKey] || null),
     token: JSON.parse(session.token || null),
     refreshToken: JSON.parse(session.refreshToken || null),
     tokenExpires: JSON.parse(session.tokenExpires || null),
@@ -91,6 +92,8 @@ module.exports = async (data, res) => {
 
     return update;
   } catch (error) {
+    log.debug('error', error);
+
     if (error instanceof firebase.HttpsError) {
       raise(error);
     }

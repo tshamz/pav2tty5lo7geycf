@@ -5,7 +5,7 @@
   "main": "index.js",
   "engines": {
     "node": "12",
-    "yarn": ""
+    "yarn": "2.4.0"
   },
   "scripts": {
     "dev": "yarn g:dev",

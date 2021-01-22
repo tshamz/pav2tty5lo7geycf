@@ -1,35 +1,34 @@
 #!/bin/bash
 
 # files
-build=".build.zip"
-packagejson="package.json"
+BUILD=".build.zip"
 
 # dirs
-entry=$PWD
-tmpdir=$(mktemp -d "${PWD:-/tmp}"/.deploy.XXXXXXXX)
-services="${tmpdir}/bundle/packages/@services"
-functions="${tmpdir}/bundle/packages/functions"
+ENTRY=$PWD
+TMPDIR=$(mktemp -d "${PWD:-/tmp}"/.deploy.XXXXXXXX)
+SERVICES="${TMPDIR}/bundle/packages/@services"
+FUNCTIONS="${TMPDIR}/bundle/packages/functions"
 
 # clean up
 function finish {
-  rm -rf "$tmpdir"
+  rm -rf "$TMPDIR"
 }
 
 trap finish EXIT
 
 # unzip build into tmp
-unzip -o -qq $build -d $tmpdir
+unzip -o -qq $BUILD -d $TMPDIR
 
 # update paths and rearrange dirs
-find $services -name $packagejson | xargs sed -i '' s,workspace:packages/@services,file:..,
-sed -i '' s,workspace:packages,file:., ${functions}/${packagejson}
-mv $services $functions
+find $SERVICES -name package.json | xargs sed -i '' s,workspace:packages/@services,file:..,
+sed -i '' s,workspace:packages,file:., ${FUNCTIONS}/package.json
+mv $SERVICES $FUNCTIONS
 
 # deploy functions
-cd $functions
+cd $FUNCTIONS
 npm i --production --quiet
 firebase deploy --only functions
 
 # on success cleanup
-cd $entry
-rm $build
+cd $ENTRY
+rm $BUILD

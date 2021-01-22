@@ -2,8 +2,9 @@
 
 # Build artifacts:
 dist
-build
+*.build*
 node_modules
+*bundle*
 
 # Environment Variables
 .env*
@@ -24,3 +25,6 @@ node_modules
 !.yarn/sdks
 !.yarn/versions
 # .pnp.*
+
+
+packages/functions/.data/

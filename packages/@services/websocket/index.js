@@ -39,11 +39,11 @@ exports.restart = async (connection) => {
 exports.connect = (url, options = {}) => {
   const connection = new ReconnectingWs(url, [], {
     WebSocket: ws,
-    maxRetries: options.maxRetries || 3,
-    startClosed: options.startClosed || true,
-    minUptime: options.minUptime || 10000,
-    minReconnectionDelay: options.minReconnectionDelay || options.maxReconnectionDelay,
-    maxReconnectionDelay: options.maxReconnectionDelay || options.minReconnectionDelay,
+    startClosed: true,
+    minUptime: 10000,
+    minReconnectionDelay: 20000 || options.reconnectionDelay,
+    maxReconnectionDelay: 20000 || options.reconnectionDelay,
+    ...options,
   });
 
   connection.addEventListener('open', () => {

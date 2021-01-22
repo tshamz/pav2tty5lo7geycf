@@ -3,9 +3,10 @@ const winston = require('winston');
 const { LoggingWinston, express } = require('@google-cloud/logging-winston');
 
 const version = process.env.GAE_VERSION;
-const service = process.env.GAE_SERVICE
-  ? process.env.GAE_SERVICE
-  : process.env.PWD.split('/').reverse()[0];
+const service =
+  process.env.GAE_SERVICE ||
+  (process.env.FUNCTION_TARGET || '').split('.')[1] ||
+  (process.env.INIT_CWD || '').split('/').reverse()[0];
 
 const colors = {
   last: 'red',

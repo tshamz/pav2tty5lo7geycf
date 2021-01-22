@@ -1,18 +1,17 @@
 require('@services/env');
 
-const admin = require('firebase-admin');
 const firebase = require('firebase');
+const admin = require('firebase-admin');
 
 const database = require('./database');
 const functions = require('./functions');
 
-const projectId = process.env.GCLOUD_PROJECT;
 const credentials = admin.credential.applicationDefault();
-const databaseURL = process.env.FIREBASE_DEFAULT_DATABASE_URL;
+const databaseURL = 'https://pav2tty5lo7geycf-default-rtdb.firebaseio.com';
 
 if (!firebase.apps.length) {
-  admin.initializeApp({ projectId, credentials, databaseURL });
-  firebase.initializeApp({ projectId, credentials, databaseURL });
+  admin.initializeApp({ credentials, databaseURL });
+  firebase.initializeApp({ credentials, databaseURL });
 }
 
 if (process.env.NODE_ENV === 'development') {
