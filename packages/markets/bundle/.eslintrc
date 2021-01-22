@@ -1,6 +1,0 @@
-{
-  "extends": ["@packdigital/eslint-config-ripperoni"],
-  "rules": {
-    "import/order": "off"
-  }
-}
