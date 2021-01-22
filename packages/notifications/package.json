@@ -4,14 +4,15 @@
   "version": "0.0.1",
   "main": "index.js",
   "engines": {
-    "node": "12"
+    "node": "12",
+    "yarn": ""
   },
   "scripts": {
     "dev": "yarn g:dev",
     "watch": "yarn nodemon $INIT_CWD --watch $INIT_CWD --watch ../../",
     "build": "yarn bundle -a .build.zip",
-    "deploy": "yarn build && gcloud beta app deploy --quiet --stop-previous-version",
-    "start": "unzip -o -qq .build.zip && cd bundle && yarn node entrypoint.js"
+    "deploy": "yarn build && gcloud beta app deploy notifications.yaml --quiet --stop-previous-version",
+    "start": "yarn node bundle/entrypoint.js"
   },
   "dependencies": {
     "@services/debug": "workspace:packages/@services/debug",

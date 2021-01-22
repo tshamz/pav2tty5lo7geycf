@@ -26,16 +26,18 @@ EXPOSE $PORT 8080
 
 WORKDIR /srv
 
-COPY app.zip app.zip
+COPY .build.zip .
 
-RUN \
-  unzip app.zip && \
-  mv bundle app && \
-  rm app.zip
+RUN unzip -o -qq .build.zip
 
-WORKDIR /srv/app
+# RUN \
+#   unzip app.zip && \
+#   mv bundle app && \
+#   rm app.zip
+
+# WORKDIR /srv/app
 
 # check every 30s to ensure this service returns HTTP 200
 HEALTHCHECK --interval=30s CMD node healthcheck.js
 
-CMD yarn workspace markets start
+CMD yarn start
