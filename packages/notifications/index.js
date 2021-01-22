@@ -5,9 +5,9 @@ const log = require('@services/logger');
 const express = require('@services/express');
 const websocket = require('@services/websocket');
 
-const url = require('./url')
-
-const connection = websocket.connect(url.get, { minReconnectionDelay: 5 * 60 * 1000 });
+const url = require('./url');
+const options = { minReconnectionDelay: 5 * 60 * 1000 };
+const connection = websocket.connect(url.get, options);
 
 connection.addEventListener('open', require('./onOpen'));
 connection.addEventListener('message', require('./onMessage'));

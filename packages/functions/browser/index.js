@@ -12,8 +12,3 @@ exports.updateSession = firebase.functions
 exports.createSession = firebase.functions
   .runWith({ timeoutSeconds: 120, memory: '2GB' })
   .https.onCall(createSession);
-
-// prettier-ignore
-exports.createSession__manual = firebase.functions
-  .runWith({ timeoutSeconds: 120, memory: '2GB' })
-  .https.onRequest(createSession);

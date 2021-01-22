@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
-const log = require('@services/logger');
+const utils = require('@services/utils');
+const raise = utils.raise;
 
 const { headers, params } = require('./url');
 
@@ -15,7 +16,6 @@ module.exports = async () => {
 
     return;
   } catch (error) {
-    log.error(error);
-    throw error;
+    raise(error);
   }
 };

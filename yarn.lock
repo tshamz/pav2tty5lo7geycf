@@ -3268,16 +3268,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:2.6.9, debug@npm:^2.2.0, debug@npm:^2.3.3, debug@npm:^2.6.9":
-  version: 2.6.9
-  resolution: "debug@npm:2.6.9"
-  dependencies:
-    ms: 2.0.0
-  checksum: 559f44f98cf25e2ee489022aec173afbff746564cb108c4493becb95bc3c017a67bdaa25a0ff64801fd32c35051d00af0e56cc7f762ae2c3bc089496e5a1c31b
-  languageName: node
-  linkType: hard
-
-"debug@npm:4, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1":
+"debug@npm:*, debug@npm:4, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1":
   version: 4.3.2
   resolution: "debug@npm:4.3.2"
   dependencies:
@@ -3286,6 +3277,15 @@ __metadata:
     supports-color:
       optional: true
   checksum: 5543570879e2274f6725d4285a034d6e0822d35faefc6f55965933fb440e8c21eb3a0bef934e66f4b6b491f898ee2de37cab980e9d4fd61372136c19d3ce4527
+  languageName: node
+  linkType: hard
+
+"debug@npm:2.6.9, debug@npm:^2.2.0, debug@npm:^2.3.3, debug@npm:^2.6.9":
+  version: 2.6.9
+  resolution: "debug@npm:2.6.9"
+  dependencies:
+    ms: 2.0.0
+  checksum: 559f44f98cf25e2ee489022aec173afbff746564cb108c4493becb95bc3c017a67bdaa25a0ff64801fd32c35051d00af0e56cc7f762ae2c3bc089496e5a1c31b
   languageName: node
   linkType: hard
 
@@ -6443,6 +6443,7 @@ fsevents@~2.3.1:
     "@services/express": "workspace:packages/@services/express"
     "@services/firebase": "workspace:packages/@services/firebase"
     "@services/logger": "workspace:packages/@services/logger"
+    "@services/utils": "workspace:packages/@services/utils"
     "@services/websocket": "workspace:packages/@services/websocket"
     node-fetch: ^2.6.1
     nodemon: ^2.0.7
@@ -8243,6 +8244,15 @@ fsevents@~2.3.1:
   version: 3.0.0
   resolution: "stubs@npm:3.0.0"
   checksum: 5d58c7b76aa6ac62149166ae43a1fc257cc093fffc2b584cbc09a49c5feb951f4ba05c6832453fad392a3c7665bbe62167c116a17edc8520637d0d65706bef0d
+  languageName: node
+  linkType: hard
+
+"supports-color@npm:*":
+  version: 8.1.0
+  resolution: "supports-color@npm:8.1.0"
+  dependencies:
+    has-flag: ^4.0.0
+  checksum: 6213162d55e33b23562b1b8ec8c93f610fb1a1d2b88bf9b0bbeaed2d5652d5850faa293177890f914c5b5af722387e1b75a818e4496367134aeb9b3c5516eb2f
   languageName: node
   linkType: hard
 

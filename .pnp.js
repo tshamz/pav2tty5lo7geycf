@@ -1767,7 +1767,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],
       [
         "has-flag",
-        "npm:3.0.0"
+        "npm:4.0.0"
       ],
       [
         "has-symbols",
@@ -8034,13 +8034,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/$$virtual/debug-virtual-8714063b74/0/cache/debug-npm-4.3.2-f0148b6afe-5543570879.zip/node_modules/debug/",
           "packageDependencies": [
             ["debug", "virtual:624e94788eef25c12f9e1d41a3f2dd6bfc03b7eafe6e579f00f392c4bc5edfd642b7b446afe3e9ecc3bd0928629a9f81ff8e076874224c7de832ec225314cb3d#npm:4.3.2"],
-            ["@types/supports-color", null],
             ["ms", "npm:2.1.2"],
-            ["supports-color", null]
-          ],
-          "packagePeers": [
-            "@types/supports-color",
-            "supports-color"
+            ["supports-color", "npm:8.1.0"]
           ],
           "linkType": "HARD",
         }],
@@ -8048,12 +8043,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/$$virtual/debug-virtual-ac94571114/0/cache/debug-npm-3.2.7-754e818c7a-9fc1277e66.zip/node_modules/debug/",
           "packageDependencies": [
             ["debug", "virtual:7b95e4651161f58fae67ad0e500093fe3efc1260126f9dd9f0cf96334b9e5c43c30afa86faf5d3c609740562b9985718bf9d1cf396b473e9cda8d4a60334e6e1#npm:3.2.7"],
-            ["@types/supports-color", null],
             ["ms", "npm:2.1.3"],
             ["supports-color", "npm:5.5.0"]
           ],
           "packagePeers": [
-            "@types/supports-color",
             "supports-color"
           ],
           "linkType": "HARD",
@@ -8062,13 +8055,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/$$virtual/debug-virtual-d08cd93353/0/cache/debug-npm-2.6.9-7d4cb597dc-559f44f98c.zip/node_modules/debug/",
           "packageDependencies": [
             ["debug", "virtual:fa0173d26738ef894de6f639abae81ef8c1dc3fb742f450a622367c86186d9f4d23dbd3bcc38bbe27382c39f87e11cad6137dd70480a36e752eee25974706e2c#npm:2.6.9"],
-            ["@types/supports-color", null],
             ["ms", "npm:2.0.0"],
-            ["supports-color", null]
-          ],
-          "packagePeers": [
-            "@types/supports-color",
-            "supports-color"
+            ["supports-color", "npm:8.1.0"]
           ],
           "linkType": "HARD",
         }]
@@ -9314,12 +9302,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/$$virtual/follow-redirects-virtual-47d90373e0/0/cache/follow-redirects-npm-1.13.1-7cb0be11a2-c7c6c90587.zip/node_modules/follow-redirects/",
           "packageDependencies": [
             ["follow-redirects", "virtual:d192f6b3b31cd5d11a443145a3883a70c04cbd7c813c53085dbaf50263735f1162f10fdbddd53c24e162ec3bc37b90966413084323739b7cf942b8bfb4da8831#npm:1.13.1"],
-            ["@types/debug", null],
-            ["debug", null]
-          ],
-          "packagePeers": [
-            "@types/debug",
-            "debug"
+            ["debug", "virtual:624e94788eef25c12f9e1d41a3f2dd6bfc03b7eafe6e579f00f392c4bc5edfd642b7b446afe3e9ecc3bd0928629a9f81ff8e076874224c7de832ec225314cb3d#npm:4.3.2"]
           ],
           "linkType": "HARD",
         }]
@@ -11652,6 +11635,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@services/express", "workspace:packages/@services/express"],
             ["@services/firebase", "virtual:8df8d56db65ab8b9c3ccdfa4d9c7283e3784d1b85abe36ece0023f84bb3a9eee6b5f90fae243b7871a045619ec7270fb8189b3c2d746f89a8603b31d50569353#workspace:packages/@services/firebase"],
             ["@services/logger", "workspace:packages/@services/logger"],
+            ["@services/utils", "workspace:packages/@services/utils"],
             ["@services/websocket", "workspace:packages/@services/websocket"],
             ["node-fetch", "npm:2.6.1"],
             ["nodemon", "npm:2.0.7"]
@@ -13668,6 +13652,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/supports-color-npm-7.2.0-606bfcf7da-8e57067c39.zip/node_modules/supports-color/",
           "packageDependencies": [
             ["supports-color", "npm:7.2.0"],
+            ["has-flag", "npm:4.0.0"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:8.1.0", {
+          "packageLocation": "./.yarn/cache/supports-color-npm-8.1.0-f1688888e2-6213162d55.zip/node_modules/supports-color/",
+          "packageDependencies": [
+            ["supports-color", "npm:8.1.0"],
             ["has-flag", "npm:4.0.0"]
           ],
           "linkType": "HARD",
