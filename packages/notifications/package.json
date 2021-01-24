@@ -9,9 +9,13 @@
   },
   "scripts": {
     "dev": "yarn g:dev",
+    "docker:build": "docker build -t pav2tty5lo7geycf/notifications .",
+    "docker:run": "docker run -dp 8080:8082 pav2tty5lo7geycf/notifications",
+    "test": "yarn build && yarn docker:build && yarn docker:run",
     "watch": "yarn nodemon $INIT_CWD --watch $INIT_CWD --watch ../../",
     "build": "yarn bundle -a .build.zip",
-    "deploy": "yarn build && gcloud beta app deploy notifications.yaml --quiet --stop-previous-version",
+    "deploy": "yarn build && gcloud beta app deploy notifications.yaml --quiet --stop-previous-version && yarn postdeploy",
+    "postdeploy": "rm -rf .build.zip",
     "start": "yarn node bundle/entrypoint.js"
   },
   "dependencies": {

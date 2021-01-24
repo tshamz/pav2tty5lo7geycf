@@ -5,7 +5,7 @@ const functions = require('firebase-functions');
 const isEmulator = process.env.IS_FIREBASE_CLI;
 const isDev = process.env.NODE_ENV === 'development';
 const isProduction = process.env.NODE_ENV === 'production';
-const isEnabled = (isProduction || isDev && isEmulator);
+const isEnabled = isProduction || (isDev && isEmulator);
 
 const getConfig = (path) => {
   const config = functions.config();
@@ -14,7 +14,7 @@ const getConfig = (path) => {
 };
 
 const triggerFunction = (name) => async (data) => {
-  if (!isEnabled) return null
+  if (!isEnabled) return null;
 
   // prettier-ignore
   return firebase

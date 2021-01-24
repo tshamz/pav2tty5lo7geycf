@@ -18,8 +18,9 @@ const colors = {
 const formatOutputForConsole = (info) => {
   const color = info.status ? colors[info.status] : colors.last;
   colors.last = color;
-  const spacer = ' '.repeat(20 - info.label.length);
-  return `${spacer}[${chalk[color](info.label)}] ${info.message}`;
+  const label = info.label.length > 18 ? info.label.slice(0, 18) : info.label;
+  const spacer = ' '.repeat(20 - label.length);
+  return `${spacer}[${chalk[color](label)}] ${info.message}`;
 };
 
 const googleTransport = new LoggingWinston({
@@ -49,7 +50,6 @@ const logger = winston.createLogger(options);
 
 if (process.env.NODE_ENV === 'production') {
   logger.add(googleTransport);
-  logger.add(consoleTransport);
 }
 
 if (process.env.NODE_ENV === 'development') {

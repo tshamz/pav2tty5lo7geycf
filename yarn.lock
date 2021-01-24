@@ -1252,14 +1252,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/auth@npm:0.16.1":
-  version: 0.16.1
-  resolution: "@firebase/auth@npm:0.16.1"
+"@firebase/auth@npm:0.16.2":
+  version: 0.16.2
+  resolution: "@firebase/auth@npm:0.16.2"
   dependencies:
     "@firebase/auth-types": 0.10.1
   peerDependencies:
     "@firebase/app": 0.x
-  checksum: cd111663987f58531ae37869992056672bf6b8b1f8551734c510bf8a3534f56aaf332b67d8afe4454d69bfedc3adfa3b271f77986059fae44ef0689524e4b6eb
+  checksum: c2b0e5b0669f58f3b6248a23af2bcd222185371ec6750617ce49f2d3b0a72328e05ea7ab7031ef57a597a555b13ba26f802c6ca3a3edba45624c84084f627af1
   languageName: node
   linkType: hard
 
@@ -1282,7 +1282,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/database@npm:0.8.3, @firebase/database@npm:^0.8.1":
+"@firebase/database@npm:0.9.0":
+  version: 0.9.0
+  resolution: "@firebase/database@npm:0.9.0"
+  dependencies:
+    "@firebase/auth-interop-types": 0.1.5
+    "@firebase/component": 0.1.21
+    "@firebase/database-types": 0.6.1
+    "@firebase/logger": 0.2.6
+    "@firebase/util": 0.3.4
+    faye-websocket: 0.11.3
+    tslib: ^1.11.1
+  checksum: a97dae6502bebf0f352f22276a0cfb011332d34b2377ec547b2eab3b9b8cea61ef9b220c4fbdd698bc23657472e3483895ef984d1012e98fcef28b77f7bb5a2f
+  languageName: node
+  linkType: hard
+
+"@firebase/database@npm:^0.8.1":
   version: 0.8.3
   resolution: "@firebase/database@npm:0.8.3"
   dependencies:
@@ -1306,9 +1321,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firebase/firestore@npm:2.1.2":
-  version: 2.1.2
-  resolution: "@firebase/firestore@npm:2.1.2"
+"@firebase/firestore@npm:2.1.3":
+  version: 2.1.3
+  resolution: "@firebase/firestore@npm:2.1.3"
   dependencies:
     "@firebase/component": 0.1.21
     "@firebase/firestore-types": 2.1.0
@@ -1322,7 +1337,7 @@ __metadata:
   peerDependencies:
     "@firebase/app": 0.x
     "@firebase/app-types": 0.x
-  checksum: a50688a9ed01bbd8a7f525c788999c59b1d3bc383c5a0c8a38bce7204e5551172347f4ed5a8f1c05717a4814890302fdf6e658c2d940e92f1c287bb2d4513314
+  checksum: 094d62d4a9196bb2ca258f279e548f363ab5b8ae14e54cab6dba6ab2c6eeed28241c8e82e608e3d6d6568eeb6f7e2d2ef9d26b2c5895fa514bdc56752b4a011f
   languageName: node
   linkType: hard
 
@@ -1555,8 +1570,8 @@ __metadata:
   linkType: hard
 
 "@google-cloud/logging-winston@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "@google-cloud/logging-winston@npm:4.0.2"
+  version: 4.0.3
+  resolution: "@google-cloud/logging-winston@npm:4.0.3"
   dependencies:
     "@google-cloud/logging": ^9.0.0
     google-auth-library: ^6.0.0
@@ -1566,7 +1581,7 @@ __metadata:
     winston-transport: ^4.3.0
   peerDependencies:
     winston: ">=3.2.1"
-  checksum: dd4183472bb556a32e8b2027ba306bafad59c9c89ca55cc824e51d1b3dcccaa6fd2ce5f394d96d7e485397013ee538049c4fd1a683dff0dd3b3d22b69b19721a
+  checksum: 03f162774ad1a1d0da48858ff83fa3e862ac4239ac1834fd939194dd9312a8407e4fc0f09464c8b6c9a5fb044529312a56d6e19ad6cb415ea6527fe76f221e9a
   languageName: node
   linkType: hard
 
@@ -3262,9 +3277,9 @@ __metadata:
   linkType: hard
 
 "dayjs@npm:^1.10.0, dayjs@npm:^1.8.29":
-  version: 1.10.3
-  resolution: "dayjs@npm:1.10.3"
-  checksum: df7d13e99a2932c12efb3fc9c36e537ee6722ed1763fb2b74559bf9a864828b3d3eac6d3ae59f0c1dbef8dae52444059d8c8bc540c7edb13d665fcd2b08028e6
+  version: 1.10.4
+  resolution: "dayjs@npm:1.10.4"
+  checksum: 3b7bb2232fff808209870bc72d4b2000941a1aa45f0226e2907f9dd1dda306d4b3a1eb9058450fd2c324b01a007a37809ac6f9b525806a86902c55e2934cd5d5
   languageName: node
   linkType: hard
 
@@ -3552,9 +3567,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.3.634":
-  version: 1.3.642
-  resolution: "electron-to-chromium@npm:1.3.642"
-  checksum: 099c14b929f267f5cf91667c69367b3578f8c9887e8e73b02d56f4ccf742e9fb068bd55a24a9098a2f8e1bcf89988f9f73aa3182c438f7e5c1681550a2ddae74
+  version: 1.3.644
+  resolution: "electron-to-chromium@npm:1.3.644"
+  checksum: 20cabbaa13a5793a90e5a4973f7233ee2e88a298d59b5702a36a230d8df829133a88a63ff3cee6f38c95bae0782dcbda726ae5867625ae211d466a1296604686
   languageName: node
   linkType: hard
 
@@ -4297,15 +4312,15 @@ __metadata:
   linkType: hard
 
 "firebase@npm:^8.2.3":
-  version: 8.2.3
-  resolution: "firebase@npm:8.2.3"
+  version: 8.2.4
+  resolution: "firebase@npm:8.2.4"
   dependencies:
     "@firebase/analytics": 0.6.2
     "@firebase/app": 0.6.13
     "@firebase/app-types": 0.6.1
-    "@firebase/auth": 0.16.1
-    "@firebase/database": 0.8.3
-    "@firebase/firestore": 2.1.2
+    "@firebase/auth": 0.16.2
+    "@firebase/database": 0.9.0
+    "@firebase/firestore": 2.1.3
     "@firebase/functions": 0.6.1
     "@firebase/installations": 0.4.19
     "@firebase/messaging": 0.7.3
@@ -4314,7 +4329,7 @@ __metadata:
     "@firebase/remote-config": 0.1.30
     "@firebase/storage": 0.4.2
     "@firebase/util": 0.3.4
-  checksum: 58d8dc3ed5fbb023080578640c08ecfc3247b3dbc59df8b15031d4460d09a7f72ee36f9ee619f22ca6846617e29afa1b833c9d46e138d1ca189f07e4026f2ace
+  checksum: 9c524cc8ec814bdba6af3a0b1d6a70f905018b123e27966aa192460de9bdfc409904070284680948b535e7634b3266581c290f035e22ecbfbcc2f05206185cfa
   languageName: node
   linkType: hard
 
@@ -6868,9 +6883,6 @@ fsevents@~2.3.1:
     eslint-plugin-react: ^7.21.5
     npm-run-all: ^4.1.5
     prettier: ^2.2.1
-  dependenciesMeta:
-    firebase-admin@9.4.2:
-      unplugged: true
   languageName: unknown
   linkType: soft
 
@@ -8248,11 +8260,11 @@ fsevents@~2.3.1:
   linkType: hard
 
 "supports-color@npm:*":
-  version: 8.1.0
-  resolution: "supports-color@npm:8.1.0"
+  version: 8.1.1
+  resolution: "supports-color@npm:8.1.1"
   dependencies:
     has-flag: ^4.0.0
-  checksum: 6213162d55e33b23562b1b8ec8c93f610fb1a1d2b88bf9b0bbeaed2d5652d5850faa293177890f914c5b5af722387e1b75a818e4496367134aeb9b3c5516eb2f
+  checksum: 0219f5c91753fea8dc8046cd4b18d39458b5dc0c6421c67c1072209faae9ba93b89283252e3b05d5c18901fd9f8b95001e3247fb93e2265f66d584a676522c75
   languageName: node
   linkType: hard
 

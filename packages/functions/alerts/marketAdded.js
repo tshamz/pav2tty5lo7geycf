@@ -17,7 +17,7 @@ module.exports = async (snapshot, context) => {
       .sort((a, b) => a.displayOrder < b.displayOrder)
       .map(({ shortName }) => `• ${shortName}`);
 
-    log.info(`Market Added: ${market.shortname}`);
+    log.debug(`Market Added: ${market.shortname}`);
 
     await twilio.sendMessage([
       `Market Added!`,

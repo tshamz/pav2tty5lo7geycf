@@ -1,14 +1,14 @@
-# FROM node:12.18.0
 FROM gcr.io/google-appengine/nodejs
+
+ENV GAE_SERVICE="notifications"
 
 RUN apt-get update && apt-get install unzip
 
-ENV NODE_ENV=production
 ENV GOOGLE_APPLICATION_CREDENTIALS="/srv/bundle/credentials.firebase.json"
 
 ENV GCLOUD_PROJECT="pav2tty5lo7geycf"
 ENV FIREBASE_PROJECT="pav2tty5lo7geycf"
-ENV FIREBASE_DEFAULT_DATABASE_URL="https://pav2tty5lo7geycf.firebaseio.com"
+ENV FIREBASE_DEFAULT_DATABASE_URL="https://pav2tty5lo7geycf-default-rtdb.firebaseio.com/"
 ENV FIREBASE_CONFIG='{"storageBucket":"pav2tty5lo7geycf.appspot.com","databaseURL":"https://pav2tty5lo7geycf-default-rtdb.firebaseio.com","projectId":"pav2tty5lo7geycf"}'
 
 EXPOSE $PORT 8080

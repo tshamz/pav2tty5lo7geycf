@@ -90,9 +90,17 @@ module.exports = async (data, res) => {
 
     await firebase.db.set('session', update);
 
+    if (res && res.sendStatus) {
+      res.json(update);
+    }
+
     return update;
   } catch (error) {
     log.debug('error', error);
+
+    if (res && res.sendStatus) {
+      res.sendStatus(503);
+    }
 
     if (error instanceof firebase.HttpsError) {
       raise(error);

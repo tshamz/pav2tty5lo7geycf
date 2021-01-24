@@ -1,5 +1,6 @@
-# FROM node:12.18.0
 FROM gcr.io/google-appengine/nodejs
+
+ENV GAE_SERVICE="status"
 
 RUN apt-get update && apt-get install unzip
 
@@ -19,14 +20,6 @@ COPY .build.zip .
 RUN unzip -o -qq .build.zip
 
 WORKDIR /srv/bundle
-
-RUN echo "$GAE_INSTANCE"
-RUN echo "$GAE_MEMORY_MB"
-RUN echo "$GAE_SERVICE"
-RUN echo "$GAE_VERSION"
-RUN echo "$GOOGLE_CLOUD_PROJECT"
-RUN echo "$NODE_ENV"
-RUN echo "$PORT"
 
 # check every 30s to ensure this service returns HTTP 200
 HEALTHCHECK --interval=30s CMD node healthcheck.js

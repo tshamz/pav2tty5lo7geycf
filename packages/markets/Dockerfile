@@ -1,9 +1,9 @@
-# FROM node:12.18.0
 FROM gcr.io/google-appengine/nodejs
+
+ENV GAE_SERVICE="markets"
 
 RUN apt-get update && apt-get install unzip
 
-ENV NODE_ENV=production
 ENV GOOGLE_APPLICATION_CREDENTIALS="/srv/bundle/credentials.firebase.json"
 
 ENV GCLOUD_PROJECT="pav2tty5lo7geycf"

@@ -9,6 +9,9 @@
   },
   "scripts": {
     "dev": "yarn g:dev",
+    "docker:build": "docker build -t pav2tty5lo7geycf/status .",
+    "docker:run": "docker run -dp 8080:8083 pav2tty5lo7geycf/status",
+    "test": "yarn build && yarn docker:build && yarn docker:run",
     "watch": "yarn nodemon $INIT_CWD --watch $INIT_CWD --watch ../../",
     "build": "yarn bundle -a .build.zip",
     "deploy": "yarn build && gcloud beta app deploy status.yaml --quiet --stop-previous-version && yarn postdeploy",

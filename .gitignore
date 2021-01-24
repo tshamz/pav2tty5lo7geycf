@@ -2,8 +2,8 @@
 
 # Build artifacts:
 dist
-*.build*
 node_modules
+*.build*
 *bundle*
 
 # Environment Variables
@@ -11,7 +11,7 @@ node_modules
 .runtimeconfig.json
 
 # Data
-.data/*
+*.data*
 
 # etc...
 .meta
