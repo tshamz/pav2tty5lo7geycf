@@ -122,7 +122,7 @@ const getContractsAndPricesUpdate = (markets, current) => {
               buyYes: contract.bestBuyYesCost,
               sellNo: contract.bestSellNoCost,
               sellYes: contract.bestSellYesCost,
-              lastTrade: contract.lastTradePrice,
+              // lastTrade: contract.lastTradePrice,
               market: market.id,
             },
           }),

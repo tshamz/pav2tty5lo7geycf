@@ -1,6 +1,7 @@
 const firebase = require('@services/firebase');
 
 const getUpdates = async (database) => {
+  console.log('database', database);
   const now = new Date();
   const then = now.setMonth(now.getMonth() - 1);
   const snapshot = await database.get();
