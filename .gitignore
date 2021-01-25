@@ -9,6 +9,7 @@ node_modules
 # Environment Variables
 .env*
 .runtimeconfig.json
+credentials.firebase.json
 
 # Data
 *.data*
