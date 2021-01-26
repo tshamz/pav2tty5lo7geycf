@@ -631,7 +631,7 @@ GAE_MEMORY_MB         # The amount of memory available to the application proces
 GAE_RUNTIME	          # The runtime specified in your app.yaml file.
 GAE_SERVICE	          # The service name specified in your app.yaml file. If no service name is specified, it is set to default.
 GAE_VERSION	          # The current version label of your service.
-GOOGLE_CLOUD_PROJEC   # The Cloud project ID associated with your application.
+GOOGLE_CLOUD_PROJECT  # The Cloud project ID associated with your application.
 NODE_ENV              # Set to production when your service is deployed.
 PORT                  # The port that receives HTTP requests.
 ```
