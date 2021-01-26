@@ -92,6 +92,7 @@ Make sure you have created a Google Cloud Platform project [here](https://consol
 ### `firebase-tools` + Yarn 2
 ```bash
 # Install firebase-tools globally (you'll need to build and link version that works with yarn 2)
+# see: https://github.com/firebase/firebase-tools/pull/2356#issuecomment-755245782
 $ git clone https://github.com/firebase/firebase-tools
 $ cd firebase-tools
 $ git checkout ss-fix-yarn-2
