@@ -299,7 +299,7 @@ There's a suite of firebase serverless functions that are used for performing di
 
 ##### `updatePriceHistory.js`
 - Tracks changes in `lastTrade` price of all contracts
-- Responds to writes to the [`prices/{contract_id}/lastTrade`](/blob/master/packages/functions/data/index.js#L56) property in the default database
+- Responds to writes to the [`prices/{contract_id}/lastTrade`](/packages/functions/data/index.js#L56) property in the default database
 - Updates the `{contract_id}/{timestamp}` property in the `price-history` database
 
 ##### `updatePriceInterval.js`
