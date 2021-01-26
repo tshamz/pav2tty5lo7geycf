@@ -30,11 +30,11 @@ module.exports = ({ data, target, type }) => {
       }
 
       if (type === 'marketOwnershipUpdate_data') {
-        firebase.firebase.call.updateMarketPosition(data);
+        firebase.call.updateMarketPosition(data);
       }
 
       if (type === 'contractOwnershipUpdate_data') {
-        firebase.firebase.call.updateContractPosition(data);
+        firebase.call.updateContractPosition(data);
       }
 
       if (type === 'notification_shares_traded') {
