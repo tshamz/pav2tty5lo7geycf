@@ -623,17 +623,17 @@ TOTAL_PRICE / PRICE_PER_SHARE = TOTAL_SHARES_TO_PURCHASE
 
 ### Env Vars
 ```
-GAE_APPLICATION	The ID of your App Engine application. This ID is prefixed with 'region code~' such as 'e~' for applications deployed in Europe.
-GAE_DEPLOYMENT_ID	The ID of the current deployment.
-GAE_ENV	The App Engine environment. Set to standard.
-GAE_INSTANCE	The ID of the instance on which your service is currently running.
-GAE_MEMORY_MB	The amount of memory available to the application process, in MB.
-GAE_RUNTIME	The runtime specified in your app.yaml file.
-GAE_SERVICE	The service name specified in your app.yaml file. If no service name is specified, it is set to default.
-GAE_VERSION	The current version label of your service.
-GOOGLE_CLOUD_PROJECT	The Cloud project ID associated with your application.
-NODE_ENV	Set to production when your service is deployed.
-PORT	The port that receives HTTP requests.
+GAE_APPLICATION       # The ID of your App Engine application. This ID is prefixed with 'region code~' such as 'e~' for applications deployed in Europe.
+GAE_DEPLOYMENT_ID     # The ID of the current deployment.
+GAE_ENV	              # The App Engine environment. Set to standard.
+GAE_INSTANCE          # The ID of the instance on which your service is currently running.
+GAE_MEMORY_MB         # The amount of memory available to the application process, in MB.
+GAE_RUNTIME	          # The runtime specified in your app.yaml file.
+GAE_SERVICE	          # The service name specified in your app.yaml file. If no service name is specified, it is set to default.
+GAE_VERSION	          # The current version label of your service.
+GOOGLE_CLOUD_PROJEC   # The Cloud project ID associated with your application.
+NODE_ENV              # Set to production when your service is deployed.
+PORT                  # The port that receives HTTP requests.
 ```
 
 ### NPM Packages
