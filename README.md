@@ -204,7 +204,7 @@ _**Note:** Some of the below links might be off by a few lines_
 
 #### 🌎 Browser
 
-##### `createSession.js`
+##### [`createSession.js`](/packages/functions/browser/createSession.js)
 - Uses [puppeteer](https://github.com/puppeteer/puppeteer) to login to the site and store the `localStorage` session data to the database
 - The session data can then be used to turn a future unauthenticated puppeteer instance into an authenticated one without the extra step of entering in credentials
 - This is important because without it, if you are using puppeteer to perform 100's of automated actions through out the day, it will also create 100's of new authenticated sessions which is likely to arouse suspicion
@@ -217,7 +217,8 @@ _**Note:** Some of the below links might be off by a few lines_
 - Headless automation is preferred over using the internal "private" api (`https://www.predictit.org/api`) because activity looks like it's coming from a real user, which can be further improved by using [puppeteer-extra](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra)
 
 #### 📊 Data
-##### `updateAccountFunds.js`
+
+##### [`updateAccountFunds.js`](/packages/functions/data/updateAccountFunds.js)
 - Updates user's Predictit account fund [data](/packages/functions/data/updateAccountFunds.js#L5-L11):
   - available cash
   - amount invested
@@ -225,7 +226,7 @@ _**Note:** Some of the below links might be off by a few lines_
 - Data is under the [`funds`](/packages/functions/data/updateAccountFunds.js#L13) node inside the default database
 - Triggered by [`accountfunds_data`](/packages/notifications/onMessage.js#L23) message sent from Predictit on `notifications` server
 
-##### `updateContractPosition.js`
+##### [`updateContractPosition.js`](/packages/functions/data/updateContractPosition.js)
 - ⚠️ **`WORK IN PROGRESS`**
 - Updates all active contract position [data](/packages/functions/data/updateContractPosition.js#L13-L22):
   - market id
@@ -237,7 +238,7 @@ _**Note:** Some of the below links might be off by a few lines_
 - Data is under the [`contractPositions`](/packages/functions/data/updateContractPosition.js#L24) node in the default database
 - Triggered by [`contractOwnershipUpdate_data`](/packages/notifications/onMessage.js#L36) message sent from Predictit on `notifications` server
 
-##### `updateContractPrice.js`
+##### [`updateContractPrice.js`](/packages/functions/data/updateContractPrice.js)
 - Updates realtime contract price [data](/packages/functions/data/updateContractPrice.js#L6-L10)
 - Data is under the [`prices/{contract_id}/lastTrade`](/packages/functions/data/updateContractPrice.js#L5) property in the default database
 - Triggered by [`contractStats`](/packages/markets/onMessage.js#L19) message sent from Predictit on `markets` server
@@ -246,14 +247,14 @@ _**Note:** Some of the below links might be off by a few lines_
   - [`updatePriceInterval.js`](/packages/functions/data/updatePriceInterval.js) and `price-interval` database
   - [`updatePriceOHLC.js`](/packages/functions/data/updatePriceOHLC.js) and `price-ohcl` database
 
-##### `updateMarket.js`
+##### [`updateMarket.js`](/packages/functions/data/updateMarket.js)
 - Updates realtime information about [markets](/packages/functions/data/updateMarket.js#L6-L11):
   - market active
   - total trade volume
 - Data is under the [`markets/{market_id}` nodes](/packages/functions/data/updateMarket.js#L5) in the default database
 - Triggered by [`marketStats`](/packages/markets/onMessage.js#L15) message sent from Predictit on `markets` server
 
-##### `updateMarketPosition.js`
+##### [`updateMarketPosition.js`](/packages/functions/data/updateMarketPosition.js)
 - ⚠️ **`WORK IN PROGRESS`**
 - Updates meta information about all active contract positions in a particular market
   - total investment
@@ -261,7 +262,7 @@ _**Note:** Some of the below links might be off by a few lines_
 - Data is under the `marketPositions` node in the default database
 - Triggered by `marketOwnershipUpdate_data` message sent from Predictit on `notifications` server
 
-##### `updateMarkets.js`
+##### [`updateMarkets.js`](/packages/functions/data/updateMarkets.js)
 - Updates [market](/packages/functions/data/updateMarkets.js#L67) and [contract](/packages/functions/data/updateMarkets.js#L101) metadata, as well as additional [price](/packages/functions/data/updateMarkets.js#L115) data
   - Market data updated under the `markets/{market_id}` node:
     - id
@@ -292,38 +293,38 @@ _**Note:** Some of the below links might be off by a few lines_
   - Only metadata and non-critical price data is collected from this API
   - Data is only fetched [once every 60 seconds](/packages/functions/data/index.js#L42)
 
-##### `updateOpenOrders.js`
+##### [`updateOpenOrders.js`](/packages/functions/data/updateOpenOrders.js)
 - ⚠️ **`WORK IN PROGRESS`**
 - Updates orders that have not been completely fulfilled yet
 - Data is under the `openOrders` node in the default database
 - Triggered by `tradeConfirmed_data` and `notification_shares_traded` messages sent from Predictit on `notifications` server
 
-##### `updateOrderBook.js`
+##### [`updateOrderBook.js`](/packages/functions/data/updateOrderBook.js)
 - ⚠️ **`WORK IN PROGRESS`**
 - Updates the order book for all contracts
 - Data is under the `orderBooks` node in the default database
 - Data is provided by the unofficial Predicitit orderBook api (`https://predictit-f497e.firebaseio.com/contractOrderBook.json`)
 - url is unauthenticated
 
-##### `updatePriceHistory.js`
+##### [`updatePriceHistory.js`](/packages/functions/data/updatePriceHistory.js)
 - ⚠️ sorta...**`WORK IN PROGRESS`**
 - Tracks changes in `lastTrade` price of all contracts
 - Responds to [writes](/packages/functions/data/index.js#L57) to the [`prices/{contract_id}/lastTrade`](/packages/functions/data/index.js#L56) property in the default database
 - Updates the [`{contract_id}/{timestamp}`](/packages/functions/data/updatePriceHistory.js#L13) property in the [`price-history`](/packages/functions/data/updatePriceHistory.js#L15) database
 
-##### `updatePriceInterval.js`
+##### [`updatePriceInterval.js`](/packages/functions/data/updatePriceInterval.js)
 - ⚠️ sorta...**`WORK IN PROGRESS`**
 - Tracks `lastTrade` price of all contracts at a consistent interval [(currently every 10 minutes)](/packages/functions/data/index.js#L61)
 - Uses data from `prices/{contract_id}/lastTrade` property in the default database
 - Updates the `{contract_id}/{timestamp}` property in the `price-interval` database
 
-##### `updatePriceOHLC.js`
+##### [`updatePriceOHLC.js`](/packages/functions/data/updatePriceOHLC.js)
 - ⚠️ sorta...**`WORK IN PROGRESS`**
 - Tracks "open", high, low, and "close" prices of all contracts at a consistent interval [(currently every 1 hour)](/packages/functions/data/index.js#L66)
 - Uses `lastTrade` and `open` property data from `prices/{contract_id}` nodes in the default database
 - Updates the `{contract_id}/{timestamp}` node in the `price-ohlc` database
 
-##### `updateTradeHistory.js`  
+##### [`updateTradeHistory.js`  ](/packages/functions/data/updateTradeHistory.js)
 - Keeps a list of all trade data:
   - market id
   - contract id
@@ -338,17 +339,18 @@ _**Note:** Some of the below links might be off by a few lines_
 - Triggered by `tradeConfirmed_data` message sent from Predictit on `notifications` server  
 
 #### 💾 DB
-##### `addCreatedAt.js`
+
+##### [`addCreatedAt.js`](/packages/functions/db/addCreatedAt.js)
 - When a new contract or market is added under the [`contracts`](/packages/functions/db/index.js#L19) or [`markets`](/packages/functions/db/index.js#L14) node in the default database, this function adds a meta `_createdAt` property to the new node
 
-##### `cleanupDatabase.js`
+##### [`cleanupDatabase.js`](/packages/functions/db/cleanupDatabase.js)
 - Utility function that is triggered [manually](/packages/functions/db/index.js#L25) clean up databases
 
-##### `deleteClosedMarkets.js`
+##### [`deleteClosedMarkets.js`](/packages/functions/db/deleteClosedMarkets.js)
 - [Scheduled](/packages/functions/db/index.js#L29) function that is used to remove market, contract, price, and orderBook nodes from the database when a contract is removed from Predictit
 - Helps prevent database from becoming large and increasing firebase costs
 
-##### `deleteStalePriceData.js`
+##### [`deleteStalePriceData.js`](/packages/functions/db/deleteStatePriceData.js)
 - ⚠️ **`WORK IN PROGRESS`**
 - [Scheduled](/packages/functions/db/index.js#L34) function that is used to remove price data that is out of date
 - Helps prevent database from becoming large and increasing firebase costs
