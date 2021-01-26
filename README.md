@@ -183,25 +183,33 @@ There are two express servers that each open up a single websocket connection wi
 * The notifications connection is authenticated (messages are specific to authenticated user)
 
 ### Firebase Functions
-There's a suite of firebase serverless functions that are used for performing different actions throughout the app. These actions can be triggered by changes to the database, on a schedule, explicitly called from somewhere within the app, or manually through an http request. As of right now actions are grouped by: alerts, browser, data, db and stats.
+There's a suite of firebase serverless functions that are used for performing different actions throughout the app. These actions can be triggered by changes to the database, on a schedule, explicitly called from somewhere within the app, or manually through an http request. As of right now actions are grouped by: **alerts**, **browser**, **data**, and **db**.
+
+_**Note:** Some of the below links might be off by a few lines_
 
 #### 🚨 Alerts
-##### `contractsUpdated.js`
+
+##### [`contractsUpdated.js`](/packages/functions/alerts/contractsUpdated.js)
 - Sends an sms when a contract is added to a market
+- Triggered by [update](/packages/functions/alerts/index.js#L10) to [`markets/{market}/contracts` node](/packages/functions/alerts/index.js#L9)
 
-##### `marketAdded.js`
+##### [`marketAdded.js`](/packages/functions/alerts/marketAdded.js)
 - Sends an sms when new market is created
+- Triggered when [`markets/{market}` node](/packages/functions/alerts/index.js#L14) is [created](/packages/functions/alerts/index.js#L15)
 
-##### `marketClosing.js`
+##### [`marketClosing.js`](/packages/functions/alerts/marketClosing.js)
 - Sends an sms when a market is closing in the next 24 hours
+- Triggered when [`markets/{market}/daysLeft` property](/packages/functions/alerts/index.js#L14) is [updated](/packages/functions/alerts/index.js#L20)
+
 
 #### 🌎 Browser
+
 ##### `createSession.js`
 - Uses [puppeteer](https://github.com/puppeteer/puppeteer) to login to the site and store the `localStorage` session data to the database
 - The session data can then be used to turn a future unauthenticated puppeteer instance into an authenticated one without the extra step of entering in credentials
 - This is important because without it, if you are using puppeteer to perform 100's of automated actions through out the day, it will also create 100's of new authenticated sessions which is likely to arouse suspicion
 - The session data includes the current websocket url used to connect to the Predictit market/contract websocket used mentioned above
-- This function is scheduled to run automatically once a day in order to keep session data fresh.
+- This function is [scheduled](/packages/functions/browser/index.js#L18) to run automatically once a day in order to keep session data fresh or run [on call](/packages/functions/browser/index.js#L13) when needed
     
 **Notes**
 - This technology can be used to automate buying and selling, which is a key part of how this whole system makes money
@@ -210,40 +218,40 @@ There's a suite of firebase serverless functions that are used for performing di
 
 #### 📊 Data
 ##### `updateAccountFunds.js`
-- Updates user's Predictit account fund data:
+- Updates user's Predictit account fund [data](/packages/functions/data/updateAccountFunds.js#L5-L11):
   - available cash
   - amount invested
   - profitable predictions
-- Data is under the `funds` node inside the default database
-- Triggered by `accountfunds_data` message sent from Predictit on `notifications` server
+- Data is under the [`funds`](/packages/functions/data/updateAccountFunds.js#L13) node inside the default database
+- Triggered by [`accountfunds_data`](/packages/notifications/onMessage.js#L23) message sent from Predictit on `notifications` server
 
 ##### `updateContractPosition.js`
 - ⚠️ **`WORK IN PROGRESS`**
-- Updates all active contract position data:
+- Updates all active contract position [data](/packages/functions/data/updateContractPosition.js#L13-L22):
   - market id
   - prediction (yes/no)
   - quantity
   - open buy orders
   - open sell orders
   - average price of owned shares
-- Data is under the `contractPositions` node in the default database
-- Triggered by `contractOwnershipUpdate_data` message sent from Predictit on `notifications` server
+- Data is under the [`contractPositions`](/packages/functions/data/updateContractPosition.js#L24) node in the default database
+- Triggered by [`contractOwnershipUpdate_data`](/packages/notifications/onMessage.js#L36) message sent from Predictit on `notifications` server
 
 ##### `updateContractPrice.js`
-- Updates realtime contract price data
-- Data is under the `prices/{contract_id}/lastTrade` property in the default database
-- Triggered by `contractStats` message sent from Predictit on `markets` server
+- Updates realtime contract price [data](/packages/functions/data/updateContractPrice.js#L6-L10)
+- Data is under the [`prices/{contract_id}/lastTrade`](/packages/functions/data/updateContractPrice.js#L5) property in the default database
+- Triggered by [`contractStats`](/packages/markets/onMessage.js#L19) message sent from Predictit on `markets` server
 - The data under the `prices` node is important because a number of other functions and databases depend on it:
-  - `updatePriceHistory.js` and `price-history` database
-  - `updatePriceInterval.js` and `price-interval` database
-  - `updatePriceOHLC.js` and `price-ohcl` database
+  - [`updatePriceHistory.js`](/packages/functions/data/updatePriceHistory.js) and `price-history` database
+  - [`updatePriceInterval.js`](/packages/functions/data/updatePriceInterval.js) and `price-interval` database
+  - [`updatePriceOHLC.js`](/packages/functions/data/updatePriceOHLC.js) and `price-ohcl` database
 
 ##### `updateMarket.js`
-- Updates realtime information about markets:
+- Updates realtime information about [markets](/packages/functions/data/updateMarket.js#L6-L11):
   - market active
   - total trade volume
-- Data is under the `markets/{market_id}` nodes in the default database
-- Triggered by `marketStats` message sent from Predictit on `markets` server
+- Data is under the [`markets/{market_id}` nodes](/packages/functions/data/updateMarket.js#L5) in the default database
+- Triggered by [`marketStats`](/packages/markets/onMessage.js#L15) message sent from Predictit on `markets` server
 
 ##### `updateMarketPosition.js`
 - ⚠️ **`WORK IN PROGRESS`**
@@ -254,7 +262,7 @@ There's a suite of firebase serverless functions that are used for performing di
 - Triggered by `marketOwnershipUpdate_data` message sent from Predictit on `notifications` server
 
 ##### `updateMarkets.js`
-- Updates market and contract metadata, as well as additional price data
+- Updates [market](/packages/functions/data/updateMarkets.js#L67) and [contract](/packages/functions/data/updateMarkets.js#L101) metadata, as well as additional [price](/packages/functions/data/updateMarkets.js#L115) data
   - Market data updated under the `markets/{market_id}` node:
     - id
     - url
@@ -282,7 +290,7 @@ There's a suite of firebase serverless functions that are used for performing di
     - market
 - Data is provided by the official Predictit public api, which is only updated once every 60 seconds and therefore is considered stale
   - Only metadata and non-critical price data is collected from this API
-  - Data is only fetched once every 60 seconds
+  - Data is only fetched [once every 60 seconds](/packages/functions/data/index.js#L42)
 
 ##### `updateOpenOrders.js`
 - ⚠️ **`WORK IN PROGRESS`**
@@ -298,17 +306,20 @@ There's a suite of firebase serverless functions that are used for performing di
 - url is unauthenticated
 
 ##### `updatePriceHistory.js`
+- ⚠️ sorta...**`WORK IN PROGRESS`**
 - Tracks changes in `lastTrade` price of all contracts
-- Responds to writes to the [`prices/{contract_id}/lastTrade`](/packages/functions/data/index.js#L56) property in the default database
-- Updates the `{contract_id}/{timestamp}` property in the `price-history` database
+- Responds to [writes](/packages/functions/data/index.js#L57) to the [`prices/{contract_id}/lastTrade`](/packages/functions/data/index.js#L56) property in the default database
+- Updates the [`{contract_id}/{timestamp}`](/packages/functions/data/updatePriceHistory.js#L13) property in the [`price-history`](/packages/functions/data/updatePriceHistory.js#L15) database
 
 ##### `updatePriceInterval.js`
-- Tracks `lastTrade` price of all contracts at a consistent interval (currently every 10 minutes)
+- ⚠️ sorta...**`WORK IN PROGRESS`**
+- Tracks `lastTrade` price of all contracts at a consistent interval [(currently every 10 minutes)](/packages/functions/data/index.js#L61)
 - Uses data from `prices/{contract_id}/lastTrade` property in the default database
 - Updates the `{contract_id}/{timestamp}` property in the `price-interval` database
 
 ##### `updatePriceOHLC.js`
-- Tracks "open", high, low, and "close" prices of all contracts at a consistent interval (currently every 1 hour)
+- ⚠️ sorta...**`WORK IN PROGRESS`**
+- Tracks "open", high, low, and "close" prices of all contracts at a consistent interval [(currently every 1 hour)](/packages/functions/data/index.js#L66)
 - Uses `lastTrade` and `open` property data from `prices/{contract_id}` nodes in the default database
 - Updates the `{contract_id}/{timestamp}` node in the `price-ohlc` database
 
@@ -328,18 +339,18 @@ There's a suite of firebase serverless functions that are used for performing di
 
 #### 💾 DB
 ##### `addCreatedAt.js`
-- When a new contract or market is added under the `contracts` or `markets` node in the default database, this function adds a meta `_createdAt` property to the new node
+- When a new contract or market is added under the [`contracts`](/packages/functions/db/index.js#L19) or [`markets`](/packages/functions/db/index.js#L14) node in the default database, this function adds a meta `_createdAt` property to the new node
 
 ##### `cleanupDatabase.js`
-- Utility function that is triggered manually clean up databases
+- Utility function that is triggered [manually](/packages/functions/db/index.js#L25) clean up databases
 
 ##### `deleteClosedMarkets.js`
-- Scheduled function that is used to remove market, contract, price, and orderBook nodes from the database when a contract is removed from Predictit
+- [Scheduled](/packages/functions/db/index.js#L29) function that is used to remove market, contract, price, and orderBook nodes from the database when a contract is removed from Predictit
 - Helps prevent database from becoming large and increasing firebase costs
 
 ##### `deleteStalePriceData.js`
 - ⚠️ **`WORK IN PROGRESS`**
-- Scheduled function that is used to remove price data that is out of date
+- [Scheduled](/packages/functions/db/index.js#L34) function that is used to remove price data that is out of date
 - Helps prevent database from becoming large and increasing firebase costs
 
 
