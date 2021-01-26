@@ -11,6 +11,7 @@ module.exports = ({ data, target, type }) => {
   messages.forEach(async (rawData) => {
     try {
       const [type, data] = rawData.A;
+      console.log(type, data);
 
       if (type === 'market_status') {
         // firebase.call.???(data);
@@ -30,11 +31,11 @@ module.exports = ({ data, target, type }) => {
       }
 
       if (type === 'marketOwnershipUpdate_data') {
-        firebase.call.updateMarketPosition(data);
+        // firebase.call.updateMarketPosition(data);
       }
 
       if (type === 'contractOwnershipUpdate_data') {
-        firebase.call.updateContractPosition(data);
+        // firebase.call.updateContractPosition(data);
       }
 
       if (type === 'notification_shares_traded') {
