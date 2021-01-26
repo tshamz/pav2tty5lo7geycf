@@ -23,39 +23,59 @@ The main purpose for this "app" has been to gain a competitive advantage over ot
   
   1. [Getting Started](#getting-started)
       - [Requirements](#requirements)
-      - [Installation](#installation)
+      - [Google Cloud Platform Project](#google-cloud-platform-project)
+      - [`firebase-tools` + Yarn 2](#firebase-tools-+-yarn-2)
+      - [Project Installation](#project-installation)
       - [Environment Variables](#environment-variables)
       - [Usage](#usage)
   1. [Application Structure](#application-structure)
       - [Express Servers](#express-servers)
       - [Firebase Functions](#firebase-functions)
         - [Alerts](#alerts)
-          - [`contractsUpdated.js`](#contractsUpdated.js)
-          - [`marketAdded.js`](#marketAdded.js)
-          - [`marketClosing.js`](#marketClosing.js)
+          - [`contractsUpdated.js`](#contractsUpdatedjs)
+          - [`marketAdded.js`](#marketAddedjs)
+          - [`marketClosing.js`](#marketClosingjs)
         - [Browser](#browser)
-          - [`createSession.js`](#createSession.js)
+          - [`createSession.js`](#createSessionjs)
         - [Data](#data)
-          - [`updateAccountFunds.js`](#updateAccountFunds.js)
-          - [`updateContractPosition.js`](updateContractPosition.js) **[WIP]** 
-          - [`updateContractPrice.js`](#updateContractPrice.js)
-          - [`updateMarket.js`](#updateMarket.js)
-          - [`updateMarketPosition.js`](updateMarketPosition.js) **[WIP]** 
-          - [`updateMarkets.js`](#updateMarkets.js)
-          - [`updateOpenOrders.js`](updateOpenOrders.js) **[WIP]** 
-          - [`updateOrderBook.js`](updateOrderBook.js) **[WIP]** 
-          - [`updatePriceHistory.js`](#updatePriceHistory.js)
-          - [`updatePriceInterval.js`](#updatePriceInterval.js)
-          - [`updatePriceOHLC.js`](#updatePriceOHLC.js)
-          - [`updateTradeHistory.js`  ](updateTradeHistory.js)
+          - [`updateAccountFunds.js`](#updateAccountFundsjs)
+          - [`updateContractPosition.js`](updateContractPositionjs) **[WIP]**
+          - [`updateContractPrice.js`](#updateContractPricejs)
+          - [`updateMarket.js`](#updateMarketjs)
+          - [`updateMarketPosition.js`](updateMarketPositionjs) **[WIP]**
+          - [`updateMarkets.js`](#updateMarketsjs)
+          - [`updateOpenOrders.js`](updateOpenOrdersjs) **[WIP]**
+          - [`updateOrderBook.js`](updateOrderBookjs) **[WIP]**
+          - [`updatePriceHistory.js`](#updatePriceHistoryjs)
+          - [`updatePriceInterval.js`](#updatePriceIntervaljs)
+          - [`updatePriceOHLC.js`](#updatePriceOHLCjs)
+          - [`updateTradeHistory.js`  ](updateTradeHistoryjs)
         - [DB](#db)
-          - [`addCreatedAt.js`](#addCreatedAt.js)
-          - [`cleanupDatabase.js`](#cleanupDatabase.js)
-          - [`deleteClosedMarkets.js`](#deleteClosedMarkets.js)
-          - [`deleteStalePriceData.js` ](deleteStalePriceData.js) **[WIP]** 
+          - [`addCreatedAt.js`](#addCreatedAtjs)
+          - [`cleanupDatabase.js`](#cleanupDatabasejs)
+          - [`deleteClosedMarkets.js`](#deleteClosedMarketsjs)
+          - [`deleteStalePriceData.js` ](deleteStalePriceDatajs) **[WIP]**
   1. [Database Structure](#database-structure)
-  1. [Misc Notes](#misc-notes)
-  
+  1. [Misc. Notes](#misc-notes)
+      - [Strategy](#strategy)
+      - [Questions](#questions)
+      - [Indicators](#indicators)
+      - [Quotes](#quotes)
+      - [WS](#ws)
+      - [Puppeteer](#puppeteer)
+      - [Trades](#trades)
+      - [Notifications](#notifications)
+      - [Utils](#utils)
+      - [Other](#other)
+      - [API](#api)
+        - [predictit.org](#predictit.org)
+      - [Formulas](#formulas)
+        - [Number Of Shares To Buy](#number-of-shares-to-buy)
+        - [Profit Or Loss On Sale](#profit-or-loss-on-sale)
+        - [Empty Database](#empty-database)
+      - [Env Vars](#env-vars)
+      - [NPM Packages](#npm-packages)
+      - [Github Repositories](#github-repositories)
   
   </p>
 </details>
@@ -63,10 +83,24 @@ The main purpose for this "app" has been to gain a competitive advantage over ot
 ## Getting Started
 
 ### Requirements
-- node >= `12.18.0`
-- yarn = `2.4.0`
+- node: `12.18.0`
+- yarn: `2.4.0`
 
-### Installation
+### Google Cloud Platform Project
+Make sure you have created a Google Cloud Platform project [here](https://console.cloud.google.com) and have installed the gcloud sdk [here](https://cloud.google.com/sdk/docs/install).
+
+### `firebase-tools` + Yarn 2
+```bash
+# Install firebase-tools globally (you'll need to build and link version that works with yarn 2)
+$ git clone https://github.com/firebase/firebase-tools
+$ cd firebase-tools
+$ git checkout ss-fix-yarn-2
+$ npm install
+$ npm run build
+$ npm link
+```
+
+### Project Installation
 ```bash
 # Clone this repository
 $ git clone https://github.com/tshamz/pav2tty5lo7geycf
@@ -82,18 +116,18 @@ $ touch .env
 ```
 
 Sample env file:
-```
+```env
 # filenames
 DEPLOY_SCRIPT="deploy.sh"
 BUILD_ARCHIVE=".build.zip"
 
 # paths
-PROJECT_ROOT="<path_to_project_root>"
-FUNCTIONS_ROOT="<path_to_functions_root>"
-MARKETS_ROOT="<path_to_markets_root>"
-NOTIFICATIONS_ROOT="<path_to_notifications_root>"
-SERVICES_ROOT="<path_to_services_root>"
-STATUS_ROOT="<path_to_status_root>"
+PROJECT_ROOT="<absolute_path_to_project_root>"
+FUNCTIONS_ROOT="<absolute_path_to_functions_root>"
+MARKETS_ROOT="<absolute_path_to_markets_root>"
+NOTIFICATIONS_ROOT="<absolute_path_to_notifications_root>"
+SERVICES_ROOT="<absolute_path_to_services_root>"
+STATUS_ROOT="<absolute_path_to_status_root>"
 
 # ports
 MAIN_PORT="8080"
@@ -103,12 +137,14 @@ STATUS_HOST_PORT="8083"
 
 # google
 GCLOUD_PROJECT="<gcloud_project_id>"
-GOOGLE_APPLICATION_CREDENTIALS="<path_to_application_default_credentials>"
+GOOGLE_APPLICATION_CREDENTIALS="<path_to_application_default_credentials>" # [1]
 
 # firebase
-FIREBASE_PROJECT="<gcloud_project_id>"  # same as GCLOUD_PROJECT
+FIREBASE_PROJECT="<gcloud_project_id>"  # [2]
 FIREBASE_DEFAULT_DATABASE_URL="<url_of_firebase_project_default_database>"
-FIREBASE_CONFIG='{"storageBucket":"<firebase_project_id>.appspot.com","databaseURL":"<url_of_firebase_project_default_database>","projectId":"<firebase_project_id>"}'
+
+# [1] should be in root of project
+# [2] same as GCLOUD_PROJECT
 ```
 
 ### Usage
@@ -119,7 +155,7 @@ $ yarn dev:<server_name>
 # e.g.
 $ yarn dev:notifications
 
-# see root package.json for more details
+# see scripts in root package.json for more details
 ```
 
 ## Application Structure
@@ -129,6 +165,7 @@ $ yarn dev:notifications
 There are two express servers that each open up a single websocket connection with Predictit, one for realtime market/contract updates (`markets/`), one for for platform notifications (`notifications/`). Both take care of opening up their connection with Predictit, reconnecting if the their link gets severed, and handling the receipt of messages pushed from Predictit. After parsing out the data from the received message, it's then sent to a firebase function for storage in our own realtime database. The servers are deployed as services to their own containers on Google App Engine.
 
 **Notes:**
+* The `status` is there as the default Google App Engine service; it doesn't do anything noteworthy
 * The market/contract messages are sent from Predictit when:
   - Market volume changes
   - Contract price changes
@@ -180,7 +217,8 @@ There's a suite of firebase serverless functions that are used for performing di
 - Data is under the `funds` node inside the default database
 - Triggered by `accountfunds_data` message sent from Predictit on `notifications` server
 
-##### `updateContractPosition.js` **[WIP]**
+##### `updateContractPosition.js`
+- ⚠️ **`WORK IN PROGRESS`**
 - Updates all active contract position data:
   - market id
   - prediction (yes/no)
@@ -207,7 +245,8 @@ There's a suite of firebase serverless functions that are used for performing di
 - Data is under the `markets/{market_id}` nodes in the default database
 - Triggered by `marketStats` message sent from Predictit on `markets` server
 
-##### `updateMarketPosition.js`  **[WIP]**
+##### `updateMarketPosition.js`
+- ⚠️ **`WORK IN PROGRESS`**
 - Updates meta information about all active contract positions in a particular market
   - total investment
   - max payout
@@ -245,12 +284,14 @@ There's a suite of firebase serverless functions that are used for performing di
   - Only metadata and non-critical price data is collected from this API
   - Data is only fetched once every 60 seconds
 
-##### `updateOpenOrders.js` **[WIP]**
+##### `updateOpenOrders.js`
+- ⚠️ **`WORK IN PROGRESS`**
 - Updates orders that have not been completely fulfilled yet
 - Data is under the `openOrders` node in the default database
 - Triggered by `tradeConfirmed_data` and `notification_shares_traded` messages sent from Predictit on `notifications` server
 
-##### `updateOrderBook.js` **[WIP]**
+##### `updateOrderBook.js`
+- ⚠️ **`WORK IN PROGRESS`**
 - Updates the order book for all contracts
 - Data is under the `orderBooks` node in the default database
 - Data is provided by the unofficial Predicitit orderBook api (`https://predictit-f497e.firebaseio.com/contractOrderBook.json`)
@@ -258,7 +299,7 @@ There's a suite of firebase serverless functions that are used for performing di
 
 ##### `updatePriceHistory.js`
 - Tracks changes in `lastTrade` price of all contracts
-- Responds to writes to the `prices/{contract_id}/lastTrade` property in the default database
+- Responds to writes to the [`prices/{contract_id}/lastTrade`](/blob/master/packages/functions/data/index.js#L56) property in the default database
 - Updates the `{contract_id}/{timestamp}` property in the `price-history` database
 
 ##### `updatePriceInterval.js`
@@ -296,12 +337,10 @@ There's a suite of firebase serverless functions that are used for performing di
 - Scheduled function that is used to remove market, contract, price, and orderBook nodes from the database when a contract is removed from Predictit
 - Helps prevent database from becoming large and increasing firebase costs
 
-##### `deleteStalePriceData.js`  **[WIP]**
+##### `deleteStalePriceData.js`
+- ⚠️ **`WORK IN PROGRESS`**
 - Scheduled function that is used to remove price data that is out of date
 - Helps prevent database from becoming large and increasing firebase costs
-
-**Notes:**
-* Hosted on Firebase
 
 
 ## Databases Structure
@@ -405,8 +444,9 @@ There's a suite of firebase serverless functions that are used for performing di
     - `riskChange`
     - `tradeType`
 
-## Misc Notes
+## Misc. Notes
 
+### Strategy
 For markets that are building towards a single event (e.g. an election w/ some uncertainty on a single date)
   - don't invest before and hold throughout the event
   - research and pick a position before
@@ -443,7 +483,7 @@ For markets that are building towards a single event (e.g. an election w/ some u
 - stochastics indicators
 - adx
 
-#### Quotes
+### Quotes
 > "For something like that, if you had 10k shares of a bracket at say 6c, you could sell 5k at 9c and effectively bring the cost of the remaining down to 3c (+ the 10% profit fee for the other half). Even better is to sell enough to free roll the rest. Have $100 that turns into $300? Sell half and secure profit no matter the outcome. Having your cake and potentially eating it too."
 
 > "Your Risk in any contract is the sum of your profits and losses, across all contracts, should that contract resolve to 'Yes'. To work out this sum, add the 'If Yes' figure for the contract to the 'If No' figures for all other contracts."
@@ -454,7 +494,7 @@ For markets that are building towards a single event (e.g. an election w/ some u
 
 > "Share Value corresponds to the face value of your position in each contract (shares multiplied by average purchase price). This value cannot exceed $850."
 
-### ✅ WS
+### WS
 
 - on disconnect
   - ✅ wait
@@ -556,7 +596,7 @@ data {
 TOTAL_PRICE / PRICE_PER_SHARE = TOTAL_SHARES_TO_PURCHASE
 ```
 
-#### Profit/Loss On Sale
+#### Profit Or Loss On Sale
 
 ```
 ((850 / BUY) * SELL) - 850

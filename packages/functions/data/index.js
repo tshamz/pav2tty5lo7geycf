@@ -2,12 +2,12 @@ const firebase = require('@services/firebase');
 
 const updateMarket = require('./updateMarket');
 const updateMarkets = require('./updateMarkets');
-const updateMarketPosition = require('./updateMarketPosition');
-const updateOrderBook = require('./updateOrderBook');
+// const updateMarketPosition = require('./updateMarketPosition');
+// const updateOrderBook = require('./updateOrderBook');
 const updateAccountFunds = require('./updateAccountFunds');
 const updateTradeHistory = require('./updateTradeHistory');
-const updateOpenOrders = require('./updateOpenOrders');
-const updateContractPosition = require('./updateContractPosition');
+// const updateOpenOrders = require('./updateOpenOrders');
+// const updateContractPosition = require('./updateContractPosition');
 const updateContractPrice = require('./updateContractPrice');
 const updatePriceHistory = require('./updatePriceHistory');
 const updatePriceOHLC = require('./updatePriceOHLC');
