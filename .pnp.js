@@ -65,10 +65,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       {
         "name": "notifications",
         "reference": "workspace:packages/notifications"
-      },
-      {
-        "name": "status",
-        "reference": "workspace:packages/status"
       }
     ],
     "enableTopLevelFallback": true,
@@ -85,8 +81,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["functions", ["workspace:packages/functions"]],
       ["markets", ["workspace:packages/markets"]],
       ["notifications", ["workspace:packages/notifications"]],
-      ["pav2tty5lo7geycf", ["workspace:."]],
-      ["status", ["workspace:packages/status"]]
+      ["pav2tty5lo7geycf", ["workspace:."]]
     ],
     "fallbackPool": [
       [
@@ -2948,10 +2943,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       [
         "static-extend",
         "npm:0.1.2"
-      ],
-      [
-        "status",
-        "workspace:packages/status"
       ],
       [
         "statuses",
@@ -13425,20 +13416,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["object-copy", "npm:0.1.0"]
           ],
           "linkType": "HARD",
-        }]
-      ]],
-      ["status", [
-        ["workspace:packages/status", {
-          "packageLocation": "./packages/status/",
-          "packageDependencies": [
-            ["status", "workspace:packages/status"],
-            ["@services/debug", "workspace:packages/@services/debug"],
-            ["@services/env", "workspace:packages/@services/env"],
-            ["@services/express", "workspace:packages/@services/express"],
-            ["@services/logger", "workspace:packages/@services/logger"],
-            ["nodemon", "npm:2.0.7"]
-          ],
-          "linkType": "SOFT",
         }]
       ]],
       ["statuses", [

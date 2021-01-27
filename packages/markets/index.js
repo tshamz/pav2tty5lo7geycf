@@ -46,6 +46,11 @@ app.get('/health', (req, res) => {
   res.sendStatus(websocket.isOpen(connection) ? 200 : 503);
 });
 
+app.get('/_ah/warmup', (req, res) => {
+  websocket.open(connection);
+  res.sendStatus(200);
+});
+
 app.get('/status', (req, res) => {
   const isOpen = websocket.isOpen(connection);
 

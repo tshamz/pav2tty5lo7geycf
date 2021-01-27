@@ -1,0 +1,12 @@
+runtime: nodejs12
+service: notifications
+automatic_scaling:
+  max_instances: 1
+  min_instances: 1
+inbound_services:
+  - warmup
+env_variables:
+  GCLOUD_PROJECT: 'pav2tty5lo7geycf'
+  FIREBASE_PROJECT: 'pav2tty5lo7geycf'
+  FIREBASE_DEFAULT_DATABASE_URL: 'https://pav2tty5lo7geycf-default-rtdb.firebaseio.com/'
+  FIREBASE_CONFIG: '{"storageBucket":"pav2tty5lo7geycf.appspot.com","databaseURL":"https://pav2tty5lo7geycf-default-rtdb.firebaseio.com","projectId":"pav2tty5lo7geycf"}'

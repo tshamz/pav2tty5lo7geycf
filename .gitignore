@@ -5,6 +5,7 @@ dist
 node_modules
 *.build*
 *bundle*
+.deploy*
 
 # Environment Variables
 .env*
@@ -29,3 +30,4 @@ credentials.firebase.json
 
 
 packages/functions/.data/
+.trash

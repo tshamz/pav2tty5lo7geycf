@@ -9,15 +9,10 @@
   },
   "scripts": {
     "dev": "yarn g:dev",
-    "docker:build": "docker build -t pav2tty5lo7geycf/markets .",
-    "docker:run": "docker run -dp 8080:8081 pav2tty5lo7geycf/markets",
-    "test": "yarn build && yarn docker:build && yarn docker:run && yarn posttest",
-    "posttest": "rm -rf .build.zip",
     "watch": "yarn nodemon $INIT_CWD --watch $INIT_CWD --watch ../../",
     "build": "yarn bundle -a .build.zip",
-    "deploy": "yarn build && gcloud beta app deploy markets.yaml --quiet --stop-previous-version && yarn postdeploy",
-    "postdeploy": "rm -rf .build.zip",
-    "start": "yarn node bundle/entrypoint.js"
+    "deploy": "yarn bundle -a .build.zip && ../../deploy.sh markets",
+    "start": "node ."
   },
   "dependencies": {
     "@services/debug": "workspace:packages/@services/debug",

@@ -8046,18 +8046,6 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"status@workspace:packages/status":
-  version: 0.0.0-use.local
-  resolution: "status@workspace:packages/status"
-  dependencies:
-    "@services/debug": "workspace:packages/@services/debug"
-    "@services/env": "workspace:packages/@services/env"
-    "@services/express": "workspace:packages/@services/express"
-    "@services/logger": "workspace:packages/@services/logger"
-    nodemon: ^2.0.7
-  languageName: unknown
-  linkType: soft
-
 "statuses@npm:>= 1.5.0 < 2, statuses@npm:~1.5.0":
   version: 1.5.0
   resolution: "statuses@npm:1.5.0"
