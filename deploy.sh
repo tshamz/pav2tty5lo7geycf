@@ -5,7 +5,6 @@ BUILD=".build.zip"
 
 # dirs
 ENTRY=$PWD
-# TMPDIR=$(mktemp -d /tmp/${1}-deploy.XXXXXXXX)
 TMPDIR=$(mktemp -d "${PWD:-/tmp}".deploy.XXXXXXXX)
 SERVICES="${TMPDIR}/bundle/packages/@services"
 PACKAGE="${TMPDIR}/bundle/packages/${1}"
