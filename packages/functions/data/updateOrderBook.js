@@ -4,39 +4,43 @@ const firebase = require('@services/firebase');
 
 module.exports = async (snapshot, res) => {
   try {
-    const Accept =
-      'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9';
-    const Host = 'predictit-f497e.firebaseio.com';
-    const userAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36`;
-    const headers = { Accept, Host, 'User-Agent': userAgent };
     const url = `https://predictit-f497e.firebaseio.com/contractOrderBook.json`;
+
+    const headers = {
+      Accept: '*/*',
+      Host: 'predictit-f497e.firebaseio.com',
+      'User-Agent': 'curl/7.64.1',
+    };
+
     const response = await fetch(url, { headers });
     const orderBooks = await response.json();
+    const orderBooksEntries = Object.entries(orderBooks);
 
-    const update = Object.entries(orderBooks).reduce((updates, [id, data]) => {
-      const timestamp = Math.floor(parseFloat(data.timestamp) * 1000);
-
+    const getUpdates = (updates, [id, data]) => {
       return {
         ...updates,
         [id]: {
           noOrders: data.noOrders,
           yesOrdrs: data.yesOrders,
-          _timestamp: timestamp || null,
-          _updatedAt: new Date(timestamp).toUTCString() || null,
         },
       };
-    }, {});
+    };
+
+    const update = orderBooksEntries.reduce(getUpdates, {});
 
     await firebase.db.set(`orderBooks`, update);
-
-    return;
   } catch (error) {
-    console.error(error);
-
-    return { error };
+    firebase.logger.error(error.message);
   } finally {
     if (res && res.status) {
-      res.status(200).json({});
+      res.sendStatus(200);
     }
+
+    return null;
   }
 };
+
+// const Accept =
+//   'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9';
+// const userAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36`;
+// const headers = { Accept, Host, 'User-Agent': userAgent };

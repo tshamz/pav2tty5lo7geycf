@@ -3,12 +3,12 @@ const admin = require('firebase-admin');
 
 const connections = {};
 
-const getConnection = (name) => {
+const getConnection = (name = '') => {
+  const id = camelcase(name);
+
   if (!name) {
     return admin.database();
   }
-
-  const id = camelcase(name);
 
   if (connections[id]) {
     return connections[id];

@@ -1,37 +1,26 @@
 const stealthPlugin = require('puppeteer-extra-plugin-stealth');
 const puppeteer = require('puppeteer-extra').use(stealthPlugin());
 
-const log = require('@services/logger');
+const utils = require('@services/utils');
 const firebase = require('@services/firebase');
-const { was, now, raise } = require('@services/utils');
 
 const config = firebase.config('predictit');
 
 const checkLastRan = async () => {
   try {
-    const _updatedAt = now();
-    const _timestamp = Date.now();
-    const session = await firebase.db.get('session');
+    const code = 'resource-exhausted';
+    const message = 'createSession run less than 5 minutes ago';
+    const lastRan = new Date(await firebase.db.get('session/lastRan'));
+    const timeSince = Date.now() - lastRan.getTime();
+    const timeLeft = (5 * 60 * 1000 - timeSince) / 1000 + ` seconds`;
 
-    if (!session || !session._updatedAt) return;
-
-    const lastRan = new Date(session._updatedAt);
-    const sinceNow = Date.now() - lastRan.getTime();
-    const timeLeft = (5 * 60 * 1000 - sinceNow) / 1000;
-
-    if (was(lastRan).under('5 minutes ago')) {
-      const code = 'resource-exhausted';
-      const details = { timeLeft, lastRan };
-      const message = `createSession run less than 5 minutes ago`;
-      log.debug(message);
-      log.debug(`time left: ${timeLeft} seconds`);
-      log.debug(`last ran: ${lastRan.toLocaleString()}`);
-      throw new firebase.HttpsError(code, message, details);
+    if (utils.was(lastRan).under('5 minutes ago')) {
+      throw new firebase.HttpsError(code, message, { timeLeft, lastRan });
     }
 
-    await firebase.db.set('session', { _updatedAt, _timestamp });
+    await firebase.db.set('session', { lastRan: utils.now() });
   } catch (error) {
-    raise(error, { log: false });
+    throw error;
   }
 };
 
@@ -55,7 +44,7 @@ const createNewSession = async () => {
   } catch (error) {
     await page.close();
     await browser.close();
-    raise(error, { log: false });
+    throw error;
   }
 };
 
@@ -79,33 +68,20 @@ const parseSession = async (session) => {
   };
 };
 
-// onRun((context: EventContext)
-// onCall((data: any, context: CallableContext)
 module.exports = async (data, res) => {
   try {
-    await checkLastRan();
+    const update = await checkLastRan()
+      .then(createNewSession)
+      .then(parseSession);
 
-    const session = await createNewSession();
-    const update = await parseSession(session);
-
-    await firebase.db.set('session', update);
-
-    if (res && res.sendStatus) {
-      res.json(update);
-    }
-
-    return update;
+    firebase.db.set('session', update);
   } catch (error) {
-    log.debug('error', error);
-
+    firebase.logger.error(error.message);
+  } finally {
     if (res && res.sendStatus) {
-      res.sendStatus(503);
+      res.sendStatus(200);
     }
 
-    if (error instanceof firebase.HttpsError) {
-      raise(error);
-    }
-
-    raise(new firebase.HttpsError('unknown', error.message));
+    return null;
   }
 };

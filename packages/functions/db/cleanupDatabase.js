@@ -1,8 +1,6 @@
 const firebase = require('@services/firebase');
 
-module.exports = async (...args) => {
-  const res = args[1];
-
+module.exports = async (data, res) => {
   try {
     const database = await firebase.db.get();
 
@@ -12,6 +10,8 @@ module.exports = async (...args) => {
         ...updates,
         // Put paths in here that you want to remove
         // [`markets/${id}/_updateSource`]: null,
+        // [`markets/${id}/_timestamp`]: null,
+        // [`markets/${id}/_updatedAt`]: null,
       };
     }, {});
 
@@ -21,6 +21,8 @@ module.exports = async (...args) => {
         ...updates,
         // Put paths in here that you want to remove
         // [`contracts/${id}/_updateSource`]: null,
+        // [`contracts/${id}/_timestamp`]: null,
+        // [`contracts/${id}/_updatedAt`]: null,
       };
     }, {});
 
@@ -30,6 +32,8 @@ module.exports = async (...args) => {
         ...updates,
         // Put paths in here that you want to remove
         // [`prices/${id}/_updateSource`]: null,
+        // [`prices/${id}/_timestamp`]: null,
+        // [`prices/${id}/_updatedAt`]: null,
       };
     }, {});
 
@@ -42,15 +46,13 @@ module.exports = async (...args) => {
     };
 
     await firebase.db.set(update);
-
-    return;
   } catch (error) {
-    console.error(error);
-
-    return { error };
+    firebase.logger.error(error.message);
   } finally {
     if (res && res.status) {
-      res.status(200).json({});
+      res.sendStatus(200);
     }
+
+    return null;
   }
 };

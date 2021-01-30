@@ -1,7 +1,6 @@
 const firebase = require('@services/firebase');
 
 const getUpdates = async (database) => {
-  console.log('database', database);
   const now = new Date();
   const then = now.setMonth(now.getMonth() - 1);
   const snapshot = await database.get();
@@ -28,14 +27,13 @@ module.exports = async (snapshot, res) => {
       firebase.priceHistory.set(historyUpdates),
       firebase.priceInterval.set(intervalUpdates),
     ]);
-
-    return;
   } catch (error) {
-    console.error(error);
-    return { error };
+    firebase.logger.error(error.message);
   } finally {
     if (res && res.status) {
-      res.status(200).json({});
+      res.sendStatus(200);
     }
+
+    return null;
   }
 };

@@ -52,12 +52,12 @@ module.exports = async (snapshot, res) => {
 
     return;
   } catch (error) {
-    console.error(error);
-
-    return { error };
+    firebase.logger.error(error.message);
   } finally {
     if (res && res.status) {
-      res.status(200).json({});
+      res.sendStatus(200);
     }
+
+    return null;
   }
 };

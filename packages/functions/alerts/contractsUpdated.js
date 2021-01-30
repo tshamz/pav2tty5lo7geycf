@@ -2,7 +2,6 @@ const TinyURL = require('tinyurl');
 const isEqual = require('lodash/isEqual');
 const differenceWith = require('lodash/differenceWith');
 
-const log = require('@services/logger');
 const twilio = require('@services/twilio');
 const firebase = require('@services/firebase');
 
@@ -20,13 +19,9 @@ module.exports = async (snapshot, context) => {
     const id = context.params.market;
     const market = await firebase.db.get(`markets/${id}`);
     const contracts = await firebase.db.get('contracts');
-
     const getContractName = (id) => `• ${contracts[id].shortName}`;
-
     const addedContracts = added.map(getContractName);
     const removedContracts = removed.map(getContractName);
-
-    log.info(`Contracts Updated: ${market.shortname}`);
 
     await twilio.sendMessage([
       `Contracts Updated!`,
@@ -36,9 +31,10 @@ module.exports = async (snapshot, context) => {
       await TinyURL.shorten(market.url),
     ]);
 
-    return;
+    firebase.logger.info(`Contracts Updated: ${market.shortname}`);
   } catch (error) {
-    console.error(error);
-    return { error };
+    firebase.logger.error(error.message);
+  } finally {
+    return null;
   }
 };

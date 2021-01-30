@@ -2,30 +2,29 @@ const firebase = require('@services/firebase');
 
 module.exports = async (data, context) => {
   try {
-    if (data.UserPrediction === -1) {
-      const update = { [data.ContractId]: null };
+    const isDelete = data.UserPrediction === -1;
 
-      await firebase.db.set(`contractPositions`, update);
+    const path = isDelete
+      ? `contractPositions`
+      : `contractPositions/${data.ContractId}`;
 
-      return { update };
-    }
+    const update = isDelete
+      ? {
+          [data.ContractId]: null,
+        }
+      : {
+          market: await firebase.db.get(`contracts/${data.ContractId}/market`),
+          prediction: data.UserPrediction,
+          quantity: data.UserQuantity,
+          openBuyOrders: data.UserOpenOrdersBuyQuantity,
+          openSellOrders: data.UserOpenOrdersSellQuantity,
+          averagePrice: data.UserAveragePricePerShare,
+        };
 
-    const update = {
-      market: await firebase.db.get(`contracts/${data.ContractId}/market`),
-      prediction: data.UserPrediction,
-      quantity: data.UserQuantity,
-      openBuyOrders: data.UserOpenOrdersBuyQuantity,
-      openSellOrders: data.UserOpenOrdersSellQuantity,
-      averagePrice: data.UserAveragePricePerShare,
-      _timestamp: Date.now(),
-      _updatedAt: new Date().toUTCString(),
-    };
-
-    await firebase.db.set(`contractPositions/${data.ContractId}`, update);
-
-    return { update };
+    await firebase.db.set(path, update);
   } catch (error) {
-    console.error(error);
-    return { error };
+    firebase.logger.error(error.message);
+  } finally {
+    return null;
   }
 };

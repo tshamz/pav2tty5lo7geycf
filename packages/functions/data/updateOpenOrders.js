@@ -40,17 +40,14 @@ module.exports = async (data, context) => {
     const update = {
       [priceInCents]: {
         quantity: newQuantity > 0 ? newQuantity : null,
-        _timestamp: Date.now(),
-        _updatedAt: new Date().toUTCString(),
       },
     };
 
     await firebase.db.set(openOrderPath, update);
-
-    return { update };
   } catch (error) {
-    console.error(error);
-    return { error };
+    firebase.logger.error(error.message);
+  } finally {
+    return null;
   }
 };
 

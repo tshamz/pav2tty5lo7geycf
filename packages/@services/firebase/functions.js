@@ -37,5 +37,6 @@ module.exports = {
   functions,
   call: callable,
   config: getConfig,
+  logger: functions.logger,
   HttpsError: functions.https.HttpsError,
 };

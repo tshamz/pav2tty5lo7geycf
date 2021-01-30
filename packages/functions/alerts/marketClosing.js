@@ -1,22 +1,22 @@
 const TinyURL = require('tinyurl');
 
-const log = require('@services/logger');
 const twilio = require('@services/twilio');
 const firebase = require('@services/firebase');
 
 module.exports = async (snapshot, context) => {
   try {
-    if (snapshot.after.val() !== 1) {
-      return;
-    }
+    if (snapshot.after.val() !== 1) return;
 
     const id = context.params.market;
     const market = await firebase.db.get(`markets/${id}`);
+
     const getContract = async (id) => ({
       ...(await firebase.db.get(`prices/${id}`)),
       ...(await firebase.db.get(`contracts/${id}`)),
     });
+
     const contracts = await Promise.all(market.contracts.map(getContract));
+
     const contractsAndPrices = contracts
       .sort((a, b) => a.displayOrder < b.displayOrder)
       .map(({ shortName, buyNo, buyYes }) => {
@@ -25,8 +25,6 @@ module.exports = async (snapshot, context) => {
         return `• ${shortName} - ${yes}/${no}`;
       });
 
-    log.info(`Market Closing: ${market.shortname}`);
-
     await twilio.sendMessage([
       `Market Closing!`,
       [`Market:`, market.shortName],
@@ -34,9 +32,10 @@ module.exports = async (snapshot, context) => {
       await TinyURL.shorten(market.url),
     ]);
 
-    return;
+    firebase.logger.info(`Market Closing: ${market.shortname}`);
   } catch (error) {
-    console.error(error);
-    return { error };
+    firebase.logger.error(error.message);
+  } finally {
+    return null;
   }
 };

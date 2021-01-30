@@ -2,11 +2,6 @@ const firebase = require('@services/firebase');
 
 module.exports = async (data, context) => {
   try {
-    const { Quantity, RemainingQuantity } = data.Offer;
-    const completedQuantity = Quantity - RemainingQuantity;
-
-    if (completedQuantity === 0) return;
-
     const update = {
       market: data.MarketId,
       contract: data.Offer.ContractId,
@@ -14,18 +9,16 @@ module.exports = async (data, context) => {
       profit: data.TotalProfit, // totalCost - totalRiskChange
       fees: data.TotalFees, // totalProfit * -1
       riskChange: data.TotalRiskChange, // totalCost - total profit
-      quantity: completedQuantity,
+      quantity: data.Offer.Quantity - data.Offer.RemainingQuantity,
       price: data.Offer.PricePerShare,
       tradeType: data.Offer.TradeType,
-      _createdAt: Date.now(),
     };
 
     await firebase.tradeHistory.push(update);
-
-    return { update };
   } catch (error) {
-    console.error(error);
-    return { error };
+    firebase.logger.error(error.message);
+  } finally {
+    return null;
   }
 };
 

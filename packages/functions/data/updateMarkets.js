@@ -1,133 +1,80 @@
 const fetch = require('node-fetch');
-const equals = require('deep-equal');
-
-const log = require('@services/logger');
 const firebase = require('@services/firebase');
 
 module.exports = async (context, res) => {
   try {
-    const Accept = '*/*';
-    const Host = 'www.predictit.org';
-    const headers = { Accept, Host, 'User-Agent': 'curl/7.64.1' };
-    const url = `https://www.predictit.org/api/marketdata/all`;
-    const response = await fetch(url, { headers });
-    const data = await response.json();
-    const current = (await firebase.db.get()) || {};
-    const currentMarkets = current.markets || {};
-    const update = {
-      ...(await getInactiveMarkets(data.markets, currentMarkets)),
-      ...getMarketsUpdate(data.markets, currentMarkets),
-      ...getContractsAndPricesUpdate(data.markets, current),
+    const url = 'https://www.predictit.org/api/marketdata/all';
+
+    const headers = {
+      Accept: '*/*',
+      Host: 'www.predictit.org',
+      'User-Agent': 'curl/7.64.1',
     };
 
-    await firebase.db.set(update);
+    const markets = await fetch(url, { headers })
+      .then((response) => response.json())
+      .then((data) => data.markets);
 
-    return update;
-  } catch (error) {
-    log.error(error);
+    markets.forEach((market) => {
+      const dateEnd = new Date(market.contracts[0].dateEnd);
+      const msLeft = dateEnd.getTime() - Date.now();
 
-    return { error };
-  } finally {
-    if (res && res.status) {
-      res.status(200).json({});
-    }
-  }
-};
-
-const getInactiveMarkets = async (markets, current) => {
-  try {
-    return Object.keys(current)
-      .map((id) => parseInt(id))
-      .filter((id) => !markets.map((market) => market.id).includes(id))
-      .reduce((updates, id) => {
-        return { ...updates, [`markets/${id}/active`]: false };
-      }, {});
-  } catch (error) {
-    log.error(error);
-    return {};
-  }
-};
-
-const prepareUpdate = ({ update, node, id, current = {} }) => {
-  const keyEntry = ([key, value]) => [`${node}/${id}/${key}`, value];
-  const keyedEntries = Object.entries(update).map(keyEntry);
-
-  delete current._timestamp;
-  delete current._updatedAt;
-
-  if (equals(current, update)) return {};
-
-  return {
-    ...Object.fromEntries(keyedEntries),
-    [`${node}/${id}/_timestamp`]: Date.now(),
-    [`${node}/${id}/_updatedAt`]: new Date().toUTCString(),
-  };
-};
-
-const getMarketsUpdate = (markets, current) => {
-  return markets.reduce((updates, market) => {
-    const msLeft = new Date(market.contracts[0].dateEnd).getTime() - Date.now();
-    return {
-      ...updates,
-      ...prepareUpdate({
-        node: 'markets',
+      const marketUpdate = {
         id: market.id,
-        current: current[market.id],
-        update: {
-          id: market.id,
-          url: market.url,
-          name: market.name,
-          shortName: market.shortName,
-          image: market.image,
-          active: market.status === 'Open',
-          dateEnd: new Date(market.contracts[0].dateEnd) || null,
-          daysLeft: Math.floor(msLeft / (24 * 60 * 60 * 1000)) || null,
-          contracts: market.contracts.map(({ id }) => id),
-        },
-      }),
-    };
-  }, {});
-};
+        url: market.url,
+        name: market.name,
+        shortName: market.shortName,
+        image: market.image,
+        active: market.status === 'Open',
+        contracts: market.contracts.map(({ id }) => id),
+        dateEnd: dateEnd || null,
+        daysLeft: Math.floor(msLeft / (24 * 60 * 60 * 1000)) || null,
+      };
 
-const getContractsAndPricesUpdate = (markets, current) => {
-  const currentContracts = current.contracts || {};
-  const currentPrices = current.prices || {};
-  return markets.reduce((updates, market) => {
-    return {
-      ...updates,
-      ...market.contracts.reduce((updates, contract) => {
-        return {
+      const contractsUpdate = market.contracts.reduce(
+        (updates, contract) => ({
           ...updates,
-          ...prepareUpdate({
+          [`contracts/${contract.id}`]: {
             id: contract.id,
-            node: 'contracts',
-            current: currentContracts[contract.id],
-            update: {
-              id: contract.id,
-              url: market.url,
-              name: contract.name,
-              shortName: contract.shortName,
-              market: market.id,
-              image: contract.image,
-              displayOrder: contract.displayOrder,
-            },
-          }),
-          ...prepareUpdate({
+            url: market.url,
+            name: contract.name,
+            shortName: contract.shortName,
+            market: market.id,
+            image: contract.image,
+            displayOrder: contract.displayOrder,
+          },
+        }),
+        {}
+      );
+
+      const pricesUpdate = market.contracts.reduce(
+        (updates, contract) => ({
+          ...updates,
+          [`prices/${contract.id}`]: {
             id: contract.id,
-            node: 'prices',
-            current: currentPrices[contract.id],
-            update: {
-              id: contract.id,
-              buyNo: contract.bestBuyNoCost,
-              buyYes: contract.bestBuyYesCost,
-              sellNo: contract.bestSellNoCost,
-              sellYes: contract.bestSellYesCost,
-              // lastTrade: contract.lastTradePrice,
-              market: market.id,
-            },
-          }),
-        };
-      }, {}),
-    };
-  }, {});
+            buyNo: contract.bestBuyNoCost,
+            buyYes: contract.bestBuyYesCost,
+            sellNo: contract.bestSellNoCost,
+            sellYes: contract.bestSellYesCost,
+            market: market.id,
+          },
+        }),
+        {}
+      );
+
+      Promise.all([
+        firebase.db.set(`markets/${market.id}`, marketUpdate),
+        firebase.db.set('contracts', contractsUpdate),
+        firebase.db.set('prices', pricesUpdate),
+      ]);
+    });
+  } catch (error) {
+    firebase.logger.error(error.message);
+  } finally {
+    if (res && res.sendStatus) {
+      res.sendStatus(200);
+    }
+
+    return null;
+  }
 };
