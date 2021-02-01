@@ -361,9 +361,6 @@ _**Note:** Some of the below links might be off by a few lines_
 - Default Database (`default-rtdb`)
   - `contracts`
     - `{contract_id}`
-      - `_createdAt`
-      - `_timestamp`
-      - `_updatedAt`
       - `displayOrder`
       - `id`
       - `image`
@@ -373,9 +370,6 @@ _**Note:** Some of the below links might be off by a few lines_
       - `url`
   - `markets`
     - `{contract_id}`
-      - `_createdAt`
-      - `_timestamp`
-      - `_updatedAt`
       - `active`
       - `id`
       - `image`
@@ -404,8 +398,6 @@ _**Note:** Some of the below links might be off by a few lines_
           - `tradeType`
   - `prices`
     - `{contract_id}`
-        - `_timestamp`
-        - `_updatedAt`
         - `buyNo`
         - `buyYes`
         - `id`
@@ -415,8 +407,6 @@ _**Note:** Some of the below links might be off by a few lines_
         - `sellNo`
         - `sellYes`
   - `session` (some fields omitted)
-    - `_timestamp`
-    - `_updatedAt`
     - `wssHost`
     - `username`
     - `eng_mt`

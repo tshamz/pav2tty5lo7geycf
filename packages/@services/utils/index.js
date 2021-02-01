@@ -13,13 +13,6 @@ const was = (datelike) => {
   return { over, under };
 };
 
-const now = (options) => {
-  const date = new Date();
-  const timezone = 'America/Los_Angeles';
-
-  return date.toLocaleString({ timezone, ...options });
-};
-
 const raise = (error, options = {}) => {
   if (options.log) {
     log.error(error);
@@ -29,7 +22,6 @@ const raise = (error, options = {}) => {
 };
 
 module.exports = {
-  now,
   was,
   raise,
 };

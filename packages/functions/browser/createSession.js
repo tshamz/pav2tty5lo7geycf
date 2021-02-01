@@ -1,7 +1,7 @@
 const stealthPlugin = require('puppeteer-extra-plugin-stealth');
 const puppeteer = require('puppeteer-extra').use(stealthPlugin());
 
-const utils = require('@services/utils');
+const { was } = require('@services/utils');
 const firebase = require('@services/firebase');
 
 const config = firebase.config('predictit');
@@ -13,12 +13,13 @@ const checkLastRan = async () => {
     const lastRan = new Date(await firebase.db.get('session/lastRan'));
     const timeSince = Date.now() - lastRan.getTime();
     const timeLeft = (5 * 60 * 1000 - timeSince) / 1000 + ` seconds`;
+    const now = new Date().toLocaleString({ timezone: 'America/Los_Angeles' });
 
-    if (utils.was(lastRan).under('5 minutes ago')) {
+    if (was(lastRan).under('5 minutes ago')) {
       throw new firebase.HttpsError(code, message, { timeLeft, lastRan });
     }
 
-    await firebase.db.set('session', { lastRan: utils.now() });
+    await firebase.db.set('session/lastRan', now);
   } catch (error) {
     throw error;
   }
@@ -63,8 +64,6 @@ const parseSession = async (session) => {
     tokenExpires: JSON.parse(session.tokenExpires || null),
     browseHeaders: JSON.parse(session.browseHeaders || null),
     eng_mt: JSON.parse(session.eng_mt || null),
-    _updatedAt: now(),
-    _timestamp: Date.now(),
   };
 };
 

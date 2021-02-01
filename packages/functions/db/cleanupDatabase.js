@@ -23,8 +23,8 @@ module.exports = async (data, res) => {
         // Put paths in here that you want to remove
         // [`contracts/${id}/_updateSource`]: null,
         [`contracts/${id}/_createdAt`]: null,
-        [`contracts/${id}/_timestamp`]: null,
         [`contracts/${id}/_updatedAt`]: null,
+        [`contracts/${id}/_timestamp`]: null,
       };
     }, {});
 
@@ -35,8 +35,8 @@ module.exports = async (data, res) => {
         // Put paths in here that you want to remove
         // [`prices/${id}/_updateSource`]: null,
         [`prices/${id}/_createdAt`]: null,
-        [`prices/${id}/_timestamp`]: null,
         [`prices/${id}/_updatedAt`]: null,
+        [`prices/${id}/_timestamp`]: null,
       };
     }, {});
 
