@@ -25,8 +25,18 @@ exports.addUpdatedAtMarkets = firebase.functions.database
   .onUpdate(addUpdatedAt);
 
 // prettier-ignore
+exports.addUpdatedAtPrices = firebase.functions.database
+  .ref('prices/{id}')
+  .onUpdate(addUpdatedAt);
+
+// prettier-ignore
 exports.addUpdatedAtSession = firebase.functions.database
   .ref('session')
+  .onUpdate(addUpdatedAt);
+
+// prettier-ignore
+exports.addUpdatedAtFunds = firebase.functions.database
+  .ref('funds')
   .onUpdate(addUpdatedAt);
 
 // prettier-ignore
