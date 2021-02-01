@@ -16,8 +16,8 @@ module.exports = async (context, res) => {
       .then((data) => data.markets);
 
     markets.forEach((market) => {
-      const dateEnd = new Date(market.contracts[0].dateEnd);
-      const msLeft = dateEnd.getTime() - Date.now();
+      const dateEnd = new Date(market.contracts[0].dateEnd + 'Z').getTime();
+      const daysLeft = (dateEnd - Date.now()) / (24 * 60 * 60 * 1000);
 
       const marketUpdate = {
         id: market.id,
@@ -28,13 +28,13 @@ module.exports = async (context, res) => {
         active: market.status === 'Open',
         contracts: market.contracts.map(({ id }) => id),
         dateEnd: dateEnd || null,
-        daysLeft: Math.floor(msLeft / (24 * 60 * 60 * 1000)) || null,
+        daysLeft: Math.floor(daysLeft) || null,
       };
 
       const contractsUpdate = market.contracts.reduce(
         (updates, contract) => ({
           ...updates,
-          [`contracts/${contract.id}`]: {
+          [contract.id]: {
             id: contract.id,
             url: market.url,
             name: contract.name,
@@ -50,7 +50,7 @@ module.exports = async (context, res) => {
       const pricesUpdate = market.contracts.reduce(
         (updates, contract) => ({
           ...updates,
-          [`prices/${contract.id}`]: {
+          [contract.id]: {
             id: contract.id,
             buyNo: contract.bestBuyNoCost,
             buyYes: contract.bestBuyYesCost,

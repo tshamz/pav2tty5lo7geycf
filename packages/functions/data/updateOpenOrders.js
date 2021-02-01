@@ -38,9 +38,7 @@ module.exports = async (data, context) => {
       .then((quantity) => quantity + changeInQuantity);
 
     const update = {
-      [priceInCents]: {
-        quantity: newQuantity > 0 ? newQuantity : null,
-      },
+      [priceInCents]: newQuantity > 0 ? { quantity: newQuantity } : null,
     };
 
     await firebase.db.set(openOrderPath, update);

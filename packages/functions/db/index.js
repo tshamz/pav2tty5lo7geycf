@@ -1,6 +1,5 @@
 const firebase = require('@services/firebase');
 
-const addCreatedAt = require('./addCreatedAt');
 const addUpdatedAt = require('./addUpdatedAt');
 const cleanupDatabase = require('./cleanupDatabase');
 const deleteClosedMarkets = require('./deleteClosedMarkets');
@@ -16,23 +15,13 @@ exports.cleanUpDatabase__manual = firebase.functions
   .https.onRequest(cleanupDatabase);
 
 // prettier-ignore
-exports.addCreatedAtToMarket = firebase.functions.database
-  .ref('markets/{market}')
-  .onCreate(addCreatedAt);
-
-// prettier-ignore
-exports.addCreatedAtToContract = firebase.functions.database
-  .ref('contracts/{contract}')
-  .onCreate(addCreatedAt);
-
-// prettier-ignore
-exports.addUpdatedAtToMarket = firebase.functions.database
-  .ref('markets/{market}')
+exports.addUpdatedAtContracts = firebase.functions.database
+  .ref('contracts/{id}')
   .onUpdate(addUpdatedAt);
 
 // prettier-ignore
-exports.addUpdatedAtToContract = firebase.functions.database
-  .ref('contracts/{contract}')
+exports.addUpdatedAtMarkets = firebase.functions.database
+  .ref('markets/{id}')
   .onUpdate(addUpdatedAt);
 
 // prettier-ignore
@@ -45,7 +34,7 @@ exports.deleteClosedMarkets = firebase.functions.pubsub
   .schedule('every 24 hours')
   .onRun(deleteClosedMarkets);
 
-// prettier-ignore
+// // prettier-ignore
 // exports.deleteStalePriceData = firebase.functions.pubsub
 //   .schedule('every 24 hours')
 //   .onRun(deleteStalePriceData);

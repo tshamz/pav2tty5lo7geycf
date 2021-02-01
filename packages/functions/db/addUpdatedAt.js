@@ -1,13 +1,15 @@
 const firebase = require('@services/firebase');
 
-module.exports = async (snapshot, context) => {
+module.exports = async (change, context) => {
   try {
-    const path = snapshot.after._path.slice(1);
-    const timezone = 'America/Los_Angeles';
-    const now = new Date().toLocaleString({ timezone });
+    if (change.before._data._updatedAt !== change.after._data._updatedAt) {
+      return null;
+    }
+
+    const path = change.after._path.slice(1);
 
     const update = {
-      _updatedAt: now,
+      _updatedAt: Date.now(),
     };
 
     await firebase.db.set(path, update);

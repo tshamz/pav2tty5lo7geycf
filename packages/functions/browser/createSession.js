@@ -13,13 +13,12 @@ const checkLastRan = async () => {
     const lastRan = new Date(await firebase.db.get('session/_lastRan'));
     const timeSince = Date.now() - lastRan.getTime();
     const timeLeft = (5 * 60 * 1000 - timeSince) / 1000 + ` seconds`;
-    const now = new Date().toLocaleString({ timezone: 'America/Los_Angeles' });
 
     if (was(lastRan).under('5 minutes ago')) {
       throw new firebase.HttpsError(code, message, { timeLeft, lastRan });
     }
 
-    await firebase.db.set('session', { _lastRan: now });
+    await firebase.db.set('session', { _lastRan: Date.now() });
   } catch (error) {
     throw error;
   }
