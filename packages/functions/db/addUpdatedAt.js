@@ -7,7 +7,7 @@ module.exports = async (snapshot, context) => {
     const now = new Date().toLocaleString({ timezone });
 
     const update = {
-      updatedAt: now,
+      _updatedAt: now,
     };
 
     await firebase.db.set(path, update);

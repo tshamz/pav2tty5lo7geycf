@@ -8,9 +8,7 @@ exports.get = async () => {
     if (!wssHost) {
       const response = await firebase.call.createSession();
 
-      wssHost = response.data
-        ? response.data.wssHost
-        : `s-usc1c-nss-270.firebaseio.com`;
+      wssHost = response.data.wssHost;
     }
 
     const url = `wss://${wssHost}/.ws?v=5&ns=predictit-f497e`;

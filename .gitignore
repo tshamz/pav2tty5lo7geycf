@@ -29,5 +29,5 @@ credentials.firebase.json
 # .pnp.*
 
 
-packages/functions/.data/
+packages/functions/.data
 .trash

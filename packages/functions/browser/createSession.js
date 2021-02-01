@@ -10,7 +10,7 @@ const checkLastRan = async () => {
   try {
     const code = 'resource-exhausted';
     const message = 'createSession run less than 5 minutes ago';
-    const lastRan = new Date(await firebase.db.get('session/lastRan'));
+    const lastRan = new Date(await firebase.db.get('session/_lastRan'));
     const timeSince = Date.now() - lastRan.getTime();
     const timeLeft = (5 * 60 * 1000 - timeSince) / 1000 + ` seconds`;
     const now = new Date().toLocaleString({ timezone: 'America/Los_Angeles' });
@@ -19,7 +19,7 @@ const checkLastRan = async () => {
       throw new firebase.HttpsError(code, message, { timeLeft, lastRan });
     }
 
-    await firebase.db.set('session/lastRan', now);
+    await firebase.db.set('session', { _lastRan: now });
   } catch (error) {
     throw error;
   }
@@ -74,13 +74,13 @@ module.exports = async (data, res) => {
       .then(parseSession);
 
     firebase.db.set('session', update);
+
+    return update;
   } catch (error) {
     firebase.logger.error(error.message);
   } finally {
     if (res && res.sendStatus) {
       res.sendStatus(200);
     }
-
-    return null;
   }
 };
