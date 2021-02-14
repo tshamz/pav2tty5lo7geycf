@@ -569,6 +569,10 @@ For markets that are building towards a single event (e.g. an election w/ some u
 
 #### predictit.org
 
+- https://predictit-f497e.firebaseio.com/marketStats.json
+- https://predictit-f497e.firebaseio.com/contractStats.json
+- https://predictit-f497e.firebaseio.com/contractOrderBook/.json
+
 - protocols: https
 - base: predictit.org/api
 - paths:

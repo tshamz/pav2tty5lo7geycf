@@ -19,54 +19,51 @@ module.exports = async (context, res) => {
       const dateEnd = new Date(market.contracts[0].dateEnd + 'Z').getTime();
       const daysLeft = (dateEnd - Date.now()) / (24 * 60 * 60 * 1000);
 
-      const marketUpdate = {
-        id: market.id,
-        url: market.url,
-        name: market.name,
-        shortName: market.shortName,
-        image: market.image,
-        active: market.status === 'Open',
-        contracts: market.contracts.map(({ id }) => id),
-        dateEnd: dateEnd || null,
-        daysLeft: Math.floor(daysLeft) || null,
+      // prettier-ignore
+      const marketUpdates = {
+        [`markets/${market.id}/id`]: market.id,
+        [`markets/${market.id}/contracts`]: market.contracts.map(({ id }) => id),
+        [`markets/${market.id}/url`]: market.url,
+        [`markets/${market.id}/name`]: market.name,
+        [`markets/${market.id}/shortName`]: market.shortName,
+        [`markets/${market.id}/image`]: market.image,
+        [`markets/${market.id}/active`]: market.status === 'Open',
+        [`markets/${market.id}/dateEnd`]: dateEnd || null,
+        [`markets/${market.id}/daysLeft`]: Math.floor(daysLeft) || null,
       };
 
-      const contractsUpdate = market.contracts.reduce(
+      const contractUpdates = market.contracts.reduce(
         (updates, contract) => ({
           ...updates,
-          [contract.id]: {
-            id: contract.id,
-            url: market.url,
-            name: contract.name,
-            shortName: contract.shortName,
-            market: market.id,
-            image: contract.image,
-            displayOrder: contract.displayOrder,
-          },
+          [`contracts/${contract.id}/id`]: contract.id,
+          [`contracts/${contract.id}/url`]: market.url,
+          [`contracts/${contract.id}/name`]: contract.name,
+          [`contracts/${contract.id}/shortName`]: contract.shortName,
+          [`contracts/${contract.id}/market`]: market.id,
+          [`contracts/${contract.id}/image`]: contract.image,
+          [`contracts/${contract.id}/displayOrder`]: contract.displayOrder,
         }),
         {}
       );
 
-      const pricesUpdate = market.contracts.reduce(
+      const priceUpdates = market.contracts.reduce(
         (updates, contract) => ({
           ...updates,
-          [contract.id]: {
-            id: contract.id,
-            buyNo: contract.bestBuyNoCost,
-            buyYes: contract.bestBuyYesCost,
-            sellNo: contract.bestSellNoCost,
-            sellYes: contract.bestSellYesCost,
-            market: market.id,
-          },
+          [`prices/${contract.id}/id`]: contract.id,
+          [`prices/${contract.id}/buyNo`]: contract.bestBuyNoCost,
+          [`prices/${contract.id}/buyYes`]: contract.bestBuyYesCost,
+          [`prices/${contract.id}/sellNo`]: contract.bestSellNoCost,
+          [`prices/${contract.id}/sellYes`]: contract.bestSellYesCost,
+          [`prices/${contract.id}/market`]: market.id,
         }),
         {}
       );
 
-      Promise.all([
-        firebase.db.set(`markets/${market.id}`, marketUpdate),
-        firebase.db.set('contracts', contractsUpdate),
-        firebase.db.set('prices', pricesUpdate),
-      ]);
+      firebase.db.set({
+        ...marketUpdates,
+        ...contractUpdates,
+        ...priceUpdates,
+      });
     });
   } catch (error) {
     firebase.logger.error(error.message);
