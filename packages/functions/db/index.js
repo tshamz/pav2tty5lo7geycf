@@ -1,6 +1,7 @@
 const firebase = require('@services/firebase');
 
 const addUpdatedAt = require('./addUpdatedAt');
+const addCreatedAt = require('./addCreatedAt');
 const cleanupDatabase = require('./cleanupDatabase');
 const deleteClosedMarkets = require('./deleteClosedMarkets');
 // const deleteStalePriceData = require('./deleteStalePriceData');
@@ -15,27 +16,32 @@ exports.cleanUpDatabase__manual = firebase.functions
   .https.onRequest(cleanupDatabase);
 
 // prettier-ignore
-exports.addUpdatedAtContracts = firebase.functions.database
+exports.addCreatedAtToContracts = firebase.functions.database
+  .ref('contracts/{id}')
+  .onCreate(addCreatedAt);
+
+// prettier-ignore
+exports.addUpdatedAtToContracts = firebase.functions.database
   .ref('contracts/{id}')
   .onUpdate(addUpdatedAt);
 
 // prettier-ignore
-exports.addUpdatedAtMarkets = firebase.functions.database
+exports.addUpdatedAtToMarkets = firebase.functions.database
   .ref('markets/{id}')
   .onUpdate(addUpdatedAt);
 
 // prettier-ignore
-exports.addUpdatedAtPrices = firebase.functions.database
+exports.addUpdatedAtToPrices = firebase.functions.database
   .ref('prices/{id}')
   .onUpdate(addUpdatedAt);
 
 // prettier-ignore
-exports.addUpdatedAtSession = firebase.functions.database
+exports.addUpdatedAtToSession = firebase.functions.database
   .ref('session')
   .onUpdate(addUpdatedAt);
 
 // prettier-ignore
-exports.addUpdatedAtFunds = firebase.functions.database
+exports.addUpdatedAtToFunds = firebase.functions.database
   .ref('funds')
   .onUpdate(addUpdatedAt);
 
