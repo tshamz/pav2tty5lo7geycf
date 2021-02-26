@@ -3,12 +3,22 @@ const firebase = require('@services/firebase');
 module.exports = async (snapshot, res) => {
   try {
     const marketsSnapshot = await firebase.db.get('markets');
+    const isMarketClosed = (market) =>
+      market.active === false || market.dateEnd < Date.now();
 
-    const closedIds = Object.entries(marketsSnapshot)
-      .filter(([id, { active }]) => active === false)
-      .map(([market, { contracts }]) => ({ market, contracts }));
+    const closedMarkets = Object.values(marketsSnapshot).filter(isMarketClosed);
+    const closedMarketIds = closedMarkets.map(({ id }) => id);
+    const closedContractIds = closedMarkets
+      .map(({ contracts }) => contracts)
+      .flat()
+      .map(({ id }) => id);
 
-    const closedMarkets = closedIds.map(({ market }) => parseInt(market));
+    // .map(({ id: market, contracts }) => ({ market, contracts: contracts.map(({ id }) => id) }))
+    // .reduce((ids, { id, contracts }) => )
+
+    const closedMarketsIds = closedMarkets.map(({ market }) =>
+      parseInt(market)
+    );
     const closedContracts = closedIds.map(({ contracts }) => contracts).flat();
 
     const marketUpdates = closedMarkets.reduce(

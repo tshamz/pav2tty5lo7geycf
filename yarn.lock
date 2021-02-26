@@ -4514,6 +4514,7 @@ fsevents@~2.3.1:
     firebase-functions: ^3.13.1
     lodash: ^4.17.20
     node-fetch: ^2.6.1
+    nodemon: ^2.0.7
     puppeteer: ^5.5.0
     puppeteer-extra: ^3.1.16
     puppeteer-extra-plugin-stealth: ^2.6.5

@@ -20,7 +20,6 @@
     "dev:functions": "yarn workspace functions dev",
     "dev:markets": "yarn workspace markets dev",
     "dev:notifications": "yarn workspace notifications dev",
-    "dev:status": "yarn workspace status dev",
     "watch:functions": "yarn workspace functions watch",
     "watch:markets": "yarn workspace markets watch",
     "watch:notifications": "yarn workspace notifications watch",

@@ -9478,6 +9478,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["firebase-functions", "virtual:66de6e6117e10cfd70ff43ac7738e3dfb7e318e176ba7066c6787358413bb4cd330f73f102b52993726078c1cbfec4f45399fe690127889e40d34d4cda8ca910#npm:3.13.1"],
             ["lodash", "npm:4.17.20"],
             ["node-fetch", "npm:2.6.1"],
+            ["nodemon", "npm:2.0.7"],
             ["puppeteer", "npm:5.5.0"],
             ["puppeteer-extra", "virtual:097229472eab0638cd4675c60879e299e1db64bee3d0e45c32cdd3291d2ee31c62f90247e7ea9c0a4fe75aa3cdd906ccb0c2f1cca095df3f1563b7565bfa5b58#npm:3.1.16"],
             ["puppeteer-extra-plugin-stealth", "npm:2.6.6"],
