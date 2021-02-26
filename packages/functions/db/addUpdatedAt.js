@@ -9,7 +9,8 @@ module.exports = async (change, context) => {
     const path = change.after._path.slice(1);
 
     const update = {
-      _updatedAt: Date.now(),
+      _timestamp: Date.now(),
+      _updatedAt: new Date().toLocaleString(),
     };
 
     await firebase.db.set(path, update);

@@ -4,7 +4,7 @@ const firebase = require('@services/firebase');
 const groupBy = require('lodash/groupBy');
 const mapValues = require('lodash/mapValues');
 
-module.exports = async (context, res) => {
+module.exports = (timespans) => async (context, res) => {
   try {
     const _markets = await firebase.db.get(`markets`);
     const markets = Object.values(_markets)
@@ -71,11 +71,20 @@ module.exports = async (context, res) => {
       }, {});
     };
 
-    const update = await prepareUpdate('24');
+    const update = timespans.reduce(async (updates, timespan) => {
+      return {
+        ...updates,
+        ...(await prepareUpdate(timespan)),
+      };
+    }, {});
 
-    await firebase.timespans.set(update);
+    await firebase.timespans.set(await update);
   } catch (error) {
     firebase.logger.error(error.message);
     return;
+  } finally {
+    if (res && res.sendStatus) {
+      res.sendStatus(200);
+    }
   }
 };
