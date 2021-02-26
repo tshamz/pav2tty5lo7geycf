@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "dev": "yarn g:dev",
+    "dev": "firebase emulators:start --only functions,database,pubsub  --export-on-exit ./.data --import ./.data",
     "watch": "echo noop",
     "build": "yarn bundle -a .build.zip",
     "deploy": "yarn bundle -a .build.zip && ../../deploy.sh functions",
@@ -19,6 +19,7 @@
     "@services/logger": "workspace:packages/@services/logger",
     "@services/twilio": "workspace:packages/@services/twilio",
     "@services/utils": "workspace:packages/@services/utils",
+    "csvtojson": "^2.0.10",
     "deep-equal": "^2.0.5",
     "firebase": "^8.2.3",
     "firebase-admin": "^9.4.2",

@@ -58,24 +58,14 @@ module.exports = {
     set: setPath(),
     push: setPath(),
   },
-  priceOhlc: {
-    get: getPath('price-ohlc'),
-    set: setPath('price-ohlc'),
-    push: pushPath('price-ohlc'),
+  timespans: {
+    get: getPath('timespans'),
+    set: setPath('timespans'),
+    push: pushPath('timespans'),
   },
   priceHistory: {
     get: getPath('price-history'),
     set: setPath('price-history'),
     push: pushPath('price-history'),
-  },
-  priceInterval: {
-    get: getPath('price-interval'),
-    set: setPath('price-interval'),
-    push: pushPath('price-interval'),
-  },
-  tradeHistory: {
-    get: getPath('trade-history'),
-    set: setPath('trade-history'),
-    push: pushPath('trade-history'),
   },
 };

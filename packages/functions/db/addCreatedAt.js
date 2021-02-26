@@ -11,7 +11,5 @@ module.exports = async (change, context) => {
     await firebase.db.set(path, update);
   } catch (error) {
     firebase.logger.error(error.message);
-  } finally {
-    return null;
   }
 };
