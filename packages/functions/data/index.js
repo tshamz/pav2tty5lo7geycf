@@ -4,7 +4,7 @@ const updateMarket = require('./updateMarket');
 const updateMarkets = require('./updateMarkets');
 const updateAccountFunds = require('./updateAccountFunds');
 const updateContractPrice = require('./updateContractPrice');
-const updatePriceHistory = require('./updatePriceHistory');
+// const updatePriceHistory = require('./updatePriceHistory');
 const updateTimespanData = require('./updateTimespanData');
 
 // prettier-ignore
@@ -29,9 +29,9 @@ exports.updateMarkets = firebase.functions.pubsub
   .onRun(updateMarkets);
 
 // prettier-ignore
-exports.updatePriceHistory = firebase.functions.database
-  .ref('prices/{contract}/lastTrade')
-  .onWrite(updatePriceHistory);
+// exports.updatePriceHistory = firebase.functions.database
+//   .ref('prices/{contract}/lastTrade')
+//   .onWrite(updatePriceHistory);
 
 // prettier-ignore
 exports.updateHourlyTimespanData = firebase.functions.pubsub

@@ -10,7 +10,7 @@ module.exports = async (snapshot, context) => {
     const path = context.params.contract;
 
     const update = {
-      [Date.now()]: after,
+      [Date.now()]: snapshot.after.val(),
     };
 
     await firebase.priceHistory.set(path, update);
