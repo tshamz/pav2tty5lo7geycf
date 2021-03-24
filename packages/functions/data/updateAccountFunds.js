@@ -8,6 +8,8 @@ module.exports = async (data, context) => {
       cash: data.AccountBalanceDecimal,
       invested: data.PortfolioBalanceDecimal,
       profitablePredictions: data.ProfitablePredictions,
+      _timestamp: Date.now(),
+      _updatedAt: new Date().toLocaleString(),
     };
 
     await firebase.db.set(path, update);

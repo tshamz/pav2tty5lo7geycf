@@ -59,12 +59,14 @@ module.exports = (frequency) => async (context, res) => {
       }, {});
     };
 
-    const requests = Object.values(markets).map(async (market) => {
+    let update = {};
+
+    for (const id in markets) {
+      const market = markets[id];
       const fetchTimespanData = fetchData(market.id);
 
       if (!market.id) {
         console.log('market', market);
-        return {};
       }
 
       if (frequency === 'hourly') {
@@ -74,23 +76,31 @@ module.exports = (frequency) => async (context, res) => {
           return { ...hourly, [path]: data };
         };
 
-        const daily = fetchTimespanData('24h');
+        const daily = await fetchTimespanData('24h');
         const hourly = Object.entries(daily).reduce(parseHourly, {});
-        return [hourly, daily];
-      } else if (frequency === 'daily') {
-        return await Promise.all([
-          fetchTimespanData('7d'),
-          fetchTimespanData('30d'),
-          fetchTimespanData('90d'),
-        ]);
-      }
-    });
 
-    const update = await Promise.all(requests)
-      .then((results) => results.flat())
-      .then((data) =>
-        data.reduce((update, result) => ({ ...update, ...result }), {})
-      );
+        update = {
+          ...update,
+          ...hourly,
+          ...daily,
+        };
+      } else if (frequency === 'daily') {
+        update = {
+          ...update,
+          ...(await fetchTimespanData('7d')),
+          ...(await fetchTimespanData('30d')),
+          ...(await fetchTimespanData('90d')),
+        };
+      }
+    }
+
+    console.log('update', update);
+
+    // const update = await Promise.all(requests)
+    //   .then((results) => results.flat())
+    //   .then((data) =>
+    //     data.reduce((update, result) => ({ ...update, ...result }), {})
+    //   );
 
     await firebase.timespans.set(await update);
   } catch (error) {

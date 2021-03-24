@@ -21,19 +21,19 @@ exports.cleanUpDatabase__manual = firebase.functions
 //   .onCreate(addCreatedAt);
 
 // prettier-ignore
-exports.addUpdatedAtToContracts = firebase.functions.database
-  .ref('contracts/{id}')
-  .onUpdate(addUpdatedAt);
+// exports.addUpdatedAtToContracts = firebase.functions.database
+//   .ref('contracts/{id}')
+//   .onUpdate(addUpdatedAt);
 
 // prettier-ignore
-exports.addUpdatedAtToMarkets = firebase.functions.database
-  .ref('markets/{id}')
-  .onUpdate(addUpdatedAt);
+// exports.addUpdatedAtToMarkets = firebase.functions.database
+//   .ref('markets/{id}')
+//   .onUpdate(addUpdatedAt);
 
 // prettier-ignore
-exports.addUpdatedAtToPrices = firebase.functions.database
-  .ref('prices/{id}')
-  .onUpdate(addUpdatedAt);
+// exports.addUpdatedAtToPrices = firebase.functions.database
+//   .ref('prices/{id}')
+//   .onUpdate(addUpdatedAt);
 
 // prettier-ignore
 exports.addUpdatedAtToSession = firebase.functions.database

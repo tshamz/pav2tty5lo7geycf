@@ -30,6 +30,8 @@ module.exports = async (context, res) => {
         [`markets/${market.id}/active`]: market.status === 'Open',
         [`markets/${market.id}/dateEnd`]: dateEnd || null,
         [`markets/${market.id}/daysLeft`]: Math.floor(daysLeft) || null,
+        [`markets/${market.id}/_timestamp`]: Date.now(),
+        [`markets/${market.id}/_updatedAt`]: new Date().toLocaleString(),
       };
 
       const contractUpdates = market.contracts.reduce(
@@ -42,6 +44,8 @@ module.exports = async (context, res) => {
           [`contracts/${contract.id}/market`]: market.id,
           [`contracts/${contract.id}/image`]: contract.image,
           [`contracts/${contract.id}/displayOrder`]: contract.displayOrder,
+          [`contracts/${contract.id}/_timestamp`]: Date.now(),
+          [`contracts/${contract.id}/_updatedAt`]: new Date().toLocaleString(),
         }),
         {}
       );
@@ -55,6 +59,8 @@ module.exports = async (context, res) => {
           [`prices/${contract.id}/sellNo`]: contract.bestSellNoCost,
           [`prices/${contract.id}/sellYes`]: contract.bestSellYesCost,
           [`prices/${contract.id}/market`]: market.id,
+          [`prices/${contract.id}/_timestamp`]: Date.now(),
+          [`prices/${contract.id}/_updatedAt`]: new Date().toLocaleString(),
         }),
         {}
       );
