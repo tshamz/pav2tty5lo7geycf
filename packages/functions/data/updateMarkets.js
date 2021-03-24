@@ -53,14 +53,14 @@ module.exports = async (context, res) => {
       const priceUpdates = market.contracts.reduce(
         (updates, contract) => ({
           ...updates,
-          [`prices/${contract.id}/id`]: contract.id,
-          [`prices/${contract.id}/buyNo`]: contract.bestBuyNoCost,
-          [`prices/${contract.id}/buyYes`]: contract.bestBuyYesCost,
-          [`prices/${contract.id}/sellNo`]: contract.bestSellNoCost,
-          [`prices/${contract.id}/sellYes`]: contract.bestSellYesCost,
-          [`prices/${contract.id}/market`]: market.id,
-          [`prices/${contract.id}/_timestamp`]: Date.now(),
-          [`prices/${contract.id}/_updatedAt`]: new Date().toLocaleString(),
+          [`prices/${market.id}/${contract.id}/id`]: contract.id,
+          [`prices/${market.id}/${contract.id}/buyNo`]: contract.bestBuyNoCost,
+          [`prices/${market.id}/${contract.id}/buyYes`]: contract.bestBuyYesCost,
+          [`prices/${market.id}/${contract.id}/sellNo`]: contract.bestSellNoCost,
+          [`prices/${market.id}/${contract.id}/sellYes`]: contract.bestSellYesCost,
+          [`prices/${market.id}/${contract.id}/market`]: market.id,
+          [`prices/${market.id}/${contract.id}/_timestamp`]: Date.now(),
+          [`prices/${market.id}/${contract.id}/_updatedAt`]: new Date().toLocaleString(),
         }),
         {}
       );
