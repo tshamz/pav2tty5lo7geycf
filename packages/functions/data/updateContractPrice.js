@@ -2,9 +2,12 @@ const firebase = require('@services/firebase');
 
 module.exports = async (data, context) => {
   try {
-    const path = `prices/${data.id}`;
+    const contract = await firebase.db.get(`contracts/${data.id}`);
+    const path = `prices/${contract.market}/${data.id}`;
 
     const update = {
+      buyNo: data.BestNoPrice,
+      buyYes: data.BestYesPrice,
       lastTrade: data.LastTradePrice,
     };
 

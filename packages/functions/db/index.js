@@ -16,9 +16,9 @@ exports.cleanUpDatabase__manual = firebase.functions
   .https.onRequest(cleanupDatabase);
 
 // prettier-ignore
-exports.addCreatedAtToContracts = firebase.functions.database
-  .ref('contracts/{id}')
-  .onCreate(addCreatedAt);
+// exports.addCreatedAtToContracts = firebase.functions.database
+//   .ref('contracts/{id}')
+//   .onCreate(addCreatedAt);
 
 // prettier-ignore
 exports.addUpdatedAtToContracts = firebase.functions.database
