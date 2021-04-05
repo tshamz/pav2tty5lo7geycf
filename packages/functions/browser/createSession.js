@@ -7,31 +7,46 @@ const firebase = require('@services/firebase');
 
 const config = firebase.config('predictit');
 
-const throwBackoffError = (lastRan) => {
-  const timeSince = Date.now() - lastRan.getTime();
-  const timeLeft = (5 * 60 * 1000 - timeSince) / 1000 + ` seconds`;
-  const data = { timeLeft, lastRan };
-  const code = 'resource-exhausted';
-  const message = `createSession run less than 5 minutes ago`;
-  const messageTimes = `(timeLeft: ${timeLeft} lastRan: ${lastRan.toLocaleTimeString()})`;
-
-  log.debug(`${message} ${messageTimes}`);
-
-  throw new firebase.HttpsError(code, message, data);
+const throwBackoffError = (message, data) => {
+  log.debug(message);
+  throw new firebase.HttpsError('resource-exhausted', message, data);
 };
 
-const checkLastRan = async () => {
-  try {
-    const _lastRan = await firebase.db.get('session/_lastRan');
-    const lastRan = new Date(_lastRan);
+const checkLastRan = ({ _lastRan }) => {
+  const lastRan = new Date(_lastRan);
 
-    if (was(lastRan).under('5 minutes ago')) {
-      throwBackoffError(lastRan);
-    }
+  if (was(lastRan).under('5 minutes ago')) {
+    const timeSince = Date.now() - lastRan.getTime();
+    const timeLeft = (5 * 60 * 1000 - timeSince) / 1000 + ` seconds`;
+    const times = `(timeLeft: ${timeLeft} lastRan: ${lastRan.toLocaleTimeString()})`;
+    const warning = `createSession run less than 5 minutes ago`;
+    const message = `${warning} ${times}`;
+    const data = { timeLeft, lastRan };
 
-    await firebase.db.set('session', { _lastRan: Date.now() });
-  } catch (error) {
-    throw error;
+    throwBackoffError(message, data);
+  }
+};
+
+const checkForWssHost = ({ wssHost }) => {
+  const hasWssHost = !!wssHost;
+
+  if (!hasWssHost) {
+    const message = `already has wssHost`;
+    const data = { wssHost };
+
+    throwBackoffError(message, data);
+  }
+};
+
+const checkIfTokenExpired = ({ tokenExpires }) => {
+  const expiresAt = JSON.parse(tokenExpires)?.value;
+  const isExpired = new Date(expiresAt) < new Date();
+
+  if (!isExpired) {
+    const message = `token isn't expired`;
+    const data = { expiresAt };
+
+    throwBackoffError(message, data);
   }
 };
 
@@ -60,13 +75,9 @@ const createNewSession = async (browser = createNewBrowser(), attempt = 0) => {
     await page.$('#password').then((input) => input.press('Enter'));
     await page.waitForTimeout(10000);
 
-    console.log('made it to checkpoint 1');
-
     const localStorage = await page.evaluate(() => ({
       ...window.localStorage,
     }));
-
-    console.log('localStorage', localStorage);
 
     return { browser, page, localStorage };
   } catch (error) {
@@ -79,8 +90,6 @@ const createNewSession = async (browser = createNewBrowser(), attempt = 0) => {
 const parseSession = async ({ browser, page, localStorage }) => {
   const wssHostKey = 'firebase:host:predictit-f497e.firebaseio.com';
   const wssHost = JSON.parse(localStorage[wssHostKey] || null);
-  console.log('wssHostKey', wssHostKey);
-  console.log('wssHost', wssHost);
 
   if (!wssHost) {
     console.log('crash and burn!');
@@ -92,23 +101,29 @@ const parseSession = async ({ browser, page, localStorage }) => {
     await page.close();
     await browser.close();
 
-    console.log('made it to checkpoint 2');
-
     return {
       wssHost,
       username: config.username,
       token: JSON.parse(localStorage.token || null),
+      tokenExpires: localStorage.tokenExpires,
+      refreshToken: localStorage.refreshToken,
     };
   }
 };
 
 module.exports = async (data, res) => {
   try {
-    const update = await checkLastRan()
-      .then(createNewSession)
-      .then(parseSession);
+    const session = await firebase.db.get('session');
 
-    console.log('update', update);
+    if (session) {
+      checkLastRan(session);
+      checkForWssHost(session);
+      checkIfTokenExpired(session);
+    }
+
+    await firebase.db.set('session', { _lastRan: Date.now() });
+
+    const update = await createNewSession().then(parseSession);
 
     firebase.db.set('session', update);
 
