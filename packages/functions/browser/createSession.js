@@ -12,41 +12,53 @@ const throwBackoffError = (message, data) => {
   throw new firebase.HttpsError('resource-exhausted', message, data);
 };
 
-const checkLastRan = ({ _lastRan }) => {
-  const lastRan = new Date(_lastRan);
+const checkLastRan = async ({ _lastRan }) => {
+  try {
+    const lastRan = new Date(_lastRan);
 
-  if (was(lastRan).under('5 minutes ago')) {
-    const timeSince = Date.now() - lastRan.getTime();
-    const timeLeft = (5 * 60 * 1000 - timeSince) / 1000 + ` seconds`;
-    const times = `(timeLeft: ${timeLeft} lastRan: ${lastRan.toLocaleTimeString()})`;
-    const warning = `createSession run less than 5 minutes ago`;
-    const message = `${warning} ${times}`;
-    const data = { timeLeft, lastRan };
+    if (was(lastRan).under('5 minutes ago')) {
+      const timeSince = Date.now() - lastRan.getTime();
+      const timeLeft = (5 * 60 * 1000 - timeSince) / 1000 + ` seconds`;
+      const times = `(timeLeft: ${timeLeft} lastRan: ${lastRan.toLocaleTimeString()})`;
+      const warning = `createSession run less than 5 minutes ago`;
+      const message = `${warning} ${times}`;
+      const data = { timeLeft, lastRan };
 
-    throwBackoffError(message, data);
+      throwBackoffError(message, data);
+    }
+  } catch (error) {
+    throw error;
   }
 };
 
-const checkForWssHost = ({ wssHost }) => {
-  const hasWssHost = !!wssHost;
+const checkForWssHost = async ({ wssHost }) => {
+  try {
+    const hasWssHost = !!wssHost;
 
-  if (!hasWssHost) {
-    const message = `already has wssHost`;
-    const data = { wssHost };
+    if (hasWssHost) {
+      const message = `already has wssHost`;
+      const data = { wssHost };
 
-    throwBackoffError(message, data);
+      throwBackoffError(message, data);
+    }
+  } catch (error) {
+    throw error;
   }
 };
 
-const checkIfTokenExpired = ({ tokenExpires }) => {
-  const expiresAt = JSON.parse(tokenExpires)?.value;
-  const isExpired = new Date(expiresAt) < new Date();
+const checkIfTokenExpired = async ({ tokenExpires }) => {
+  try {
+    const expiresAt = JSON.parse(tokenExpires)?.value;
+    const isExpired = new Date(expiresAt) < new Date();
 
-  if (!isExpired) {
-    const message = `token isn't expired`;
-    const data = { expiresAt };
+    if (!isExpired) {
+      const message = `token isn't expired`;
+      const data = { expiresAt };
 
-    throwBackoffError(message, data);
+      throwBackoffError(message, data);
+    }
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -114,12 +126,14 @@ const parseSession = async ({ browser, page, localStorage }) => {
 module.exports = async (data, res) => {
   try {
     const session = await firebase.db.get('session');
+    // const hasWssHost = () => checkForWssHost(session);
+    // const tokenExpired = () => checkIfTokenExpired(session);
 
-    if (session) {
-      checkLastRan(session);
-      checkForWssHost(session);
-      checkIfTokenExpired(session);
-    }
+    // if (session) {
+    //   await checkLastRan(session).then(tokenExpired).then(hasWssHost);
+    // }
+
+    await checkLastRan(session);
 
     await firebase.db.set('session', { _lastRan: Date.now() });
 
