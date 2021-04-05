@@ -48,7 +48,9 @@ const checkForWssHost = async ({ wssHost }) => {
 
 const checkIfTokenExpired = async ({ tokenExpires }) => {
   try {
-    const expiresAt = JSON.parse(tokenExpires)?.value;
+    if (!tokenExpires) return;
+
+    const expiresAt = JSON.parse(tokenExpires).value;
     const isExpired = new Date(expiresAt) < new Date();
 
     if (!isExpired) {
