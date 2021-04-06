@@ -2,27 +2,27 @@
   "rules": {
     "contracts": {
       ".read": true,
-      ".write": true
-    },
-    "funds": {
-      ".read": true,
-      ".write": true
+      ".write": "auth.uid === 'superuser'"
     },
     "markets": {
       ".read": true,
-      ".write": true
+      ".write": "auth.uid === 'superuser'"
     },
     "orderBooks": {
       ".read": true,
-      ".write": true
+      ".write": "auth.uid === 'superuser'"
+    },
+    "funds": {
+      ".read": "auth.uid === 'superuser'",
+      ".write": "auth.uid === 'superuser'"
     },
     "prices": {
-      ".read": true,
-      ".write": true
+      ".read": "auth.uid === 'superuser'",
+      ".write": "auth.uid === 'superuser'"
     },
     "session": {
-      ".read": true,
-      ".write": true
+      ".read": "auth.uid === 'superuser'",
+      ".write": "auth.uid === 'superuser'"
     }
   }
 }

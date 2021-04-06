@@ -6,10 +6,8 @@ const admin = require('firebase-admin');
 if (!firebase.apps.length) {
   const projectId = process.env.FIREBASE_PROJECT;
   const credentials = admin.credential.applicationDefault();
+  const databaseAuthVariableOverride = { uid: 'superuser' };
   const databaseURL = 'https://pav2tty5lo7geycf-default-rtdb.firebaseio.com';
-  const databaseAuthVariableOverride = {
-    uid: 'superuser',
-  };
 
   admin.initializeApp({
     credentials,
