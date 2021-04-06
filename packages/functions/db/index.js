@@ -6,10 +6,6 @@ const cleanupDatabase = require('./cleanupDatabase');
 const deleteExpiredMarkets = require('./deleteExpiredMarkets');
 
 // prettier-ignore
-exports.deleteClosedMarkets__manual = firebase.functions.https
-  .onRequest(deleteClosedMarkets);
-
-// prettier-ignore
 exports.cleanUpDatabase__manual = firebase.functions
   .https.onRequest(cleanupDatabase);
 

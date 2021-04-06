@@ -7,9 +7,23 @@ if (!firebase.apps.length) {
   const projectId = process.env.FIREBASE_PROJECT;
   const credentials = admin.credential.applicationDefault();
   const databaseURL = 'https://pav2tty5lo7geycf-default-rtdb.firebaseio.com';
+  const databaseAuthVariableOverride = {
+    uid: 'superuser',
+  };
 
-  admin.initializeApp({ credentials, projectId, databaseURL });
-  firebase.initializeApp({ credentials, projectId, databaseURL });
+  admin.initializeApp({
+    credentials,
+    projectId,
+    databaseURL,
+    databaseAuthVariableOverride,
+  });
+
+  firebase.initializeApp({
+    credentials,
+    projectId,
+    databaseURL,
+    databaseAuthVariableOverride,
+  });
 }
 
 if (process.env.NODE_ENV === 'development') {
