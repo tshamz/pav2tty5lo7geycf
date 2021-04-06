@@ -1,9 +1,12 @@
+/** @format */
+
 const firebase = require('@services/firebase');
 
 const addUpdatedAt = require('./addUpdatedAt');
 const addCreatedAt = require('./addCreatedAt');
 const cleanupDatabase = require('./cleanupDatabase');
 const deleteClosedMarkets = require('./deleteClosedMarkets');
+const deleteExpiredMarket = require('./deleteExpiredMarket');
 // const deleteStalePriceData = require('./deleteStalePriceData');
 
 // prettier-ignore
@@ -54,3 +57,8 @@ exports.deleteClosedMarkets = firebase.functions.pubsub
 // exports.deleteStalePriceData = firebase.functions.pubsub
 //   .schedule('every 24 hours')
 //   .onRun(deleteStalePriceData);
+
+// prettier-ignore
+exports.deleteExpiredMarket = firebase.functions.database
+  .ref('markets/{market}/daysLeft')
+  .onUpdate(deleteExpiredMarket);

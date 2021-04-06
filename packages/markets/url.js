@@ -4,25 +4,26 @@ const firebase = require('@services/firebase');
 
 exports.get = async () => {
   try {
-    // let wssHost = await firebase.db.get('session/wssHost');
-    const session = (await firebase.db.get('session')) || {};
-    let { _lastRan, _wssLastTried, wssHost } = session;
+    let wssHost = await firebase.db.get('session/wssHost');
+    // const session = (await firebase.db.get('session')) || {};
+    // let { _lastRan, _wssLastTried, wssHost } = session;
 
-    const lastRan = new Date(_lastRan);
-    console.log('lastRan', lastRan);
+    // const lastRan = new Date(_lastRan);
+    // console.log('lastRan', lastRan);
 
-    const runRecently = was(lastRan).under('1 minutes ago');
-    console.log('runRecently', runRecently);
+    // const runRecently = was(lastRan).under('1 minutes ago');
+    // console.log('runRecently', runRecently);
 
-    const sameWssHost = _wssLastTried === wssHost;
-    console.log('sameWssHost', sameWssHost);
+    // const sameWssHost = _wssLastTried === wssHost;
+    // console.log('sameWssHost', sameWssHost);
 
-    const badWssHost = runRecently && sameWssHost;
-    console.log('badWssHost', badWssHost);
+    // const badWssHost = runRecently && sameWssHost;
+    // console.log('badWssHost', badWssHost);
 
-    if (!wssHost || badWssHost) {
-      const result = await firebase.db.set('/', { session: null });
-      console.log('result', result);
+    // if (!wssHost || badWssHost) {
+    if (!wssHost) {
+      // const result = await firebase.db.set('/', { session: null });
+      // console.log('result', result);
 
       const response = await firebase.call.createSession();
 
@@ -37,8 +38,6 @@ exports.get = async () => {
 
     return url;
   } catch (error) {
-    console.log('dingdingding');
-    console.log('error', error);
     log.error(error);
     return null;
   }

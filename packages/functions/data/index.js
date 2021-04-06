@@ -25,7 +25,7 @@ exports.updateMarket = firebase.functions.https
 
 // prettier-ignore
 exports.updateMarkets = firebase.functions.pubsub
-  .schedule('every 1 minutes')
+  .schedule('every 10 minutes')
   .onRun(updateMarkets);
 
 // prettier-ignore

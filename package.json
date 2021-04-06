@@ -41,6 +41,7 @@
     "@packdigital/babel-preset-ripperoni": "^2.0.3",
     "@packdigital/eslint-config-ripperoni": "^1.0.27",
     "@packdigital/prettier-config-ripperoni": "^1.0.13",
+    "@yarnpkg/pnpify": "^2.4.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.15.0",
     "eslint-config-prettier": "6.11.0",
