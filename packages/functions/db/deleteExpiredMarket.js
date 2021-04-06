@@ -27,6 +27,8 @@ module.exports = async (change, { params }) => {
       firebase.timespans.set(timespansUpdate),
       firebase.priceHistory.set(priceHistoryUpdate),
     ]);
+
+    return;
   } catch (error) {
     firebase.logger.error(error.message);
   }
