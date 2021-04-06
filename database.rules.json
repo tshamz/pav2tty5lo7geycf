@@ -1,6 +1,28 @@
 {
   "rules": {
-    ".read": false,
-    ".write": false
+    "contracts": {
+      ".read": true,
+      ".write": true
+    },
+    "funds": {
+      ".read": true,
+      ".write": true
+    },
+    "markets": {
+      ".read": true,
+      ".write": true
+    },
+    "orderBooks": {
+      ".read": true,
+      ".write": true
+    },
+    "prices": {
+      ".read": true,
+      ".write": true
+    },
+    "session": {
+      ".read": true,
+      ".write": true
+    }
   }
 }

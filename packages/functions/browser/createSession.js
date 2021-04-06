@@ -119,8 +119,8 @@ const parseSession = async ({ browser, page, localStorage }) => {
       wssHost,
       username: config.username,
       token: JSON.parse(localStorage.token || null),
-      tokenExpires: localStorage.tokenExpires,
-      refreshToken: localStorage.refreshToken,
+      tokenExpires: JSON.parse(localStorage.tokenExpires || null),
+      refreshToken: JSON.parse(localStorage.refreshToken || null),
     };
   }
 };
