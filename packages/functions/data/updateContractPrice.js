@@ -8,7 +8,7 @@ module.exports = async (data, context) => {
       buyNo: data.BestNoPrice,
       buyYes: data.BestYesPrice,
       lastTrade: data.LastTradePrice,
-      _timestamp: Date.now(),
+      // _timestamp: Date.now(),
     };
 
     await firebase.db.set(path, update);

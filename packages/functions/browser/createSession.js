@@ -124,7 +124,7 @@ const parseSession = async ({ browser, page, localStorage }) => {
       tokenExpires: JSON.parse(localStorage.tokenExpires || null),
       refreshToken: JSON.parse(localStorage.refreshToken || null),
       browseHeaders: JSON.parse(localStorage.browseHeaders || null),
-      _timestamp: Date.now(),
+      // _timestamp: Date.now(),
     };
   }
 };

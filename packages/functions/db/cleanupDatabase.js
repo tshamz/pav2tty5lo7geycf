@@ -12,7 +12,7 @@ module.exports = async (data, res) => {
         // [`markets/${id}/_updateSource`]: null,
         [`markets/${id}/_createdAt`]: null,
         [`markets/${id}/_updatedAt`]: null,
-        // [`markets/${id}/_timestamp`]: null,
+        [`markets/${id}/_timestamp`]: null,
       };
     }, {});
 
@@ -24,7 +24,7 @@ module.exports = async (data, res) => {
         // [`contracts/${id}/_updateSource`]: null,
         [`contracts/${id}/_createdAt`]: null,
         [`contracts/${id}/_updatedAt`]: null,
-        // [`contracts/${id}/_timestamp`]: null,
+        [`contracts/${id}/_timestamp`]: null,
       };
     }, {});
 
@@ -36,7 +36,7 @@ module.exports = async (data, res) => {
         // [`prices/${id}/_updateSource`]: null,
         [`prices/${id}/_createdAt`]: null,
         [`prices/${id}/_updatedAt`]: null,
-        // [`prices/${id}/_timestamp`]: null,
+        [`prices/${id}/_timestamp`]: null,
       };
     }, {});
 

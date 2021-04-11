@@ -7,7 +7,7 @@ module.exports = async (data, context) => {
     const update = {
       active: data.Status === 'Open',
       totalSharesTraded: data.TotalSharesTraded,
-      _timestamp: Date.now(),
+      // _timestamp: Date.now(),
     };
 
     await firebase.db.set(path, update);
