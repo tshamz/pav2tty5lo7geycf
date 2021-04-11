@@ -6,15 +6,15 @@ exports.get = async () => {
   try {
     let wssHost = await firebase.db.get('session/wssHost');
     // const session = (await firebase.db.get('session')) || {};
-    // let { _lastRan, _wssLastTried, wssHost } = session;
+    // let { lastRan, wssLastTried, wssHost } = session;
 
-    // const lastRan = new Date(_lastRan);
+    // const lastRan = new Date(lastRan);
     // console.log('lastRan', lastRan);
 
     // const runRecently = was(lastRan).under('1 minutes ago');
     // console.log('runRecently', runRecently);
 
-    // const sameWssHost = _wssLastTried === wssHost;
+    // const sameWssHost = wssLastTried === wssHost;
     // console.log('sameWssHost', sameWssHost);
 
     // const badWssHost = runRecently && sameWssHost;
@@ -34,7 +34,7 @@ exports.get = async () => {
 
     log.debug(`Trying: ${url}`, { status: 'connecting' });
 
-    await firebase.db.set('session', { _wssLastTried: wssHost });
+    await firebase.db.set('session', { wssLastTried: wssHost });
 
     return url;
   } catch (error) {

@@ -1,29 +1,29 @@
 const firebase = require('@services/firebase');
 
-// const addCreatedAt = require('./addCreatedAt');
-const addUpdatedAt = require('./addUpdatedAt');
+const purgeMarkets = require('./purgeMarkets');
 const cleanupDatabase = require('./cleanupDatabase');
-const deleteExpiredMarkets = require('./deleteExpiredMarkets');
+const removeMarketData = require('./removeMarketData');
+const removeContractData = require('./removeContractData');
 
 // prettier-ignore
 exports.cleanUpDatabase__manual = firebase.functions
   .https.onRequest(cleanupDatabase);
 
 // prettier-ignore
-exports.addUpdatedAtToSession = firebase.functions.database
-  .ref('session')
-  .onUpdate(addUpdatedAt);
-
-// prettier-ignore
-exports.addUpdatedAtToFunds = firebase.functions.database
-  .ref('funds')
-  .onUpdate(addUpdatedAt);
-
-// prettier-ignore
-exports.runNightlyCleanup = firebase.functions
+exports.purgeMarkets = firebase.functions
   .pubsub.schedule('every 24 hours')
-  .onRun(deleteExpiredMarkets);
+  .onRun(purgeMarkets);
 
 // prettier-ignore
-exports.runNightlyCleanup__manual = firebase.functions
-  .https.onRequest(deleteExpiredMarkets);
+exports.purgeMarkets__manual = firebase.functions
+  .https.onRequest(purgeMarkets);
+
+// prettier-ignore
+exports.removeMarketData = firebase.functions.database
+  .ref('markets/{id}')
+  .onDelete(removeMarketData);
+
+// prettier-ignore
+exports.removeContractData = firebase.functions.database
+  .ref('contracts/{id}')
+  .onDelete(removeContractData);

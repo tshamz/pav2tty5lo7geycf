@@ -1,6 +1,5 @@
-const csv = require('csvtojson');
-const fetch = require('node-fetch');
 const firebase = require('@services/firebase');
+const predictit = require('@services/predictit');
 
 module.exports = (frequency) => async (context, res) => {
   try {
@@ -8,18 +7,8 @@ module.exports = (frequency) => async (context, res) => {
     const contracts = await firebase.db.get(`contracts`);
 
     const fetchData = (marketId) => (timespan) => {
-      const url = `https://www.predictit.org/Resource/DownloadMarketChartData`;
-      const params = `?timespan=${timespan}&marketid=${marketId}`;
-      const headers = {
-        'User-Agent': `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36`,
-      };
-
-      const attachMarketAndTimespan = (row) => ({ ...row, marketId, timespan });
-
-      return fetch(url + params, { headers })
-        .then((response) => response.text())
-        .then((text) => csv().fromString(text))
-        .then((rows) => rows.map(attachMarketAndTimespan))
+      return predictit
+        .fetchTimespanData({ marketId, timespan })
         .then(parseData)
         .catch(console.error);
     };

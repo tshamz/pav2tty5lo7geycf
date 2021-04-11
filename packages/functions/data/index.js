@@ -2,18 +2,14 @@ const firebase = require('@services/firebase');
 
 const updateMarket = require('./updateMarket');
 const updateMarkets = require('./updateMarkets');
-const updateAccountFunds = require('./updateAccountFunds');
 const updateContractPrice = require('./updateContractPrice');
-// const updatePriceHistory = require('./updatePriceHistory');
 const updateTimespanData = require('./updateTimespanData');
+// const updateAccountFunds = require('./updateAccountFunds');
+// const updatePriceHistory = require('./updatePriceHistory');
 
 // prettier-ignore
-exports.updateMarkets__manual = firebase.functions.https
-  .onRequest(updateMarkets);
-
-// prettier-ignore
-exports.updateAccountFunds = firebase.functions.https
-  .onCall(updateAccountFunds);
+// exports.updateAccountFunds = firebase.functions.https
+//   .onCall(updateAccountFunds);
 
 // prettier-ignore
 exports.updateContractPrice = firebase.functions.https
@@ -29,9 +25,8 @@ exports.updateMarkets = firebase.functions.pubsub
   .onRun(updateMarkets);
 
 // prettier-ignore
-// exports.updatePriceHistory = firebase.functions.database
-//   .ref('prices/{contract}/lastTrade')
-//   .onWrite(updatePriceHistory);
+exports.updateMarkets__manual = firebase.functions.https
+  .onRequest(updateMarkets);
 
 // prettier-ignore
 exports.updateHourlyTimespanData = firebase.functions.pubsub
@@ -39,14 +34,19 @@ exports.updateHourlyTimespanData = firebase.functions.pubsub
   .onRun(updateTimespanData('hourly'));
 
 // prettier-ignore
+exports.updateHourlyTimespanData__manual = firebase.functions.https
+  .onRequest(updateTimespanData('hourly'));
+
+// prettier-ignore
 exports.updateDailyTimespanData = firebase.functions.pubsub
   .schedule('every day 16:05')
   .onRun(updateTimespanData('daily'));
 
 // prettier-ignore
-exports.updateHourlyTimespanData__manual = firebase.functions.https
-  .onRequest(updateTimespanData('hourly'));
-
-// prettier-ignore
 exports.updateDailyTimespanData__manual = firebase.functions.https
   .onRequest(updateTimespanData('daily'));
+
+// prettier-ignore
+// exports.updatePriceHistory = firebase.functions.database
+//   .ref('prices/{contract}/lastTrade')
+//   .onWrite(updatePriceHistory);

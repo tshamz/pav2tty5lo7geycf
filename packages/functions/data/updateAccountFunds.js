@@ -9,13 +9,10 @@ module.exports = async (data, context) => {
       invested: data.PortfolioBalanceDecimal,
       profitablePredictions: data.ProfitablePredictions,
       _timestamp: Date.now(),
-      _updatedAt: new Date().toLocaleString(),
     };
 
     await firebase.db.set(path, update);
   } catch (error) {
     firebase.logger.error(error.message);
-  } finally {
-    return null;
   }
 };

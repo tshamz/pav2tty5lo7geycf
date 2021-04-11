@@ -1,19 +1,9 @@
-const fetch = require('node-fetch');
 const firebase = require('@services/firebase');
+const predictit = require('@services/predictit');
 
 module.exports = async (context, res) => {
   try {
-    const url = 'https://www.predictit.org/api/marketdata/all';
-
-    const headers = {
-      Accept: '*/*',
-      Host: 'www.predictit.org',
-      'User-Agent': 'curl/7.64.1',
-    };
-
-    const markets = await fetch(url, { headers })
-      .then((response) => response.json())
-      .then((data) => data.markets);
+    const markets = await predictit.fetchAllMarkets();
 
     markets.forEach((market) => {
       const dateEnd = new Date(market.contracts[0].dateEnd + 'Z').getTime();
@@ -28,10 +18,9 @@ module.exports = async (context, res) => {
         [`markets/${market.id}/shortName`]: market.shortName,
         [`markets/${market.id}/image`]: market.image,
         [`markets/${market.id}/active`]: market.status === 'Open',
-        [`markets/${market.id}/dateEnd`]: dateEnd || null,
-        [`markets/${market.id}/daysLeft`]: Math.floor(daysLeft) || null,
+        [`markets/${market.id}/dateEnd`]: dateEnd || false,
+        [`markets/${market.id}/daysLeft`]: Math.floor(daysLeft) || false,
         [`markets/${market.id}/_timestamp`]: Date.now(),
-        [`markets/${market.id}/_updatedAt`]: new Date().toLocaleString(),
       };
 
       const contractUpdates = market.contracts.reduce(
@@ -45,7 +34,6 @@ module.exports = async (context, res) => {
           [`contracts/${contract.id}/image`]: contract.image,
           [`contracts/${contract.id}/displayOrder`]: contract.displayOrder,
           [`contracts/${contract.id}/_timestamp`]: Date.now(),
-          [`contracts/${contract.id}/_updatedAt`]: new Date().toLocaleString(),
         }),
         {}
       );
@@ -60,7 +48,6 @@ module.exports = async (context, res) => {
           [`prices/${contract.id}/sellYes`]: contract.bestSellYesCost,
           [`prices/${contract.id}/market`]: market.id,
           [`prices/${contract.id}/_timestamp`]: Date.now(),
-          [`prices/${contract.id}/_updatedAt`]: new Date().toLocaleString(),
         }),
         {}
       );
@@ -77,7 +64,5 @@ module.exports = async (context, res) => {
     if (res && res.sendStatus) {
       res.sendStatus(200);
     }
-
-    return null;
   }
 };

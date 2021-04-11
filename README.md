@@ -693,35 +693,6 @@ Speed Report
 
 NOTE: Speeds are reported at millisecond resolution and are not the latencies that clients will see. Pending times are also reported at millisecond resolution. They approximate the interval of time between the instant a request is received and the instant it executes.
 
-
-Read Speed
-
-┌──────────────────────┬───────┬─────────────────────────┬──────────────────────┬───────────────────┐
-│ Path                 │ Count │ Average Execution Speed │ Average Pending Time │ Permission Denied │
-├──────────────────────┼───────┼─────────────────────────┼──────────────────────┼───────────────────┤
-│ /contracts           │ 1     │ 23 ms                   │ 0 ms                 │ 0                 │
-├──────────────────────┼───────┼─────────────────────────┼──────────────────────┼───────────────────┤
-│ /markets             │ 61    │ 0.26 ms                 │ 3.30 ms              │ 0                 │
-├──────────────────────┼───────┼─────────────────────────┼──────────────────────┼───────────────────┤
-│ /prices              │ 60    │ 0.13 ms                 │ 0.17 ms              │ 0                 │
-└──────────────────────┴───────┴─────────────────────────┴──────────────────────┴───────────────────┘
-
-Write Speed
-
-┌──────────┬───────┬─────────────────────────┬──────────────────────┬───────────────────┐
-│ Path     │ Count │ Average Execution Speed │ Average Pending Time │ Permission Denied │
-├──────────┼───────┼─────────────────────────┼──────────────────────┼───────────────────┤
-│ /        │ 6859  │ 3.22 ms                 │ 75.48 ms             │ 0                 │
-└──────────┴───────┴─────────────────────────┴──────────────────────┴───────────────────┘
-
-Broadcast Speed
-
-┌──────────┬───────┬─────────────────────────┬──────────────────────┐
-│ Path     │ Count │ Average Execution Speed │ Average Pending Time │
-├──────────┼───────┼─────────────────────────┼──────────────────────┤
-│ /        │ 6859  │ 0.04 ms                 │ 0 ms                 │
-└──────────┴───────┴─────────────────────────┴──────────────────────┘
-
 Bandwidth Report
 
 Downloaded Bytes

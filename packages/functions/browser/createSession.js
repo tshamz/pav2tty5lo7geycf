@@ -12,9 +12,9 @@ const throwBackoffError = (message, data) => {
   throw new firebase.HttpsError('resource-exhausted', message, data);
 };
 
-const checkLastRan = async ({ _lastRan }) => {
+const checkLastRan = async (session) => {
   try {
-    const lastRan = new Date(_lastRan);
+    const lastRan = new Date(session.lastRan);
 
     if (was(lastRan).under('5 minutes ago')) {
       const timeSince = Date.now() - lastRan.getTime();
@@ -117,10 +117,14 @@ const parseSession = async ({ browser, page, localStorage }) => {
 
     return {
       wssHost,
+      ...localStorage,
       username: config.username,
       token: JSON.parse(localStorage.token || null),
+      eng_mt: JSON.parse(localStorage.eng_mt || null),
       tokenExpires: JSON.parse(localStorage.tokenExpires || null),
       refreshToken: JSON.parse(localStorage.refreshToken || null),
+      browseHeaders: JSON.parse(localStorage.browseHeaders || null),
+      _timestamp: Date.now(),
     };
   }
 };
@@ -137,7 +141,7 @@ module.exports = async (data, res) => {
 
     await checkLastRan(session);
 
-    await firebase.db.set('session', { _lastRan: Date.now() });
+    await firebase.db.set('session', { lastRan: Date.now() });
 
     const update = await createNewSession().then(parseSession);
 

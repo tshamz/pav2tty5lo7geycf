@@ -25,6 +25,14 @@ const getConnection = (name = '') => {
   return connection;
 };
 
+const getRef = (database) => (path) => {
+  return getConnection(database).ref(path);
+};
+
+const getSnapshot = (database) => (path) => {
+  return getConnection(database).ref(path).once('value');
+};
+
 const getPath = (database) => (path) => {
   return getConnection(database)
     .ref(path)
@@ -54,18 +62,24 @@ const pushPath = (database) => (...args) => {
 
 module.exports = {
   db: {
+    ref: getRef(),
     get: getPath(),
     set: setPath(),
     push: setPath(),
+    snapshot: getSnapshot(),
   },
   timespans: {
+    ref: getRef('timespans'),
     get: getPath('timespans'),
     set: setPath('timespans'),
     push: pushPath('timespans'),
+    snapshot: getSnapshot('timespans'),
   },
   priceHistory: {
+    ref: getRef('price-history'),
     get: getPath('price-history'),
     set: setPath('price-history'),
     push: pushPath('price-history'),
+    snapshot: getSnapshot('price-history'),
   },
 };

@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "@services/predictit",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "csvtojson": "^2.0.10",
+    "fake-useragent": "^1.0.1",
+    "node-fetch": "^2.6.1"
+  }
+}

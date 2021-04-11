@@ -12,6 +12,7 @@
     "packages/@services/express",
     "packages/@services/firebase",
     "packages/@services/logger",
+    "packages/@services/predictit",
     "packages/@services/twilio",
     "packages/@services/utils",
     "packages/@services/websocket"

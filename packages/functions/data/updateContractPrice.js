@@ -2,18 +2,17 @@ const firebase = require('@services/firebase');
 
 module.exports = async (data, context) => {
   try {
+    const path = `prices/${data.id}`;
+
     const update = {
-      [`prices/${data.id}/buyNo`]: data.BestNoPrice,
-      [`prices/${data.id}/buyYes`]: data.BestYesPrice,
-      [`prices/${data.id}/lastTrade`]: data.LastTradePrice,
-      [`prices/${data.id}/_timestamp`]: Date.now(),
-      [`prices/${data.id}/_updatedAt`]: new Date().toLocaleString(),
+      buyNo: data.BestNoPrice,
+      buyYes: data.BestYesPrice,
+      lastTrade: data.LastTradePrice,
+      _timestamp: Date.now(),
     };
 
-    await firebase.db.set(update);
+    await firebase.db.set(path, update);
   } catch (error) {
     firebase.logger.error(error.message);
-  } finally {
-    return null;
   }
 };

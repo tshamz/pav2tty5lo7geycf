@@ -1,20 +1,13 @@
 const TinyURL = require('tinyurl');
-const fetch = require('node-fetch');
 
 const twilio = require('@services/twilio');
+const firebase = require('@services/firebase');
+const predictit = require('@services/predictit');
 
 module.exports = async (snapshot, context) => {
   try {
-    const url = `https://www.predictit.org/api/marketdata/markets/${context.params.market}`;
+    const market = await predictit.fetchMarket(context.params.market);
 
-    const headers = {
-      Accept: '*/*',
-      Host: 'www.predictit.org',
-      'User-Agent': 'curl/7.64.1',
-    };
-
-    const response = await fetch(url, { headers });
-    const market = await response.json();
     const contracts = (market.contracts || [])
       .sort((a, b) => a.displayOrder < b.displayOrder)
       .map(({ shortName }) => `• ${shortName}`);
@@ -29,7 +22,5 @@ module.exports = async (snapshot, context) => {
     firebase.logger.debug(`Market Added: ${market.shortname}`);
   } catch (error) {
     firebase.logger.error(error.message);
-  } finally {
-    return null;
   }
 };
