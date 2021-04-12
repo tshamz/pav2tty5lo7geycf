@@ -1,6 +1,6 @@
 const firebase = require('@services/firebase');
 
-module.exports = async (data, context) => {
+module.exports = async (data) => {
   try {
     const path = 'funds';
 
@@ -8,7 +8,6 @@ module.exports = async (data, context) => {
       cash: data.AccountBalanceDecimal,
       invested: data.PortfolioBalanceDecimal,
       profitablePredictions: data.ProfitablePredictions,
-      // _timestamp: Date.now(),
     };
 
     await firebase.db.set(path, update);

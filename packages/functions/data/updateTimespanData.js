@@ -28,8 +28,8 @@ module.exports = (frequency) => async (context, res) => {
               ...(update[path] || []),
               {
                 timespan: row.timespan,
-                market: parseInt(row.marketId),
-                contract: parseInt(contract.id),
+                market: row.marketId,
+                contract: contract.id,
                 date: row.Date,
                 name: row.ContractName,
                 open: parseFloat(row.OpenSharePrice.slice(1)),
