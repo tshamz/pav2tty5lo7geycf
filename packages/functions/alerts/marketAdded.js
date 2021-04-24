@@ -19,7 +19,9 @@ module.exports = async (snapshot, context) => {
       await TinyURL.shorten(market.url),
     ]);
 
-    firebase.logger.debug(`Market Added: ${market.shortname}`);
+    firebase.logger.info(`Market Added: ${market.shortName}`);
+
+    return;
   } catch (error) {
     firebase.logger.error(error.message);
   }

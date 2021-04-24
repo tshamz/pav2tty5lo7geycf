@@ -10,7 +10,7 @@ module.exports = async (context, res) => {
       .fetchAllMarkets()
       .then((markets) => markets.map(({ id }) => `${id}`));
 
-    const missingIds = firebaseIds.filter((id) => !predictitIds.includes(id));
+    const keysToDelete = firebaseIds.filter((id) => !predictitIds.includes(id));
 
     const inactiveSnapshot = await marketsRef
       .orderByChild('active')
@@ -23,8 +23,6 @@ module.exports = async (context, res) => {
       .endAt(0)
       .once('value');
 
-    const keysToDelete = [...missingIds];
-
     negativeDaysLeft.forEach((snapshot) => keysToDelete.push(snapshot.key));
     inactiveSnapshot.forEach((snapshot) => keysToDelete.push(snapshot.key));
 
@@ -36,14 +34,14 @@ module.exports = async (context, res) => {
 
     await firebase.db.set(update);
 
-    console.log(`deleted ${ids.length} market keys.`, ids);
+    firebase.logger.info(`deleted ${ids.length} market keys.`);
+
+    return;
   } catch (error) {
     firebase.logger.error(error.message);
   } finally {
     if (res && res.sendStatus) {
       res.sendStatus(200);
     }
-
-    return null;
   }
 };

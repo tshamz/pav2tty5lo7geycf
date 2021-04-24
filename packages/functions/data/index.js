@@ -8,10 +8,6 @@ const updateTimespanData = require('./updateTimespanData');
 // const updatePriceHistory = require('./updatePriceHistory');
 
 // prettier-ignore
-// exports.updateAccountFunds = firebase.functions.https
-//   .onCall(updateAccountFunds);
-
-// prettier-ignore
 exports.updateContractPrice = firebase.functions.https
   .onCall(updateContractPrice);
 
@@ -19,34 +15,36 @@ exports.updateContractPrice = firebase.functions.https
 exports.updateMarket = firebase.functions.https
   .onCall(updateMarket);
 
-// prettier-ignore
 exports.updateMarkets = firebase.functions.pubsub
-  .schedule('every 10 minutes')
+  .schedule('every 10 mins')
   .onRun(updateMarkets);
+
+exports.updateHourlyTimespanData = firebase.functions
+  .runWith({ timeoutSeconds: 90 })
+  .pubsub.schedule('every 60 mins')
+  .onRun(updateTimespanData(['24h']));
+
+exports.updateDailyTimespanData = firebase.functions
+  .runWith({ timeoutSeconds: 90 })
+  .pubsub.schedule('every day 16:05')
+  .onRun(updateTimespanData(['7d', '30d', '90d']));
 
 // prettier-ignore
 exports.updateMarkets__manual = firebase.functions.https
   .onRequest(updateMarkets);
 
-// prettier-ignore
-exports.updateHourlyTimespanData = firebase.functions.pubsub
-  .schedule('05 * * * *')
-  .onRun(updateTimespanData('hourly'));
+exports.updateHourlyTimespanData__manual = firebase.functions
+  .runWith({ timeoutSeconds: 90 })
+  .https.onRequest(updateTimespanData(['24h']));
 
-// prettier-ignore
-exports.updateHourlyTimespanData__manual = firebase.functions.https
-  .onRequest(updateTimespanData('hourly'));
+exports.updateDailyTimespanData__manual = firebase.functions
+  .runWith({ timeoutSeconds: 90 })
+  .https.onRequest(updateTimespanData(['7d', '30d', '90d']));
 
-// prettier-ignore
-exports.updateDailyTimespanData = firebase.functions.pubsub
-  .schedule('every day 16:05')
-  .onRun(updateTimespanData('daily'));
+// // prettier-ignore
+// exports.updateAccountFunds = firebase.functions.https
+//   .onCall(updateAccountFunds);
 
-// prettier-ignore
-exports.updateDailyTimespanData__manual = firebase.functions.https
-  .onRequest(updateTimespanData('daily'));
-
-// prettier-ignore
 // exports.updatePriceHistory = firebase.functions.database
 //   .ref('prices/{contract}/lastTrade')
 //   .onWrite(updatePriceHistory);

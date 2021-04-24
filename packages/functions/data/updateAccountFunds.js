@@ -2,15 +2,13 @@ const firebase = require('@services/firebase');
 
 module.exports = async (data) => {
   try {
-    const path = 'funds';
-
-    const update = {
+    await firebase.db.set('funds', {
       cash: data.AccountBalanceDecimal,
       invested: data.PortfolioBalanceDecimal,
       profitablePredictions: data.ProfitablePredictions,
-    };
+    });
 
-    await firebase.db.set(path, update);
+    return;
   } catch (error) {
     firebase.logger.error(error.message);
   }

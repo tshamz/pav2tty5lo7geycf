@@ -145,7 +145,9 @@ module.exports = async (data, res) => {
 
     const update = await createNewSession().then(parseSession);
 
-    firebase.db.set('session', update);
+    await firebase.db.set('session', update);
+
+    firebase.logger.info(`created a new session with data`, update);
 
     return update;
   } catch (error) {

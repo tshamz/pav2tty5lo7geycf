@@ -49,11 +49,13 @@ module.exports = async (data, res) => {
     };
 
     await firebase.db.set(update);
-  } catch (error) {
-    firebase.logger.error(error.message);
-  } finally {
+
     if (res && res.status) {
       res.sendStatus(200);
     }
+
+    return;
+  } catch (error) {
+    firebase.logger.error(error.message);
   }
 };

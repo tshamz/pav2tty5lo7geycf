@@ -685,36 +685,5 @@ https://github.com/adamjoshuagray/PredictItPy
 https://github.com/cran/rpredictit
 
 
-⠏ 8175 operations recorded. Press [enter] to stop
-Report operations collected from 2021-04-05T10:21:20.864Z over 3590322 ms.
-
-Speed Report
-
-
-NOTE: Speeds are reported at millisecond resolution and are not the latencies that clients will see. Pending times are also reported at millisecond resolution. They approximate the interval of time between the instant a request is received and the instant it executes.
-
-Bandwidth Report
-
-Downloaded Bytes
-
-┌──────────────────────┬───────────┬───────┬──────────────────────┐
-│ Path                 │ Total     │ Count │ Average              │
-├──────────────────────┼───────────┼───────┼──────────────────────┤
-│ /markets             │ 7.08 MB   │ 61    │ 116.08 kB            │
-├──────────────────────┼───────────┼───────┼──────────────────────┤
-│ /prices              │ 5.94 MB   │ 60    │ 98.94 kB             │
-├──────────────────────┼───────────┼───────┼──────────────────────┤
-│ /contracts           │ 475.65 kB │ 1     │ 475.65 kB            │
-├──────────────────────┼───────────┼───────┼──────────────────────┤
-│ /                    │ 3.34 kB   │ 6,859 │ 0.4870972444962823 B │
-└──────────────────────┴───────────┴───────┴──────────────────────┘
-
-Uploaded Bytes
-
-┌──────────┬──────────┬───────┬──────────┐
-│ Path     │ Total    │ Count │ Average  │
-├──────────┼──────────┼───────┼──────────┤
-│ /        │ 13.65 MB │ 6,859 │ 1.99 kB  │
-├──────────┼──────────┼───────┼──────────┤
-│ /session │ 2.38 kB  │ 12    │ 198.25 B │
-└──────────┴──────────┴───────┴──────────┘
+## Bots
+- bot to sell of chucks of a large position as to not spook buyers

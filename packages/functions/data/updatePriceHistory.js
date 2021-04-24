@@ -7,16 +7,13 @@ module.exports = async (snapshot, context) => {
 
     if (isSame || wasDeleted) return;
 
-    const path = context.params.contract;
-
-    const update = {
+    // todo: use rtdb lists instead
+    await firebase.priceHistory.set(context.params.contract, {
       [Date.now()]: snapshot.after.val(),
-    };
+    });
 
-    await firebase.priceHistory.set(path, update);
+    return;
   } catch (error) {
     firebase.logger.error(error.message);
-  } finally {
-    return null;
   }
 };

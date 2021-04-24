@@ -2,14 +2,12 @@ const firebase = require('@services/firebase');
 
 module.exports = async (data) => {
   try {
-    const path = `markets/${data.id}`;
-
-    const update = {
+    await firebase.db.set(`markets/${data.id}`, {
       active: data.Status === 'Open',
       totalSharesTraded: data.TotalSharesTraded,
-    };
+    });
 
-    await firebase.db.set(path, update);
+    return;
   } catch (error) {
     firebase.logger.error(error.message);
   }

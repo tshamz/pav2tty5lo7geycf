@@ -19,22 +19,21 @@ module.exports = async (snapshot, context) => {
     const id = context.params.market;
     const market = await firebase.db.get(`markets/${id}`);
     const contracts = await firebase.db.get('contracts');
-    const getContractName = (id) => `• ${contracts[id].shortName}`;
-    const addedContracts = added.map(getContractName);
-    const removedContracts = removed.map(getContractName);
+    const newContracts = added.map((id) => `• ${contracts[id].shortName}`);
+    const oldContracts = removed.map((id) => `• ${contracts[id].shortName}`);
 
     await twilio.sendMessage([
       `Contracts Updated!`,
       [`Market:`, market.shortName],
-      added.length && [`Contracts Added:`, addedContracts.join('\n')],
-      removed.length && [`Contracts Removed:`, removedContracts.join('\n')],
+      added.length && [`Contracts Added:`, newContracts.join('\n')],
+      removed.length && [`Contracts Removed:`, oldContracts.join('\n')],
       await TinyURL.shorten(market.url),
     ]);
 
-    firebase.logger.info(`Contracts Updated: ${market.shortname}`);
+    firebase.logger.info(`Contracts Updated: ${market.shortName}`);
+
+    return;
   } catch (error) {
     firebase.logger.error(error.message);
-  } finally {
-    return null;
   }
 };

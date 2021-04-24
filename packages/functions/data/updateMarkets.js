@@ -5,14 +5,13 @@ module.exports = async (context, res) => {
   try {
     const markets = await predictit.fetchAllMarkets();
 
-    markets.forEach((market) => {
-      const dateEnd = new Date(market.contracts[0].dateEnd + 'Z').getTime();
+    const update = markets.reduce((updates, { contracts, ...market }) => {
+      const dateEnd = new Date(contracts[0].dateEnd + 'Z').getTime();
       const daysLeft = (dateEnd - Date.now()) / (24 * 60 * 60 * 1000);
 
-      // prettier-ignore
       const marketUpdates = {
-        [`markets/${market.id}/id`]: market.id.toString(),
-        [`markets/${market.id}/contracts`]: market.contracts.map(({ id }) => id.toString()),
+        [`markets/${market.id}/id`]: `${market.id}`,
+        [`markets/${market.id}/contracts`]: contracts.map(({ id }) => `${id}`),
         [`markets/${market.id}/url`]: market.url,
         [`markets/${market.id}/name`]: market.name,
         [`markets/${market.id}/shortName`]: market.shortName,
@@ -22,11 +21,11 @@ module.exports = async (context, res) => {
         [`markets/${market.id}/daysLeft`]: Math.floor(daysLeft) || false,
       };
 
-      const contractUpdates = market.contracts.reduce(
+      const contractUpdates = contracts.reduce(
         (updates, contract) => ({
           ...updates,
-          [`contracts/${contract.id}/id`]: contract.id.toString(),
-          [`contracts/${contract.id}/market`]: market.id.toString(),
+          [`contracts/${contract.id}/id`]: `${contract.id}`,
+          [`contracts/${contract.id}/market`]: `${market.id}`,
           [`contracts/${contract.id}/url`]: market.url,
           [`contracts/${contract.id}/name`]: contract.name,
           [`contracts/${contract.id}/shortName`]: contract.shortName,
@@ -36,11 +35,11 @@ module.exports = async (context, res) => {
         {}
       );
 
-      const priceUpdates = market.contracts.reduce(
+      const priceUpdates = contracts.reduce(
         (updates, contract) => ({
           ...updates,
-          [`prices/${contract.id}/id`]: contract.id.toString(),
-          [`prices/${contract.id}/market`]: market.id.toString(),
+          [`prices/${contract.id}/id`]: `${contract.id}`,
+          [`prices/${contract.id}/market`]: `${market.id}`,
           [`prices/${contract.id}/buyNo`]: contract.bestBuyNoCost,
           [`prices/${contract.id}/buyYes`]: contract.bestBuyYesCost,
           [`prices/${contract.id}/sellNo`]: contract.bestSellNoCost,
@@ -49,12 +48,19 @@ module.exports = async (context, res) => {
         {}
       );
 
-      firebase.db.set({
+      return {
+        ...updates,
         ...marketUpdates,
         ...contractUpdates,
         ...priceUpdates,
-      });
-    });
+      };
+    }, {});
+
+    await firebase.db.set(update);
+
+    firebase.logger.info(`updated market data from predictit`);
+
+    return;
   } catch (error) {
     firebase.logger.error(error.message);
   } finally {
