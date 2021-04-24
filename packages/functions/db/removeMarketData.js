@@ -4,16 +4,19 @@ module.exports = async (snapshot, context) => {
   try {
     const deletedMarket = await snapshot.val();
 
-    const contractUpdate = deletedMarket.contracts
-      .map((id) => `contracts/${id}`)
-      .reduce((update, path) => ({ ...update, [path]: null }), {});
-
-    await Promise.all([
-      firebase.db.set(contractUpdate),
-      firebase.timespans.set({
+    if (deletedMarket?.id) {
+      await firebase.timespans.set({
         [deletedMarket.id]: null,
-      }),
-    ]);
+      });
+    }
+
+    if (deletedMarket?.contracts) {
+      const contractUpdate = deletedMarket?.contracts
+        .map((id) => `contracts/${id}`)
+        .reduce((update, path) => ({ ...update, [path]: null }), {});
+
+      await firebase.db.set(contractUpdate);
+    }
 
     return;
   } catch (error) {
