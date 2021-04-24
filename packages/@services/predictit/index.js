@@ -10,11 +10,7 @@ const fromPredictit = async ({ path, params, asJson = true }) => {
     const headers = { 'User-Agent': fakeUserAgent() };
     const response = await fetch(url.toString(), { headers });
 
-    if (asJson) {
-      return response.json();
-    }
-
-    return response.text();
+    return asJson ? await response.json() : await response.text();
   } catch (error) {
     console.error(error);
     throw error;
