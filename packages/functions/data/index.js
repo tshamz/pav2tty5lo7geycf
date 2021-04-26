@@ -32,27 +32,27 @@ exports.updateContractPrice = firebase.functions
 
 // prettier-ignore
 exports.updateHourlyTimespanData = firebase.functions
-  .runWith({ timeoutSeconds: 300 })
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
   .pubsub
   .schedule('every 60 mins')
   .onRun(updateTimespanData(HOURLY_TIMESPANS));
 
 // prettier-ignore
 exports.updateHourlyTimespanData__manual = firebase.functions
-  .runWith({ timeoutSeconds: 300 })
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
   .https
   .onRequest(updateTimespanData(HOURLY_TIMESPANS));
 
 // prettier-ignore
 exports.updateDailyTimespanData = firebase.functions
-  .runWith({ timeoutSeconds: 300 })
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
   .pubsub
   .schedule('every day 16:05')
   .onRun(updateTimespanData(DAILY_TIMESPANS));
 
 // prettier-ignore
 exports.updateDailyTimespanData__manual = firebase.functions
-  .runWith({ timeoutSeconds: 300 })
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
   .https
   .onRequest(updateTimespanData(DAILY_TIMESPANS));
 
