@@ -14,8 +14,8 @@ module.exports = (timespans) => async (context, res) => {
 
       return data.map((row) => ({
         timespan,
-        market: market.id,
-        contract: getContract(row.ContractName).id,
+        market: `${market.id}`,
+        contract: `${getContract(row.ContractName).id}`,
         date: row.Date,
         name: row.ContractName,
         open: parseFloat(row.OpenSharePrice.slice(1)),
