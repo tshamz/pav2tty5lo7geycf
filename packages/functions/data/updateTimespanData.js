@@ -10,12 +10,12 @@ module.exports = (timespans) => async (context, res) => {
 
     const parseData = ({ market, timespan }) => (data) => {
       const getContract = (name) =>
-        market.contracts.find(({ shortName }) => shortName === name);
+        market.contracts.find(({ shortName }) => shortName === name) || {};
 
       return data.map((row) => ({
         timespan,
         market: market.id,
-        contract: getContract(row.ContractName)?.id,
+        contract: getContract(row.ContractName).id,
         date: row.Date,
         name: row.ContractName,
         open: parseFloat(row.OpenSharePrice.slice(1)),
@@ -47,8 +47,12 @@ module.exports = (timespans) => async (context, res) => {
         .then(prepareUpdate);
     };
 
-    const fetchTimespans = (timespan) => {
+    const fetchTimespans = async (timespan, index) => {
+      const pauseLength = 60000 * index;
       const fetchTimespan = fetchMarketTimespan(timespan);
+
+      await require('wait')(pauseLength);
+
       return Promise.all(markets.map(fetchTimespan)).then(mergePaths);
     };
 

@@ -5,22 +5,30 @@ const purgeMarkets = require('./purgeMarkets');
 const removeMarketData = require('./removeMarketData');
 const removeContractData = require('./removeContractData');
 
-// // prettier-ignore
-// exports.cleanUpDatabase__manual = firebase.functions
-//   .https.onRequest(cleanupDatabase);
-
-exports.purgeMarkets = firebase.functions.pubsub
+// prettier-ignore
+exports.purgeMarkets = firebase.functions
+  .pubsub
   .schedule('every 24 hours')
   .onRun(purgeMarkets);
 
 // prettier-ignore
 exports.purgeMarkets__manual = firebase.functions
-  .https.onRequest(purgeMarkets);
+  .https
+  .onRequest(purgeMarkets);
 
-exports.removeMarketData = firebase.functions.database
+// // prettier-ignore
+// exports.cleanUpDatabase__manual = firebase.functions
+//   .https
+//   .onRequest(cleanupDatabase);
+
+// prettier-ignore
+exports.removeMarketData = firebase.functions
+  .database
   .ref('markets/{id}')
   .onDelete(removeMarketData);
 
-exports.removeContractData = firebase.functions.database
+// prettier-ignore
+exports.removeContractData = firebase.functions
+  .database
   .ref('contracts/{id}')
   .onDelete(removeContractData);

@@ -4,14 +4,10 @@ module.exports = async (snapshot, context) => {
   try {
     const deletedContract = await snapshot.val();
 
-    if (deletedContract?.id) {
+    if (deletedContract && deletedContract.id) {
       await Promise.all([
         firebase.db.set({
           [`prices/${deletedContract.id}`]: null,
-          [`orderBooks/${deletedContract.id}`]: null,
-        }),
-        firebase.priceHistory.set({
-          [deletedContract.id]: null,
         }),
       ]);
     }

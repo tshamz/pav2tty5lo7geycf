@@ -5,46 +5,58 @@ const updateMarkets = require('./updateMarkets');
 const updateContractPrice = require('./updateContractPrice');
 const updateTimespanData = require('./updateTimespanData');
 // const updateAccountFunds = require('./updateAccountFunds');
-// const updatePriceHistory = require('./updatePriceHistory');
+
+const HOURLY_TIMESPANS = ['24h'];
+const DAILY_TIMESPANS = ['7d', '30d', '90d'];
 
 // prettier-ignore
-exports.updateContractPrice = firebase.functions.https
-  .onCall(updateContractPrice);
-
-// prettier-ignore
-exports.updateMarket = firebase.functions.https
+exports.updateMarket = firebase.functions
+  .https
   .onCall(updateMarket);
 
-exports.updateMarkets = firebase.functions.pubsub
+// prettier-ignore
+exports.updateMarkets = firebase.functions
+  .pubsub
   .schedule('every 10 mins')
   .onRun(updateMarkets);
 
-exports.updateHourlyTimespanData = firebase.functions
-  .runWith({ timeoutSeconds: 90 })
-  .pubsub.schedule('every 60 mins')
-  .onRun(updateTimespanData(['24h']));
-
-exports.updateDailyTimespanData = firebase.functions
-  .runWith({ timeoutSeconds: 90 })
-  .pubsub.schedule('every day 16:05')
-  .onRun(updateTimespanData(['7d', '30d', '90d']));
-
 // prettier-ignore
-exports.updateMarkets__manual = firebase.functions.https
+exports.updateMarkets__manual = firebase.functions
+  .https
   .onRequest(updateMarkets);
 
-exports.updateHourlyTimespanData__manual = firebase.functions
-  .runWith({ timeoutSeconds: 90 })
-  .https.onRequest(updateTimespanData(['24h']));
+// prettier-ignore
+exports.updateContractPrice = firebase.functions
+  .https
+  .onCall(updateContractPrice);
 
+// prettier-ignore
+exports.updateHourlyTimespanData = firebase.functions
+  .runWith({ timeoutSeconds: 300 })
+  .pubsub
+  .schedule('every 60 mins')
+  .onRun(updateTimespanData(HOURLY_TIMESPANS));
+
+// prettier-ignore
+exports.updateHourlyTimespanData__manual = firebase.functions
+  .runWith({ timeoutSeconds: 300 })
+  .https
+  .onRequest(updateTimespanData(HOURLY_TIMESPANS));
+
+// prettier-ignore
+exports.updateDailyTimespanData = firebase.functions
+  .runWith({ timeoutSeconds: 300 })
+  .pubsub
+  .schedule('every day 16:05')
+  .onRun(updateTimespanData(DAILY_TIMESPANS));
+
+// prettier-ignore
 exports.updateDailyTimespanData__manual = firebase.functions
-  .runWith({ timeoutSeconds: 90 })
-  .https.onRequest(updateTimespanData(['7d', '30d', '90d']));
+  .runWith({ timeoutSeconds: 300 })
+  .https
+  .onRequest(updateTimespanData(DAILY_TIMESPANS));
 
 // // prettier-ignore
-// exports.updateAccountFunds = firebase.functions.https
+// exports.updateAccountFunds = firebase.functions
+//   .https
 //   .onCall(updateAccountFunds);
-
-// exports.updatePriceHistory = firebase.functions.database
-//   .ref('prices/{contract}/lastTrade')
-//   .onWrite(updatePriceHistory);

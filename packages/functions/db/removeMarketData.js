@@ -4,14 +4,14 @@ module.exports = async (snapshot, context) => {
   try {
     const deletedMarket = await snapshot.val();
 
-    if (deletedMarket?.id) {
+    if (deletedMarket && deletedMarket.id) {
       await firebase.timespans.set({
         [deletedMarket.id]: null,
       });
     }
 
-    if (deletedMarket?.contracts) {
-      const contractUpdate = deletedMarket?.contracts
+    if (deletedMarket && deletedMarket.contracts) {
+      const contractUpdate = deletedMarket.contracts
         .map((id) => `contracts/${id}`)
         .reduce((update, path) => ({ ...update, [path]: null }), {});
 

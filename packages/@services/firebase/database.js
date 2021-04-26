@@ -44,20 +44,14 @@ const setPath = (database) => (...args) => {
   const path = args.length === 1 ? undefined : args[0];
   const update = args.length === 1 ? args[0] : args[1];
 
-  // prettier-ignore
-  return getConnection(database)
-    .ref(path)
-    .update(update);
+  return getConnection(database).ref(path).update(update);
 };
 
 const pushPath = (database) => (...args) => {
   const path = args.length === 1 ? undefined : args[0];
   const update = args.length === 1 ? args[0] : args[1];
 
-  // prettier-ignore
-  return getConnection(database)
-    .ref(path)
-    .push(update);
+  return getConnection(database).ref(path).push(update);
 };
 
 module.exports = {
@@ -74,12 +68,5 @@ module.exports = {
     set: setPath('timespans'),
     push: pushPath('timespans'),
     snapshot: getSnapshot('timespans'),
-  },
-  priceHistory: {
-    ref: getRef('price-history'),
-    get: getPath('price-history'),
-    set: setPath('price-history'),
-    push: pushPath('price-history'),
-    snapshot: getSnapshot('price-history'),
   },
 };
