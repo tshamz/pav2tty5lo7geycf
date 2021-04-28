@@ -4,7 +4,7 @@ const updateMarket = require('./updateMarket');
 const updateMarkets = require('./updateMarkets');
 const updateContractPrice = require('./updateContractPrice');
 const updateTimespanData = require('./updateTimespanData');
-// const updateAccountFunds = require('./updateAccountFunds');
+const updateOrderBooks = require('./updateOrderBooks');
 
 const HOURLY_TIMESPANS = ['24h'];
 const DAILY_TIMESPANS = ['7d', '30d', '90d'];
@@ -56,7 +56,13 @@ exports.updateDailyTimespanData__manual = firebase.functions
   .https
   .onRequest(updateTimespanData(DAILY_TIMESPANS));
 
-// // prettier-ignore
-// exports.updateAccountFunds = firebase.functions
-//   .https
-//   .onCall(updateAccountFunds);
+// prettier-ignore
+exports.updateOrderBooks = firebase.functions
+  .pubsub
+  .schedule('every 60 mins')
+  .onRun(updateOrderBooks);
+
+// prettier-ignore
+exports.updateOrderBooks__manual = firebase.functions
+  .https
+  .onRequest(updateOrderBooks);

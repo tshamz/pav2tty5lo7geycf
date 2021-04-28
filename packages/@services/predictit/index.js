@@ -2,10 +2,12 @@ const csv = require('csvtojson');
 const fetch = require('node-fetch');
 const fakeUserAgent = require('fake-useragent');
 
-const fromPredictit = async ({ path, params, asJson = true }) => {
+const fromPredictit = async ({ url, path, params, asJson = true }) => {
   try {
-    const url = new URL(path, `https://www.predictit.org`);
-    url.search = new URLSearchParams(params);
+    if (!url) {
+      url = new URL(path, `https://www.predictit.org`);
+      url.search = new URLSearchParams(params);
+    }
 
     const headers = { 'User-Agent': fakeUserAgent() };
     const response = await fetch(url.toString(), { headers });
@@ -36,8 +38,15 @@ const fetchMarketChartData = (params) => {
   return fromPredictit({ path, params, asJson: false }).then(parseTextAsCsv);
 };
 
+const fetchOrderBooks = () => {
+  const url = `https://predictit-f497e.firebaseio.com/contractOrderBook.json`;
+
+  return fromPredictit({ url });
+};
+
 module.exports = {
   fetchMarket,
   fetchAllMarkets,
   fetchMarketChartData,
+  fetchOrderBooks,
 };

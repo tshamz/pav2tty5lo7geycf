@@ -82,6 +82,13 @@ The main purpose for this "app" has been to gain a competitive advantage over ot
 
 ## Getting Started
 
+<details>
+  <summary>
+    <strong>Expand / Collapse</strong>
+  </summary>
+  <p>
+  
+
 ### Requirements
 - node: `12.18.0`
 - yarn: `2.4.0`
@@ -158,49 +165,57 @@ $ yarn dev:notifications
 
 # see scripts in root package.json for more details
 ```
+  </p>
+</details>
 
 ## Application Structure
 
-### Express Servers
+### • Express Servers
+<details>
+  <summary>
+    <strong>Expand / Collapse</strong>
+  </summary>
+  <p>
+
 
 There are two express servers that each open up a single websocket connection with Predictit, one for realtime market/contract updates (`markets/`), one for for platform notifications (`notifications/`). Both take care of opening up their connection with Predictit, reconnecting if the their link gets severed, and handling the receipt of messages pushed from Predictit. After parsing out the data from the received message, it's then sent to a firebase function for storage in our own realtime database. The servers are deployed as services to their own containers on Google App Engine.
 
 **Notes:**
-* The `status` is there as the default Google App Engine service; it doesn't do anything noteworthy
 * The market/contract messages are sent from Predictit when:
   - Market volume changes
   - Contract price changes
   - Contract order book changes (order is bought/sold/added/removed)
     - These messages aren't sent unless explicitly subscribed to (see below)
-* The notifications messages are sent from Predictit when:
-  - Market is opened or closed
-  - Site enters/exits maintenance mode
-  - User sells shares, buys shares, deposits, withdraws
-  - User opened new buy/sell order
-  - User's open order in market is bought/sold
 * Messages that can be sent to Predictit include:
   - Asking Predictit to start/stop sending message for a specific order book's changes
 * The market/contract websocket connection is unauthenticated
-* The notifications connection is authenticated (messages are specific to authenticated user)
 
-### Firebase Functions
+  </p>
+</details>
+
+
+### • Firebase Functions
+<details>
+  <summary>
+    <strong>Expand / Collapse</strong>
+  </summary>
+  <p>
+
 There's a suite of firebase serverless functions that are used for performing different actions throughout the app. These actions can be triggered by changes to the database, on a schedule, explicitly called from somewhere within the app, or manually through an http request. As of right now actions are grouped by: **alerts**, **browser**, **data**, and **db**.
-
-_**Note:** Some of the below links might be off by a few lines_
 
 #### 🚨 Alerts
 
 ##### [`contractsUpdated.js`](/packages/functions/alerts/contractsUpdated.js)
 - Sends an sms when a contract is added to a market
-- Triggered by [update](/packages/functions/alerts/index.js#L10) to [`markets/{market}/contracts` node](/packages/functions/alerts/index.js#L9)
+- Triggered by [update](/packages/functions/alerts/index.js) to [`markets/{market}/contracts` node](/packages/functions/alerts/index.js)
 
 ##### [`marketAdded.js`](/packages/functions/alerts/marketAdded.js)
 - Sends an sms when new market is created
-- Triggered when [`markets/{market}` node](/packages/functions/alerts/index.js#L14) is [created](/packages/functions/alerts/index.js#L15)
+- Triggered when [`markets/{market}` node](/packages/functions/alerts/index.js) is [created](/packages/functions/alerts/index.js)
 
 ##### [`marketClosing.js`](/packages/functions/alerts/marketClosing.js)
 - Sends an sms when a market is closing in the next 24 hours
-- Triggered when [`markets/{market}/daysLeft` property](/packages/functions/alerts/index.js#L14) is [updated](/packages/functions/alerts/index.js#L20)
+- Triggered when [`markets/{market}/daysLeft` property](/packages/functions/alerts/index.js) is [updated](/packages/functions/alerts/index.js)
 
 
 #### 🌎 Browser
@@ -210,7 +225,7 @@ _**Note:** Some of the below links might be off by a few lines_
 - The session data can then be used to turn a future unauthenticated puppeteer instance into an authenticated one without the extra step of entering in credentials
 - This is important because without it, if you are using puppeteer to perform 100's of automated actions through out the day, it will also create 100's of new authenticated sessions which is likely to arouse suspicion
 - The session data includes the current websocket url used to connect to the Predictit market/contract websocket used mentioned above
-- This function is [scheduled](/packages/functions/browser/index.js#L18) to run automatically once a day in order to keep session data fresh or run [on call](/packages/functions/browser/index.js#L13) when needed
+- This function is [scheduled](/packages/functions/browser/index.js) to run automatically once a day in order to keep session data fresh or run [on call](/packages/functions/browser/index.js) when needed
     
 **Notes**
 - This technology can be used to automate buying and selling, which is a key part of how this whole system makes money
@@ -220,51 +235,27 @@ _**Note:** Some of the below links might be off by a few lines_
 #### 📊 Data
 
 ##### [`updateAccountFunds.js`](/packages/functions/data/updateAccountFunds.js)
-- Updates user's Predictit account fund [data](/packages/functions/data/updateAccountFunds.js#L5-L11):
+- Updates user's Predictit account fund [data](/packages/functions/data/updateAccountFunds.js):
   - available cash
   - amount invested
   - profitable predictions
-- Data is under the [`funds`](/packages/functions/data/updateAccountFunds.js#L13) node inside the default database
-- Triggered by [`accountfunds_data`](/packages/notifications/onMessage.js#L23) message sent from Predictit on `notifications` server
-
-##### [`updateContractPosition.js`](/packages/functions/data/updateContractPosition.js)
-- ⚠️ **`WORK IN PROGRESS`**
-- Updates all active contract position [data](/packages/functions/data/updateContractPosition.js#L13-L22):
-  - market id
-  - prediction (yes/no)
-  - quantity
-  - open buy orders
-  - open sell orders
-  - average price of owned shares
-- Data is under the [`contractPositions`](/packages/functions/data/updateContractPosition.js#L24) node in the default database
-- Triggered by [`contractOwnershipUpdate_data`](/packages/notifications/onMessage.js#L36) message sent from Predictit on `notifications` server
+- Data is under the [`funds`](/packages/functions/data/updateAccountFunds.js) node inside the default database
+- Triggered by [`accountfunds_data`](/packages/notifications/onMessage.js) message sent from Predictit on `notifications` server
 
 ##### [`updateContractPrice.js`](/packages/functions/data/updateContractPrice.js)
-- Updates realtime contract price [data](/packages/functions/data/updateContractPrice.js#L6-L10)
-- Data is under the [`prices/{contract_id}/lastTrade`](/packages/functions/data/updateContractPrice.js#L5) property in the default database
-- Triggered by [`contractStats`](/packages/markets/onMessage.js#L19) message sent from Predictit on `markets` server
-- The data under the `prices` node is important because a number of other functions and databases depend on it:
-  - [`updatePriceHistory.js`](/packages/functions/data/updatePriceHistory.js) and `price-history` database
-  - [`updatePriceInterval.js`](/packages/functions/data/updatePriceInterval.js) and `price-interval` database
-  - [`updatePriceOHLC.js`](/packages/functions/data/updatePriceOHLC.js) and `price-ohcl` database
+- Updates realtime contract price [data](/packages/functions/data/updateContractPrice.js)
+- Data is under the [`prices/{contract_id}/lastTrade`](/packages/functions/data/updateContractPrice.js) property in the default database
+- Triggered by [`contractStats`](/packages/markets/onMessage.js) message sent from Predictit on `markets` server
 
 ##### [`updateMarket.js`](/packages/functions/data/updateMarket.js)
-- Updates realtime information about [markets](/packages/functions/data/updateMarket.js#L6-L11):
+- Updates realtime information about [markets](/packages/functions/data/updateMarket.js):
   - market active
   - total trade volume
-- Data is under the [`markets/{market_id}` nodes](/packages/functions/data/updateMarket.js#L5) in the default database
-- Triggered by [`marketStats`](/packages/markets/onMessage.js#L15) message sent from Predictit on `markets` server
-
-##### [`updateMarketPosition.js`](/packages/functions/data/updateMarketPosition.js)
-- ⚠️ **`WORK IN PROGRESS`**
-- Updates meta information about all active contract positions in a particular market
-  - total investment
-  - max payout
-- Data is under the `marketPositions` node in the default database
-- Triggered by `marketOwnershipUpdate_data` message sent from Predictit on `notifications` server
+- Data is under the [`markets/{market_id}` nodes](/packages/functions/data/updateMarket.js) in the default database
+- Triggered by [`marketStats`](/packages/markets/onMessage.js) message sent from Predictit on `markets` server
 
 ##### [`updateMarkets.js`](/packages/functions/data/updateMarkets.js)
-- Updates [market](/packages/functions/data/updateMarkets.js#L67) and [contract](/packages/functions/data/updateMarkets.js#L101) metadata, as well as additional [price](/packages/functions/data/updateMarkets.js#L115) data
+- Updates [market](/packages/functions/data/updateMarkets.js) and [contract](/packages/functions/data/updateMarkets.js) metadata, as well as additional [price](/packages/functions/data/updateMarkets.js) data
   - Market data updated under the `markets/{market_id}` node:
     - id
     - url
@@ -292,13 +283,26 @@ _**Note:** Some of the below links might be off by a few lines_
     - market
 - Data is provided by the official Predictit public api, which is only updated once every 60 seconds and therefore is considered stale
   - Only metadata and non-critical price data is collected from this API
-  - Data is only fetched [once every 60 seconds](/packages/functions/data/index.js#L42)
+  - Data is only fetched [once every 60 seconds](/packages/functions/data/index.js)
 
-##### [`updateOpenOrders.js`](/packages/functions/data/updateOpenOrders.js)
-- ⚠️ **`WORK IN PROGRESS`**
-- Updates orders that have not been completely fulfilled yet
-- Data is under the `openOrders` node in the default database
-- Triggered by `tradeConfirmed_data` and `notification_shares_traded` messages sent from Predictit on `notifications` server
+##### [`updateTimespanData.js`](/packages/functions/data/updateTimespanData.js)
+- 
+
+#### 💾 DB
+
+##### [`cleanupDatabase.js`](/packages/functions/db/cleanupDatabase.js)
+- Utility function that is triggered [manually](/packages/functions/db/index.js) clean up databases
+
+##### [`purgeMarkets.js`](/packages/functions/db/purgeMarkets.js)
+- 
+
+##### [`removeContractData.js`](/packages/functions/db/removeContractData.js)
+- 
+
+##### [`removeMarketData.js`](/packages/functions/db/removeMarketData.js)
+- 
+
+#### 🚧 WIP
 
 ##### [`updateOrderBook.js`](/packages/functions/data/updateOrderBook.js)
 - ⚠️ **`WORK IN PROGRESS`**
@@ -310,20 +314,14 @@ _**Note:** Some of the below links might be off by a few lines_
 ##### [`updatePriceHistory.js`](/packages/functions/data/updatePriceHistory.js)
 - ⚠️ sorta...**`WORK IN PROGRESS`**
 - Tracks changes in `lastTrade` price of all contracts
-- Responds to [writes](/packages/functions/data/index.js#L57) to the [`prices/{contract_id}/lastTrade`](/packages/functions/data/index.js#L56) property in the default database
-- Updates the [`{contract_id}/{timestamp}`](/packages/functions/data/updatePriceHistory.js#L13) property in the [`price-history`](/packages/functions/data/updatePriceHistory.js#L15) database
+- Responds to [writes](/packages/functions/data/index.js) to the [`prices/{contract_id}/lastTrade`](/packages/functions/data/index.js) property in the default database
+- Updates the [`{contract_id}/{timestamp}`](/packages/functions/data/updatePriceHistory.js) property in the [`price-history`](/packages/functions/data/updatePriceHistory.js) database
 
 ##### [`updatePriceInterval.js`](/packages/functions/data/updatePriceInterval.js)
 - ⚠️ sorta...**`WORK IN PROGRESS`**
-- Tracks `lastTrade` price of all contracts at a consistent interval [(currently every 10 minutes)](/packages/functions/data/index.js#L61)
+- Tracks `lastTrade` price of all contracts at a consistent interval [(currently every 10 minutes)](/packages/functions/data/index.js)
 - Uses data from `prices/{contract_id}/lastTrade` property in the default database
 - Updates the `{contract_id}/{timestamp}` property in the `price-interval` database
-
-##### [`updatePriceOHLC.js`](/packages/functions/data/updatePriceOHLC.js)
-- ⚠️ sorta...**`WORK IN PROGRESS`**
-- Tracks "open", high, low, and "close" prices of all contracts at a consistent interval [(currently every 1 hour)](/packages/functions/data/index.js#L66)
-- Uses `lastTrade` and `open` property data from `prices/{contract_id}` nodes in the default database
-- Updates the `{contract_id}/{timestamp}` node in the `price-ohlc` database
 
 ##### [`updateTradeHistory.js`  ](/packages/functions/data/updateTradeHistory.js)
 - Keeps a list of all trade data:
@@ -337,27 +335,18 @@ _**Note:** Some of the below links might be off by a few lines_
   - price
   - trade type
 - Data is in the `trade-history` database
-- Triggered by `tradeConfirmed_data` message sent from Predictit on `notifications` server  
+- Triggered by `tradeConfirmed_data` message sent from Predictit on `notifications` server
+</p>
+</details>
 
-#### 💾 DB
+### • Databases Structure
 
-##### [`addCreatedAt.js`](/packages/functions/db/addCreatedAt.js)
-- When a new contract or market is added under the [`contracts`](/packages/functions/db/index.js#L19) or [`markets`](/packages/functions/db/index.js#L14) node in the default database, this function adds a meta `_createdAt` property to the new node
+<details>
+  <summary>
+    <strong>Expand / Collapse</strong>
+  </summary>
+  <p>
 
-##### [`cleanupDatabase.js`](/packages/functions/db/cleanupDatabase.js)
-- Utility function that is triggered [manually](/packages/functions/db/index.js#L25) clean up databases
-
-##### [`deleteClosedMarkets.js`](/packages/functions/db/deleteClosedMarkets.js)
-- [Scheduled](/packages/functions/db/index.js#L29) function that is used to remove market, contract, price, and orderBook nodes from the database when a contract is removed from Predictit
-- Helps prevent database from becoming large and increasing firebase costs
-
-##### [`deleteStalePriceData.js`](/packages/functions/db/deleteStatePriceData.js)
-- ⚠️ **`WORK IN PROGRESS`**
-- [Scheduled](/packages/functions/db/index.js#L34) function that is used to remove price data that is out of date
-- Helps prevent database from becoming large and increasing firebase costs
-
-
-## Databases Structure
 - Default Database (`default-rtdb`)
   - `contracts`
     - `{contract_id}`
@@ -369,7 +358,7 @@ _**Note:** Some of the below links might be off by a few lines_
       - `shortName`
       - `url`
   - `markets`
-    - `{contract_id}`
+    - `{market_id}`
       - `active`
       - `id`
       - `image`
@@ -378,7 +367,30 @@ _**Note:** Some of the below links might be off by a few lines_
       - `url`
       - `contracts[]`
         - `{index}`: `{contract_id}`
-  - `orderBooks`
+  - `prices`
+    - `{contract_id}`
+        - `buyNo`
+        - `buyYes`
+        - `id`
+        - `lastTrade`
+        - `market`
+        - `open`
+        - `sellNo`
+        - `sellYes`
+  - `session` (some fields omitted)
+    - `wssHost`
+    - `username`
+    - `eng_mt`
+      - `numOfTimesMetricsSent`
+      - `scrollDepth`
+      - `sessionStartTime`
+      - `timeOnSite`
+      - `ver`
+    - `token`
+      - `value`
+    - `tokenExpires`
+    - `refreshToken`
+    - `orderBooks`
     - `{contract_id}`
       - `_timestamp`
       - `_updateAt`
@@ -396,46 +408,16 @@ _**Note:** Some of the below links might be off by a few lines_
           - `pricePerShare`
           - `quantity`
           - `tradeType`
-  - `prices`
-    - `{contract_id}`
-        - `buyNo`
-        - `buyYes`
-        - `id`
-        - `lastTrade`
-        - `market`
-        - `open`
-        - `sellNo`
-        - `sellYes`
-  - `session` (some fields omitted)
-    - `wssHost`
-    - `username`
-    - `eng_mt`
-    - `token`
-      - `value`
-    - `tokenExpires`
-    - `refreshToken`
-    - `browseHeaders`
-    - ??? `d0df7f0a4c2724ff587c1cfb3e315b432e2d1f50`
-    - ??? `0b006d8eb623b8ea11b73d61f1e483b47b9d7422`
-    - ??? `19a826c7f361268a43da3a46a12047f3`
-    - ??? `4ba302311571f45d57f1aa75e428b9b78d59a7a2`
-    - ??? `511a26f4be2047a348064e4abe8ce2a9`
-    - ??? `647a3d19ac2647f361068a43df3a4da1`
-    - ??? `85bdeae0a9e0dad7fdd022d8f90da5d3a241b3d0`
-    - ??? `990a6d8eb6cbb8ea44b73d21f1e473b43b9c74ea`
+    
+
 - Price History (`price-history`)
   - `{contract_id}`
     - `{timestamp}`: `{price}`
+    
 - Price Interval(`price-interval`)
   - `{contract_id}`
     - `{timestamp}`: `{price}`
-- Price OHLC (`price-ohlc`)
-  - `{contract_id}`
-    - `{timestamp}`
-      - `open`
-      - `high`
-      - `low`
-      - `close`
+
 - Trade History (`trade-history`)
   - `{firebase_list_id}`
     - `contract`
@@ -448,9 +430,17 @@ _**Note:** Some of the below links might be off by a few lines_
     - `riskChange`
     - `tradeType`
 
+  </p>
+</details>
+
 ## Misc. Notes
 
-### Strategy
+<details>
+  <summary>
+    <strong>Expand / Collapse</strong>
+  </summary>
+  <p>
+  
 For markets that are building towards a single event (e.g. an election w/ some uncertainty on a single date)
   - don't invest before and hold throughout the event
   - research and pick a position before
@@ -458,22 +448,25 @@ For markets that are building towards a single event (e.g. an election w/ some u
   - ride the waves
   - settle into final position as things become more clear and concrete
 
+> "For something like that, if you had 10k shares of a bracket at say 6c, you could sell 5k at 9c and effectively bring the cost of the remaining down to 3c (+ the 10% profit fee for the other half). Even better is to sell enough to free roll the rest. Have $100 that turns into $300? Sell half and secure profit no matter the outcome. Having your cake and potentially eating it too."
+
+> "Your Risk in any contract is the sum of your profits and losses, across all contracts, should that contract resolve to 'Yes'. To work out this sum, add the 'If Yes' figure for the contract to the 'If No' figures for all other contracts."
+> "Your Investment in the market as a whole is equal to your greatest Risk in any one contract. This is the amount PredcitIt debits from your account to cover your position."
+> "Your Payout is the amount you would be credited if the contract resolves to Yes. It is the difference between your total Investment (greatest Risk) and the Risk in the winning contract."
+> "Share Value corresponds to the face value of your position in each contract (shares multiplied by average purchase price). This value cannot exceed $850."
+
 ### Questions
 
-1. how much cash do you leave available in your account for possible spur of the moment opportunities?
-2. what's the purpose of massive buy/sell "walls" in order books?
-   1. are they there just to psych you out?
-   2. who tf has that many shares to put up massive walls like that?
-3. why does it always seem like someone sells right after I buy (I assume to bring down the last trade price)?
-4. also, why does it seem like when you buy out all shares at a certain price, a few seconds later a few more shares (~100) pop up for sale at that same price again?
-5. what's the point of leaving the breadcrumbs of sell offers in the orderbook? Is it to keep the price low or an attempt to trick someone into buying and driving the price up? or neither?
+1. what's the purpose of massive buy/sell "walls" in order books?
+  1. are they there just to psych you out?
+  1. who tf has that many shares to put up massive walls like that?
+1. why does it always seem like someone sells right after I buy (I assume to bring down the last trade price)?
+1. also, why does it seem like when you buy out all shares at a certain price, a few seconds later a few more shares (~100) pop up for sale at that same price again?
+1. what's the point of leaving the breadcrumbs of sell offers in the orderbook? Is it to keep the price low or an attempt to trick someone into buying and driving the price up? or neither?
 
     >It’s called “painting the tape”.
     >
     >They want to print a higher or lower price to give the impression the contract is >moving in a certain direction.
-    
-7. what are the mechanics of a pump?
-   1. is a "pump" different than a stock market "pump"
 
 ### Indicators
 - simple moving average
@@ -487,47 +480,12 @@ For markets that are building towards a single event (e.g. an election w/ some u
 - stochastics indicators
 - adx
 
-### Quotes
-> "For something like that, if you had 10k shares of a bracket at say 6c, you could sell 5k at 9c and effectively bring the cost of the remaining down to 3c (+ the 10% profit fee for the other half). Even better is to sell enough to free roll the rest. Have $100 that turns into $300? Sell half and secure profit no matter the outcome. Having your cake and potentially eating it too."
-
-> "Your Risk in any contract is the sum of your profits and losses, across all contracts, should that contract resolve to 'Yes'. To work out this sum, add the 'If Yes' figure for the contract to the 'If No' figures for all other contracts."
-
-> "Your Investment in the market as a whole is equal to your greatest Risk in any one contract. This is the amount PredcitIt debits from your account to cover your position."
-
-> "Your Payout is the amount you would be credited if the contract resolves to Yes. It is the difference between your total Investment (greatest Risk) and the Risk in the winning contract."
-
-> "Share Value corresponds to the face value of your position in each contract (shares multiplied by average purchase price). This value cannot exceed $850."
-
-### WS
-
-- on disconnect
-  - ✅ wait
-  - ✅ connect to different ws url
-  - 🚫 try and get a new IP address (restart server?)
-- 🚫 ? spoof user agent in ws connection
-- ✅ clean up logging in gc
-
-### Puppeteer
-
-- ✅ spoof user agent to remove any references to "headless"
-- make sure to pause after actions in human like fashion
-
-### Trades
-
-- keep track of market positions and contract positions
-
-### Notifications
-
-- ✅ Alert on new contracts and markets added
-  - 🚫 can be done via firebase childAdded
-  - ✅ send
-    - 🚫 email
-    - ✅ text message
-
 ### Utils
 
-- time randomizer
-- global timer tracking when last "task" was run
+- time randomizer to make activities look more "human"
+- datastore tracking the last timestamp an activity was run
+  - purchase via automation
+  - connect/login via headless browser
   - don't run function if timer is still active
 - maintain "trading" hours so that automation's activity doesn't look suspicious or stand out
 
@@ -535,14 +493,6 @@ For markets that are building towards a single event (e.g. an election w/ some u
 
 - alert for markets closing in less than 24 hours
 - 🚫 compare 24 hour trend average price to 90 day trend -- are same?
-- automatically sign up for google alert based on new positions added
-  - remove alerts when position is closed
-  - https://www.npmjs.com/package/google-alerts-api
-- Use tools to identify if price increase is natural or pump and dump
-  - Google trends
-  - Google search volume
-  - Twitter search
-    - https://github.com/twitterdev/tweet-search
 - alert when purchase drops below min at purchase time
 - volume check - enough volume to make it worthwhile
 - volitility = changes in last timeframe
@@ -564,6 +514,7 @@ For markets that are building towards a single event (e.g. an election w/ some u
 - make sure volume is there before buy/sell in order to avoid getting stuck in a position
 - max out on .01 on a market with a long life left
   - over the course of that market's lifespan slowly sell small chunks of shares at .02
+- bot to sell of chucks of a large position as to not spook buyers
 
 ### API
 
@@ -594,43 +545,21 @@ data {
   TimeStamp: 2020-12-04T09:00:12.629Z,
   Guid: 'dbcc02e4-cfc6-41bf-bf2f-58859d537eae'
 }
-```
+```  
+  </p>
+</details>
 
-### Formulas
 
-#### Number Of Shares To Buy
+## Github / NPM
 
-```
-TOTAL_PRICE / PRICE_PER_SHARE = TOTAL_SHARES_TO_PURCHASE
-```
-
-#### Profit Or Loss On Sale
-
-```
-((850 / BUY) * SELL) - 850
-```
-
-#### Empty Database
-
-- Import empty object into database
-
-> {}
-
-### Env Vars
-```
-GAE_APPLICATION       # The ID of your App Engine application. This ID is prefixed with 'region code~' such as 'e~' for applications deployed in Europe.
-GAE_DEPLOYMENT_ID     # The ID of the current deployment.
-GAE_ENV	              # The App Engine environment. Set to standard.
-GAE_INSTANCE          # The ID of the instance on which your service is currently running.
-GAE_MEMORY_MB         # The amount of memory available to the application process, in MB.
-GAE_RUNTIME	          # The runtime specified in your app.yaml file.
-GAE_SERVICE	          # The service name specified in your app.yaml file. If no service name is specified, it is set to default.
-GAE_VERSION	          # The current version label of your service.
-GOOGLE_CLOUD_PROJECT  # The Cloud project ID associated with your application.
-NODE_ENV              # Set to production when your service is deployed.
-PORT                  # The port that receives HTTP requests.
-```
-
+<details>
+  <summary>
+    <strong>Expand / Collapse</strong>
+  </summary>
+  <p>
+  
+  
+  
 ### NPM Packages
 
 https://numpy.org
@@ -683,7 +612,89 @@ https://github.com/christopherfelt/PredictItAPIScripts
 https://github.com/jjordanbaird/predictit-data
 https://github.com/adamjoshuagray/PredictItPy
 https://github.com/cran/rpredictit
+  </p>
+</details>
 
 
-## Bots
-- bot to sell of chucks of a large position as to not spook buyers
+
+## 🪦 R.I.P.
+
+<details>
+  <summary>
+    <strong>Expand / Collapse</strong>
+  </summary>
+  <p>
+  
+  
+  ### Express Servers
+  * The `status` is there as the default Google App Engine service; it doesn't do anything noteworthy
+  * The notifications messages are sent from Predictit when:
+    - Market is opened or closed
+    - Site enters/exits maintenance mode
+    - User sells shares, buys shares, deposits, withdraws
+    - User opened new buy/sell order
+    - User's open order in market is bought/sold
+  * The notifications connection is authenticated (messages are specific to authenticated user)
+  
+  - automatically sign up for google alert based on new positions added
+    - remove alerts when position is closed
+    - https://www.npmjs.com/package/google-alerts-api
+  - Use tools to identify if price increase is natural or pump and dump
+    - Google trends
+    - Google search volume
+    - Twitter search
+      - https://github.com/twitterdev/tweet-search
+  
+  ##### [`updateContractPosition.js`](/packages/functions/data/updateContractPosition.js)
+  - ⚠️ **`WORK IN PROGRESS`**
+  - Updates all active contract position [data](/packages/functions/data/updateContractPosition.js):
+    - market id
+    - prediction (yes/no)
+    - quantity
+    - open buy orders
+    - open sell orders
+    - average price of owned shares
+  - Data is under the [`contractPositions`](/packages/functions/data/updateContractPosition.js) node in the default database
+  - Triggered by [`contractOwnershipUpdate_data`](/packages/notifications/onMessage.js) message sent from Predictit on `notifications` server
+ 
+  ##### [`updateMarketPosition.js`](/packages/functions/data/updateMarketPosition.js)
+  - ⚠️ **`WORK IN PROGRESS`**
+  - Updates meta information about all active contract positions in a particular market
+    - total investment
+    - max payout
+  - Data is under the `marketPositions` node in the default database
+  - Triggered by `marketOwnershipUpdate_data` message sent from Predictit on `notifications` server
+  
+  ##### [`updateOpenOrders.js`](/packages/functions/data/updateOpenOrders.js)
+  - ⚠️ **`WORK IN PROGRESS`**
+  - Updates orders that have not been completely fulfilled yet
+  - Data is under the `openOrders` node in the default database
+  - Triggered by `tradeConfirmed_data` and `notification_shares_traded` messages sent from Predictit on `notifications` server
+  
+  ##### [`updatePriceOHLC.js`](/packages/functions/data/updatePriceOHLC.js)
+  - ⚠️ sorta...**`WORK IN PROGRESS`**
+  - Tracks "open", high, low, and "close" prices of all contracts at a consistent interval [(currently every 1 hour)](/packages/functions/data/index.js)
+  - Uses `lastTrade` and `open` property data from `prices/{contract_id}` nodes in the default database
+  - Updates the `{contract_id}/{timestamp}` node in the `price-ohlc` database
+  
+  ##### [`addCreatedAt.js`](/packages/functions/db/addCreatedAt.js)
+  - When a new contract or market is added under the [`contracts`](/packages/functions/db/index.js) or [`markets`](/packages/functions/db/index.js) node in the default database, this function adds a meta `_createdAt` property to the new node
+  
+  ##### [`deleteClosedMarkets.js`](/packages/functions/db/deleteClosedMarkets.js)
+  - [Scheduled](/packages/functions/db/index.js) function that is used to remove market, contract, price, and orderBook nodes from the database when a contract is removed from Predictit
+  - Helps prevent database from becoming large and increasing firebase costs
+  
+  ##### [`deleteStalePriceData.js`](/packages/functions/db/deleteStatePriceData.js)
+  - ⚠️ **`WORK IN PROGRESS`**
+  - [Scheduled](/packages/functions/db/index.js) function that is used to remove price data that is out of date
+  - Helps prevent database from becoming large and increasing firebase costs  
+  
+  ##### [`updateContractPrice.js`](/packages/functions/data/updateContractPrice.js)
+  - The data under the `prices` node is important because a number of other functions and databases depend on it:
+    - [`updatePriceHistory.js`](/packages/functions/data/updatePriceHistory.js) and `price-history` database
+    - [`updatePriceInterval.js`](/packages/functions/data/updatePriceInterval.js) and `price-interval` database
+    - [`updatePriceOHLC.js`](/packages/functions/data/updatePriceOHLC.js) and `price-ohcl` database
+  </p>
+</details>
+
+
