@@ -38,7 +38,7 @@ module.exports = {
   db: getDatabase(),
   markets: getDatabase('markets'),
   contracts: getDatabase('contracts'),
-  orderBooks: getDatabase('orderBooks'),
+  orderBooks: getDatabase('order-books'),
   prices: getDatabase('prices'),
   timespans: getDatabase('timespans'),
 };

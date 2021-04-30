@@ -12,6 +12,11 @@ exports.updateMarket = firebase.functions
   .onCall(updateMarket);
 
 // prettier-ignore
+exports.updateContractPrice = firebase.functions
+  .https
+  .onCall(updateContractPrice);
+
+// prettier-ignore
 exports.updateMarkets = firebase.functions
   .pubsub
   .schedule('every 10 mins')
@@ -23,37 +28,6 @@ exports.updateMarkets__manual = firebase.functions
   .onRequest(updateMarkets);
 
 // prettier-ignore
-exports.updateContractPrice = firebase.functions
-  .https
-  .onCall(updateContractPrice);
-
-// prettier-ignore
-exports.updateHourlyTimespanData = firebase.functions
-  .runWith({ timeoutSeconds: 300, memory: '2GB' })
-  .pubsub
-  .schedule('every 60 mins')
-  .onRun(updateTimespanData('hourly'));
-
-// prettier-ignore
-exports.updateHourlyTimespanData__manual = firebase.functions
-  .runWith({ timeoutSeconds: 300, memory: '2GB' })
-  .https
-  .onRequest(updateTimespanData('hourly'));
-
-// prettier-ignore
-exports.updateDailyTimespanData = firebase.functions
-  .runWith({ timeoutSeconds: 300, memory: '2GB' })
-  .pubsub
-  .schedule('every day 16:05')
-  .onRun(updateTimespanData('daily'));
-
-// prettier-ignore
-exports.updateDailyTimespanData__manual = firebase.functions
-  .runWith({ timeoutSeconds: 300, memory: '2GB' })
-  .https
-  .onRequest(updateTimespanData('daily'));
-
-// prettier-ignore
 exports.updateOrderBooks = firebase.functions
   .pubsub
   .schedule('every 60 mins')
@@ -63,3 +37,68 @@ exports.updateOrderBooks = firebase.functions
 exports.updateOrderBooks__manual = firebase.functions
   .https
   .onRequest(updateOrderBooks);
+
+// prettier-ignore
+exports.update1hTimespanData = firebase.functions
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
+  .pubsub
+  .schedule('every 60 mins')
+  .onRun(updateTimespanData('1h'));
+
+// prettier-ignore
+exports.update1hTimespanData__manual = firebase.functions
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
+  .https
+  .onRequest(updateTimespanData('1h'));
+
+// prettier-ignore
+exports.update24hTimespanData = firebase.functions
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
+  .pubsub
+  .schedule('every 60 mins')
+  .onRun(updateTimespanData('24h'));
+
+// prettier-ignore
+exports.update24hTimespanData__manual = firebase.functions
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
+  .https
+  .onRequest(updateTimespanData('24h'));
+
+// prettier-ignore
+exports.update7dTimespanData = firebase.functions
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
+  .pubsub
+  .schedule('every 24 hours')
+  .onRun(updateTimespanData('7d'));
+
+// prettier-ignore
+exports.update7dTimespanData__manual = firebase.functions
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
+  .https
+  .onRequest(updateTimespanData('7d'));
+
+// prettier-ignore
+exports.update30dTimespanData = firebase.functions
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
+  .pubsub
+  .schedule('every 24 hours')
+  .onRun(updateTimespanData('30d'));
+
+// prettier-ignore
+exports.update30dTimespanData__manual = firebase.functions
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
+  .https
+  .onRequest(updateTimespanData('30d'));
+
+// prettier-ignore
+exports.update90dTimespanData = firebase.functions
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
+  .pubsub
+  .schedule('every 24 hours')
+  .onRun(updateTimespanData('90d'));
+
+// prettier-ignore
+exports.update90dTimespanData__manual = firebase.functions
+  .runWith({ timeoutSeconds: 300, memory: '2GB' })
+  .https
+  .onRequest(updateTimespanData('90d'));

@@ -1,17 +1,12 @@
-const wait = require('wait');
-const awaity = require('awaity');
 const mapValues = require('lodash/mapValues');
 
 const firebase = require('@services/firebase');
 const predictit = require('@services/predictit');
 
-const timespanIntervals = {
-  hourly: ['24h'],
-  daily: ['7d', '30d', '90d'],
-};
-
 const getPrices = (key) => (row) => row[key];
 const getTotal = (key) => (sum, row) => sum + row[key];
+const mergeResults = (results) =>
+  results.reduce((data, result) => ({ ...data, ...result }), {});
 
 const parseData = (values) => ({
   open: values.reduce(getTotal('open'), 0) / values.length,
@@ -21,46 +16,36 @@ const parseData = (values) => ({
   volume: values.reduce(getTotal('volume'), 0),
 });
 
+const groupDataByContract = (timespan) => (rows) => {
+  return rows.reduce((update, row) => {
+    const path = `${row.contract}/${timespan}`;
+    const pathData = update[path] || [];
+    return {
+      ...update,
+      [path]: [...pathData, row],
+    };
+  }, {});
+};
+
+const fetchMarketChartData = (timespan) => (market) => {
+  if (timespan === '1h') {
+    return predictit
+      .fetchMarketChartData(market, '24h')
+      .then(groupDataByContract('1h'))
+      .then((data) => mapValues(data, (value) => value.slice(-1)));
+  }
+
+  return predictit
+    .fetchMarketChartData(market, timespan)
+    .then(groupDataByContract(timespan));
+};
+
 module.exports = (timespan) => async (contextOrRequest, response) => {
   try {
-    const timespans = timespanIntervals[timespan];
     const markets = await predictit.fetchAllMarkets();
-
-    const prepareUpdate = (rows) => {
-      return rows.reduce((update, row) => {
-        const path = `${row.contract}/${row.timespan}`;
-        const pathData = update[path] || [];
-        return {
-          ...update,
-          [path]: [...pathData, row],
-        };
-      }, {});
-    };
-
-    const fetchData = async (results, timespan, index) => {
-      if (index > 0) await wait(30000);
-
-      const requests = markets
-        .map((market) => [market, timespan])
-        .map((args) => predictit.fetchMarketChartData(...args));
-
-      const data = await Promise.all(requests);
-      const update = prepareUpdate(data.flat());
-
-      if (timespan === '24h') {
-        const updateValues = (values) => values.slice(-1);
-        const updateTimespan = (row) => ({ ...row, timespan: '1h' });
-        const data2 = prepareUpdate(data.flat().map(updateTimespan));
-        const update2 = mapValues(data2, updateValues);
-
-        return { ...results, ...update, ...update2 };
-      }
-
-      return { ...results, ...update };
-    };
-
-    const data = await awaity.reduce(timespans, fetchData, {});
-    const update = mapValues(data, parseData);
+    const requests = markets.map(fetchMarketChartData(timespan));
+    const results = await Promise.all(requests).then(mergeResults);
+    const update = mapValues(results, parseData);
 
     await firebase.timespans.set(update);
 

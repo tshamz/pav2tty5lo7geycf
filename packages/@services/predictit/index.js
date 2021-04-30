@@ -40,7 +40,6 @@ const fetchMarketChartData = async (market, timespan) => {
       market.contracts.find((contract) => contract.shortName === name) || {};
 
     return data.map((row) => ({
-      timespan,
       market: `${market.id}`,
       contract: `${getContract(row.ContractName).id}`,
       date: row.Date,
