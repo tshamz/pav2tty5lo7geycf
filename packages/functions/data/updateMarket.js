@@ -2,7 +2,7 @@ const firebase = require('@services/firebase');
 
 module.exports = async (data) => {
   try {
-    await firebase.db.set(`markets/${data.id}`, {
+    await firebase.markets.set(data.id, {
       active: data.Status === 'Open',
       totalSharesTraded: data.TotalSharesTraded,
     });

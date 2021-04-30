@@ -20,6 +20,7 @@
     "@services/predictit": "workspace:packages/@services/predictit",
     "@services/twilio": "workspace:packages/@services/twilio",
     "@services/utils": "workspace:packages/@services/utils",
+    "awaity": "^1.0.0",
     "csvtojson": "^2.0.10",
     "deep-equal": "^2.0.5",
     "firebase": "^8.2.3",

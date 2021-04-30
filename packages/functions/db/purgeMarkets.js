@@ -3,8 +3,7 @@ const predictit = require('@services/predictit');
 
 module.exports = async (context, res) => {
   try {
-    const marketsRef = firebase.db.ref('markets');
-    const snapshot = await marketsRef.once('value');
+    const snapshot = await firebase.markets.ref().once('value');
     const firebaseIds = Object.keys(await snapshot.val());
     const predictitIds = await predictit
       .fetchAllMarkets()
@@ -12,12 +11,14 @@ module.exports = async (context, res) => {
 
     const keysToDelete = firebaseIds.filter((id) => !predictitIds.includes(id));
 
-    const inactiveSnapshot = await marketsRef
+    const inactiveSnapshot = await firebase.markets
+      .ref()
       .orderByChild('active')
       .equalTo(false)
       .once('value');
 
-    const negativeDaysLeft = await marketsRef
+    const negativeDaysLeft = await firebase.markets
+      .ref()
       .orderByChild('daysLeft')
       .startAt(-1)
       .endAt(0)
@@ -28,11 +29,12 @@ module.exports = async (context, res) => {
 
     const ids = [...new Set(keysToDelete)];
 
-    const update = ids
-      .map((id) => `markets/${id}`)
-      .reduce((update, path) => ({ ...update, [path]: null }), {});
+    const update = ids.reduce(
+      (update, path) => ({ ...update, [path]: null }),
+      {}
+    );
 
-    await firebase.db.set(update);
+    await firebase.markets.set(update);
 
     firebase.logger.info(`deleted ${ids.length} market keys.`);
 

@@ -16,9 +16,8 @@ module.exports = async (snapshot, context) => {
 
     await require('wait')(1500);
 
-    const id = context.params.market;
-    const market = await firebase.db.get(`markets/${id}`);
-    const contracts = await firebase.db.get('contracts');
+    const market = await firebase.markets.get(context.params.market);
+    const contracts = await firebase.contracts.get();
     const newContracts = added.map((id) => `• ${contracts[id].shortName}`);
     const oldContracts = removed.map((id) => `• ${contracts[id].shortName}`);
 

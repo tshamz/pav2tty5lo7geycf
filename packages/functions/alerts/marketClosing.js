@@ -7,12 +7,11 @@ module.exports = async (snapshot, context) => {
   try {
     if (snapshot.after.val() !== 1) return;
 
-    const id = context.params.market;
-    const market = await firebase.db.get(`markets/${id}`);
+    const market = await firebase.markets.get(context.params.market);
 
     const getContract = async (id) => ({
-      ...(await firebase.db.get(`prices/${id}`)),
-      ...(await firebase.db.get(`contracts/${id}`)),
+      ...(await firebase.prices.get(id)),
+      ...(await firebase.contracts.get(id)),
     });
 
     const contracts = await Promise.all(market.contracts.map(getContract));

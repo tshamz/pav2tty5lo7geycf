@@ -1,38 +1,35 @@
+const wait = require('wait');
+const awaity = require('awaity');
+const mapValues = require('lodash/mapValues');
+
 const firebase = require('@services/firebase');
 const predictit = require('@services/predictit');
 
-module.exports = (timespans) => async (context, res) => {
+const timespanIntervals = {
+  hourly: ['24h'],
+  daily: ['7d', '30d', '90d'],
+};
+
+const getPrices = (key) => (row) => row[key];
+const getTotal = (key) => (sum, row) => sum + row[key];
+
+const parseData = (values) => ({
+  open: values.reduce(getTotal('open'), 0) / values.length,
+  high: values.map(getPrices('high')).sort()[values.length - 1],
+  low: values.map(getPrices('low')).sort()[0],
+  close: values.reduce(getTotal('close'), 0) / values.length,
+  volume: values.reduce(getTotal('volume'), 0),
+});
+
+module.exports = (timespan) => async (contextOrRequest, response) => {
   try {
+    const timespans = timespanIntervals[timespan];
     const markets = await predictit.fetchAllMarkets();
-
-    const mergePaths = (paths) =>
-      paths.reduce((result, paths) => ({ ...result, ...paths }), {});
-
-    const parseData = ({ market, timespan }) => (data) => {
-      const getContract = (name) =>
-        market.contracts.find(({ shortName }) => shortName === name) || {};
-
-      return data.map((row) => ({
-        timespan,
-        market: `${market.id}`,
-        contract: `${getContract(row.ContractName).id}`,
-        date: row.Date,
-        name: row.ContractName,
-        open: parseFloat(row.OpenSharePrice.slice(1)),
-        high: parseFloat(row.HighSharePrice.slice(1)),
-        low: parseFloat(row.LowSharePrice.slice(1)),
-        close: parseFloat(row.CloseSharePrice.slice(1)),
-        volume: parseInt(row.TradeVolume),
-      }));
-    };
 
     const prepareUpdate = (rows) => {
       return rows.reduce((update, row) => {
-        if (!row.market || !row.contract || !row.timespan) return update;
-
-        const path = `${row.market}/${row.contract}/${row.timespan}`;
+        const path = `${row.contract}/${row.timespan}`;
         const pathData = update[path] || [];
-
         return {
           ...update,
           [path]: [...pathData, row],
@@ -40,32 +37,39 @@ module.exports = (timespans) => async (context, res) => {
       }, {});
     };
 
-    const fetchMarketTimespan = (timespan) => async (market) => {
-      return predictit
-        .fetchMarketChartData({ marketid: market.id, timespan })
-        .then(parseData({ market, timespan }))
-        .then(prepareUpdate);
+    const fetchData = async (results, timespan, index) => {
+      if (index > 0) await wait(30000);
+
+      const requests = markets
+        .map((market) => [market, timespan])
+        .map((args) => predictit.fetchMarketChartData(...args));
+
+      const data = await Promise.all(requests);
+      const update = prepareUpdate(data.flat());
+
+      if (timespan === '24h') {
+        const updateValues = (values) => values.slice(-1);
+        const updateTimespan = (row) => ({ ...row, timespan: '1h' });
+        const data2 = prepareUpdate(data.flat().map(updateTimespan));
+        const update2 = mapValues(data2, updateValues);
+
+        return { ...results, ...update, ...update2 };
+      }
+
+      return { ...results, ...update };
     };
 
-    const fetchTimespans = async (timespan, index) => {
-      const pauseLength = 60000 * index;
-      const fetchTimespan = fetchMarketTimespan(timespan);
+    const data = await awaity.reduce(timespans, fetchData, {});
+    const update = mapValues(data, parseData);
 
-      await require('wait')(pauseLength);
-
-      return Promise.all(markets.map(fetchTimespan)).then(mergePaths);
-    };
-
-    await Promise.all(timespans.map(fetchTimespans))
-      .then(mergePaths)
-      .then(firebase.timespans.set);
+    await firebase.timespans.set(update);
 
     return;
   } catch (error) {
     firebase.logger.error(error.message);
   } finally {
-    if (res && res.sendStatus) {
-      res.sendStatus(200);
+    if (response && response.sendStatus) {
+      response.sendStatus(200);
     }
   }
 };

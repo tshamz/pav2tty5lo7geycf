@@ -14,7 +14,7 @@ const throwBackoffError = (message, data) => {
 
 const checkLastRan = async (session) => {
   try {
-    const lastRan = new Date(session.lastRan);
+    const lastRan = new Date(session && session.lastRan);
 
     if (was(lastRan).under('5 minutes ago')) {
       const timeSince = Date.now() - lastRan.getTime();
@@ -23,39 +23,6 @@ const checkLastRan = async (session) => {
       const warning = `createSession run less than 5 minutes ago`;
       const message = `${warning} ${times}`;
       const data = { timeLeft, lastRan };
-
-      throwBackoffError(message, data);
-    }
-  } catch (error) {
-    throw error;
-  }
-};
-
-const checkForWssHost = async ({ wssHost }) => {
-  try {
-    const hasWssHost = !!wssHost;
-
-    if (hasWssHost) {
-      const message = `already has wssHost`;
-      const data = { wssHost };
-
-      throwBackoffError(message, data);
-    }
-  } catch (error) {
-    throw error;
-  }
-};
-
-const checkIfTokenExpired = async ({ tokenExpires }) => {
-  try {
-    if (!tokenExpires) return;
-
-    const expiresAt = JSON.parse(tokenExpires).value;
-    const isExpired = new Date(expiresAt) < new Date();
-
-    if (!isExpired) {
-      const message = `token isn't expired`;
-      const data = { expiresAt };
 
       throwBackoffError(message, data);
     }
@@ -73,11 +40,14 @@ const createNewBrowser = async () => {
   return browser;
 };
 
-const createNewSession = async (browser = createNewBrowser(), attempt = 0) => {
+const createNewSession = async (browser = createNewBrowser()) => {
   browser = await browser;
-  const page = await browser.newPage();
 
   try {
+    await firebase.db.set('session', { lastRan: Date.now() });
+
+    const page = await browser.newPage();
+
     await page.goto(`https://predictit.org`);
     await page.waitForSelector('#login');
     await page.click('#login');
@@ -95,7 +65,6 @@ const createNewSession = async (browser = createNewBrowser(), attempt = 0) => {
 
     return { browser, page, localStorage };
   } catch (error) {
-    await page.close();
     await browser.close();
     throw error;
   }
@@ -106,14 +75,12 @@ const parseSession = async ({ browser, page, localStorage }) => {
   const wssHost = JSON.parse(localStorage[wssHostKey] || null);
 
   if (!wssHost) {
-    console.log('crash and burn!');
+    firebase.logger.error(`missing wssHost in session data`);
     return localStorage;
   } else {
-    delete localStorage[wssHostKey];
+    firebase.logger.info(`created a new session with wssHost`, wssHost);
 
-    // may want to do something with these later...
-    await page.close();
-    await browser.close();
+    delete localStorage[wssHostKey];
 
     return {
       wssHost,
@@ -124,30 +91,19 @@ const parseSession = async ({ browser, page, localStorage }) => {
       tokenExpires: JSON.parse(localStorage.tokenExpires || null),
       refreshToken: JSON.parse(localStorage.refreshToken || null),
       browseHeaders: JSON.parse(localStorage.browseHeaders || null),
-      // _timestamp: Date.now(),
     };
   }
 };
 
 module.exports = async (data, res) => {
   try {
-    const session = await firebase.db.get('session');
-    // const hasWssHost = () => checkForWssHost(session);
-    // const tokenExpired = () => checkIfTokenExpired(session);
-
-    // if (session) {
-    //   await checkLastRan(session).then(tokenExpired).then(hasWssHost);
-    // }
-
-    await checkLastRan(session);
-
-    await firebase.db.set('session', { lastRan: Date.now() });
-
-    const update = await createNewSession().then(parseSession);
+    const update = await firebase.db
+      .get('session')
+      .then(checkLastRan)
+      .then(createNewSession)
+      .then(parseSession);
 
     await firebase.db.set('session', update);
-
-    firebase.logger.info(`created a new session with data`, update);
 
     return update;
   } catch (error) {

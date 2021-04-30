@@ -1,7 +1,6 @@
 const firebase = require('@services/firebase');
 
 const purgeMarkets = require('./purgeMarkets');
-// const cleanupDatabase = require('./cleanupDatabase');
 const removeMarketData = require('./removeMarketData');
 const removeContractData = require('./removeContractData');
 
@@ -16,19 +15,16 @@ exports.purgeMarkets__manual = firebase.functions
   .https
   .onRequest(purgeMarkets);
 
-// // prettier-ignore
-// exports.cleanUpDatabase__manual = firebase.functions
-//   .https
-//   .onRequest(cleanupDatabase);
-
 // prettier-ignore
 exports.removeMarketData = firebase.functions
   .database
-  .ref('markets/{id}')
+  .instance('pav2tty5lo7geycf-markets')
+  .ref('{id}')
   .onDelete(removeMarketData);
 
 // prettier-ignore
 exports.removeContractData = firebase.functions
   .database
-  .ref('contracts/{id}')
+  .instance('pav2tty5lo7geycf-contracts')
+  .ref('{id}')
   .onDelete(removeContractData);

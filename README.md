@@ -545,7 +545,8 @@ data {
   TimeStamp: 2020-12-04T09:00:12.629Z,
   Guid: 'dbcc02e4-cfc6-41bf-bf2f-58859d537eae'
 }
-```  
+```
+
   </p>
 </details>
 
@@ -557,9 +558,7 @@ data {
     <strong>Expand / Collapse</strong>
   </summary>
   <p>
-  
-  
-  
+
 ### NPM Packages
 
 https://numpy.org
@@ -612,6 +611,7 @@ https://github.com/christopherfelt/PredictItAPIScripts
 https://github.com/jjordanbaird/predictit-data
 https://github.com/adamjoshuagray/PredictItPy
 https://github.com/cran/rpredictit
+  
   </p>
 </details>
 
@@ -624,76 +624,76 @@ https://github.com/cran/rpredictit
     <strong>Expand / Collapse</strong>
   </summary>
   <p>
+
+### Express Servers
+* The `status` is there as the default Google App Engine service; it doesn't do anything noteworthy
+* The notifications messages are sent from Predictit when:
+  - Market is opened or closed
+  - Site enters/exits maintenance mode
+  - User sells shares, buys shares, deposits, withdraws
+  - User opened new buy/sell order
+  - User's open order in market is bought/sold
+* The notifications connection is authenticated (messages are specific to authenticated user)
+
+- automatically sign up for google alert based on new positions added
+  - remove alerts when position is closed
+  - https://www.npmjs.com/package/google-alerts-api
+- Use tools to identify if price increase is natural or pump and dump
+  - Google trends
+  - Google search volume
+  - Twitter search
+    - https://github.com/twitterdev/tweet-search
+
+##### [`updateContractPosition.js`](/packages/functions/data/updateContractPosition.js)
+- ⚠️ **`WORK IN PROGRESS`**
+- Updates all active contract position [data](/packages/functions/data/updateContractPosition.js):
+  - market id
+  - prediction (yes/no)
+  - quantity
+  - open buy orders
+  - open sell orders
+  - average price of owned shares
+- Data is under the [`contractPositions`](/packages/functions/data/updateContractPosition.js) node in the default database
+- Triggered by [`contractOwnershipUpdate_data`](/packages/notifications/onMessage.js) message sent from Predictit on `notifications` server
+
+##### [`updateMarketPosition.js`](/packages/functions/data/updateMarketPosition.js)
+- ⚠️ **`WORK IN PROGRESS`**
+- Updates meta information about all active contract positions in a particular market
+  - total investment
+  - max payout
+- Data is under the `marketPositions` node in the default database
+- Triggered by `marketOwnershipUpdate_data` message sent from Predictit on `notifications` server
+
+##### [`updateOpenOrders.js`](/packages/functions/data/updateOpenOrders.js)
+- ⚠️ **`WORK IN PROGRESS`**
+- Updates orders that have not been completely fulfilled yet
+- Data is under the `openOrders` node in the default database
+- Triggered by `tradeConfirmed_data` and `notification_shares_traded` messages sent from Predictit on `notifications` server
+
+##### [`updatePriceOHLC.js`](/packages/functions/data/updatePriceOHLC.js)
+- ⚠️ sorta...**`WORK IN PROGRESS`**
+- Tracks "open", high, low, and "close" prices of all contracts at a consistent interval [(currently every 1 hour)](/packages/functions/data/index.js)
+- Uses `lastTrade` and `open` property data from `prices/{contract_id}` nodes in the default database
+- Updates the `{contract_id}/{timestamp}` node in the `price-ohlc` database
+
+##### [`addCreatedAt.js`](/packages/functions/db/addCreatedAt.js)
+- When a new contract or market is added under the [`contracts`](/packages/functions/db/index.js) or [`markets`](/packages/functions/db/index.js) node in the default database, this function adds a meta `_createdAt` property to the new node
+
+##### [`deleteClosedMarkets.js`](/packages/functions/db/deleteClosedMarkets.js)
+- [Scheduled](/packages/functions/db/index.js) function that is used to remove market, contract, price, and orderBook nodes from the database when a contract is removed from Predictit
+- Helps prevent database from becoming large and increasing firebase costs
+
+##### [`deleteStalePriceData.js`](/packages/functions/db/deleteStatePriceData.js)
+- ⚠️ **`WORK IN PROGRESS`**
+- [Scheduled](/packages/functions/db/index.js) function that is used to remove price data that is out of date
+- Helps prevent database from becoming large and increasing firebase costs  
+
+##### [`updateContractPrice.js`](/packages/functions/data/updateContractPrice.js)
+- The data under the `prices` node is important because a number of other functions and databases depend on it:
+  - [`updatePriceHistory.js`](/packages/functions/data/updatePriceHistory.js) and `price-history` database
+  - [`updatePriceInterval.js`](/packages/functions/data/updatePriceInterval.js) and `price-interval` database
+  - [`updatePriceOHLC.js`](/packages/functions/data/updatePriceOHLC.js) and `price-ohcl` database
   
-  
-  ### Express Servers
-  * The `status` is there as the default Google App Engine service; it doesn't do anything noteworthy
-  * The notifications messages are sent from Predictit when:
-    - Market is opened or closed
-    - Site enters/exits maintenance mode
-    - User sells shares, buys shares, deposits, withdraws
-    - User opened new buy/sell order
-    - User's open order in market is bought/sold
-  * The notifications connection is authenticated (messages are specific to authenticated user)
-  
-  - automatically sign up for google alert based on new positions added
-    - remove alerts when position is closed
-    - https://www.npmjs.com/package/google-alerts-api
-  - Use tools to identify if price increase is natural or pump and dump
-    - Google trends
-    - Google search volume
-    - Twitter search
-      - https://github.com/twitterdev/tweet-search
-  
-  ##### [`updateContractPosition.js`](/packages/functions/data/updateContractPosition.js)
-  - ⚠️ **`WORK IN PROGRESS`**
-  - Updates all active contract position [data](/packages/functions/data/updateContractPosition.js):
-    - market id
-    - prediction (yes/no)
-    - quantity
-    - open buy orders
-    - open sell orders
-    - average price of owned shares
-  - Data is under the [`contractPositions`](/packages/functions/data/updateContractPosition.js) node in the default database
-  - Triggered by [`contractOwnershipUpdate_data`](/packages/notifications/onMessage.js) message sent from Predictit on `notifications` server
- 
-  ##### [`updateMarketPosition.js`](/packages/functions/data/updateMarketPosition.js)
-  - ⚠️ **`WORK IN PROGRESS`**
-  - Updates meta information about all active contract positions in a particular market
-    - total investment
-    - max payout
-  - Data is under the `marketPositions` node in the default database
-  - Triggered by `marketOwnershipUpdate_data` message sent from Predictit on `notifications` server
-  
-  ##### [`updateOpenOrders.js`](/packages/functions/data/updateOpenOrders.js)
-  - ⚠️ **`WORK IN PROGRESS`**
-  - Updates orders that have not been completely fulfilled yet
-  - Data is under the `openOrders` node in the default database
-  - Triggered by `tradeConfirmed_data` and `notification_shares_traded` messages sent from Predictit on `notifications` server
-  
-  ##### [`updatePriceOHLC.js`](/packages/functions/data/updatePriceOHLC.js)
-  - ⚠️ sorta...**`WORK IN PROGRESS`**
-  - Tracks "open", high, low, and "close" prices of all contracts at a consistent interval [(currently every 1 hour)](/packages/functions/data/index.js)
-  - Uses `lastTrade` and `open` property data from `prices/{contract_id}` nodes in the default database
-  - Updates the `{contract_id}/{timestamp}` node in the `price-ohlc` database
-  
-  ##### [`addCreatedAt.js`](/packages/functions/db/addCreatedAt.js)
-  - When a new contract or market is added under the [`contracts`](/packages/functions/db/index.js) or [`markets`](/packages/functions/db/index.js) node in the default database, this function adds a meta `_createdAt` property to the new node
-  
-  ##### [`deleteClosedMarkets.js`](/packages/functions/db/deleteClosedMarkets.js)
-  - [Scheduled](/packages/functions/db/index.js) function that is used to remove market, contract, price, and orderBook nodes from the database when a contract is removed from Predictit
-  - Helps prevent database from becoming large and increasing firebase costs
-  
-  ##### [`deleteStalePriceData.js`](/packages/functions/db/deleteStatePriceData.js)
-  - ⚠️ **`WORK IN PROGRESS`**
-  - [Scheduled](/packages/functions/db/index.js) function that is used to remove price data that is out of date
-  - Helps prevent database from becoming large and increasing firebase costs  
-  
-  ##### [`updateContractPrice.js`](/packages/functions/data/updateContractPrice.js)
-  - The data under the `prices` node is important because a number of other functions and databases depend on it:
-    - [`updatePriceHistory.js`](/packages/functions/data/updatePriceHistory.js) and `price-history` database
-    - [`updatePriceInterval.js`](/packages/functions/data/updatePriceInterval.js) and `price-interval` database
-    - [`updatePriceOHLC.js`](/packages/functions/data/updatePriceOHLC.js) and `price-ohcl` database
   </p>
 </details>
 

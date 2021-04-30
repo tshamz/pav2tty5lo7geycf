@@ -5,17 +5,23 @@ module.exports = async (context, res) => {
   try {
     const orderBooks = await predictit.fetchOrderBooks();
 
+    const remapKeys = (entry) => {
+      entry.contract = `${entry.contractId}`;
+      delete entry.contractId;
+      return entry;
+    };
+
     const update = Object.entries(orderBooks).reduce((updates, [id, data]) => {
       return {
         ...updates,
         [id]: {
-          noOrders: data.noOrders,
-          yesOrdrs: data.yesOrders,
+          noOrders: data.noOrders ? data.noOrders.map(remapKeys) : false,
+          yesOrdrs: data.yesOrders ? data.yesOrders.map(remapKeys) : false,
         },
       };
     }, {});
 
-    await firebase.db.set('orderBooks', update);
+    await firebase.orderBooks.set(update);
 
     firebase.logger.info(`updated order books from predictit`);
 

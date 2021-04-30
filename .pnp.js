@@ -1042,6 +1042,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:1.0.2"
       ],
       [
+        "awaity",
+        "npm:1.0.0"
+      ],
+      [
         "axios",
         "npm:0.21.1"
       ],
@@ -7799,6 +7803,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["awaity", [
+        ["npm:1.0.0", {
+          "packageLocation": "./.yarn/cache/awaity-npm-1.0.0-d4aea60000-de4688e30d.zip/node_modules/awaity/",
+          "packageDependencies": [
+            ["awaity", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["axios", [
         ["npm:0.21.1", {
           "packageLocation": "./.yarn/cache/axios-npm-0.21.1-d192f6b3b3-864fb7b5d0.zip/node_modules/axios/",
@@ -10312,6 +10325,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@services/predictit", "workspace:packages/@services/predictit"],
             ["@services/twilio", "workspace:packages/@services/twilio"],
             ["@services/utils", "workspace:packages/@services/utils"],
+            ["awaity", "npm:1.0.0"],
             ["csvtojson", "npm:2.0.10"],
             ["deep-equal", "npm:2.0.5"],
             ["firebase", "npm:8.3.2"],
@@ -13645,7 +13659,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["debug", "virtual:877b553b60b9c0a2b06217c487c6ff09d68792cf3fe025beb7fec8d1d55e0ad216174b2def4118ba748692c39f0eb896f93b6cfa8141804d933268746165cf68#npm:4.3.2"],
             ["deepmerge", "npm:4.2.2"],
             ["puppeteer", "npm:5.5.0"],
-            ["puppeteer-extra-plugin-stealth", "npm:2.7.6"]
+            ["puppeteer-extra-plugin-stealth", "npm:2.7.6"],
+            ["puppeteer-extra-plugin-user-data-dir", "npm:2.2.12"],
+            ["puppeteer-extra-plugin-user-preferences", "npm:2.2.12"]
           ],
           "packagePeers": [
             "puppeteer"
@@ -13661,7 +13677,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["debug", "virtual:877b553b60b9c0a2b06217c487c6ff09d68792cf3fe025beb7fec8d1d55e0ad216174b2def4118ba748692c39f0eb896f93b6cfa8141804d933268746165cf68#npm:4.3.2"],
             ["deepmerge", "npm:4.2.2"],
             ["puppeteer", "npm:8.0.0"],
-            ["puppeteer-extra-plugin-stealth", "npm:2.7.6"]
+            ["puppeteer-extra-plugin-stealth", "npm:2.7.6"],
+            ["puppeteer-extra-plugin-user-data-dir", "npm:2.2.12"],
+            ["puppeteer-extra-plugin-user-preferences", "npm:2.2.12"]
           ],
           "packagePeers": [
             "puppeteer"

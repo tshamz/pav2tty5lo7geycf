@@ -1,30 +1,11 @@
 const log = require('@services/logger');
-const { was } = require('@services/utils');
 const firebase = require('@services/firebase');
 
 exports.get = async () => {
   try {
     let wssHost = await firebase.db.get('session/wssHost');
-    // const session = (await firebase.db.get('session')) || {};
-    // let { lastRan, wssLastTried, wssHost } = session;
 
-    // const lastRan = new Date(lastRan);
-    // console.log('lastRan', lastRan);
-
-    // const runRecently = was(lastRan).under('1 minutes ago');
-    // console.log('runRecently', runRecently);
-
-    // const sameWssHost = wssLastTried === wssHost;
-    // console.log('sameWssHost', sameWssHost);
-
-    // const badWssHost = runRecently && sameWssHost;
-    // console.log('badWssHost', badWssHost);
-
-    // if (!wssHost || badWssHost) {
     if (!wssHost) {
-      // const result = await firebase.db.set('/', { session: null });
-      // console.log('result', result);
-
       const response = await firebase.call.createSession();
 
       wssHost = response.data.wssHost;

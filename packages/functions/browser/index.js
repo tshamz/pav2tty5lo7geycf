@@ -13,8 +13,3 @@ exports.createSession = firebase.functions
   .runWith({ timeoutSeconds: 120, memory: '2GB' })
   .https
   .onCall(createSession);
-
-// exports.updateSession = firebase.functions
-//   .runWith({ timeoutSeconds: 120, memory: '2GB' })
-//   .pubsub.schedule('every day 09:37')
-//   .onRun(createSession);

@@ -2,46 +2,70 @@ const csv = require('csvtojson');
 const fetch = require('node-fetch');
 const fakeUserAgent = require('fake-useragent');
 
-const fromPredictit = async ({ url, path, params, asJson = true }) => {
+const headers = { 'User-Agent': fakeUserAgent() };
+
+const fetchMarket = async (marketId) => {
   try {
-    if (!url) {
-      url = new URL(path, `https://www.predictit.org`);
-      url.search = new URLSearchParams(params);
-    }
+    const url = `https://www.predictit.org/api/marketdata/markets/${marketId}`;
+    const response = await fetch(url, { headers });
+    const data = await response.json();
 
-    const headers = { 'User-Agent': fakeUserAgent() };
-    const response = await fetch(url.toString(), { headers });
-
-    return asJson ? await response.json() : await response.text();
+    return data;
   } catch (error) {
-    console.error(error);
     throw error;
   }
 };
 
-const fetchMarket = (marketId) => {
-  const path = `/api/marketdata/markets/${marketId}`;
+const fetchAllMarkets = async () => {
+  try {
+    const url = 'https://www.predictit.org/api/marketdata/all';
+    const response = await fetch(url, { headers });
+    const data = await response.json();
 
-  return fromPredictit({ path });
+    return data.markets;
+  } catch (error) {
+    throw error;
+  }
 };
 
-const fetchAllMarkets = () => {
-  const path = '/api/marketdata/all';
+const fetchMarketChartData = async (market, timespan) => {
+  try {
+    const url = 'https://www.predictit.org/Resource/DownloadMarketChartData';
+    const params = `?marketid=${market.id}&timespan=${timespan}`;
+    const response = await fetch(url + params, { headers });
+    const text = await response.text();
+    const data = await csv().fromString(text);
 
-  return fromPredictit({ path }).then(({ markets }) => markets);
+    const getContract = (name) =>
+      market.contracts.find((contract) => contract.shortName === name) || {};
+
+    return data.map((row) => ({
+      timespan,
+      market: `${market.id}`,
+      contract: `${getContract(row.ContractName).id}`,
+      date: row.Date,
+      name: row.ContractName,
+      open: parseFloat(row.OpenSharePrice.slice(1)),
+      high: parseFloat(row.HighSharePrice.slice(1)),
+      low: parseFloat(row.LowSharePrice.slice(1)),
+      close: parseFloat(row.CloseSharePrice.slice(1)),
+      volume: parseInt(row.TradeVolume),
+    }));
+  } catch (error) {
+    throw error;
+  }
 };
 
-const fetchMarketChartData = (params) => {
-  const path = `/Resource/DownloadMarketChartData`;
-  const parseTextAsCsv = (text) => csv().fromString(text);
+const fetchOrderBooks = async () => {
+  try {
+    const url = `https://predictit-f497e.firebaseio.com/contractOrderBook.json`;
+    const response = await fetch(url, { headers });
+    const data = await response.json();
 
-  return fromPredictit({ path, params, asJson: false }).then(parseTextAsCsv);
-};
-
-const fetchOrderBooks = () => {
-  const url = `https://predictit-f497e.firebaseio.com/contractOrderBook.json`;
-
-  return fromPredictit({ url });
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 module.exports = {

@@ -2836,6 +2836,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"awaity@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "awaity@npm:1.0.0"
+  checksum: de4688e30d23a984ae9fc57c8f183e510ffa15cae4c4a1ce8814ce4820846d5c4818910bd07c7fddc2c51115901d8755cb10b99955314a831deb06d00e9f50ac
+  languageName: node
+  linkType: hard
+
 "axios@npm:^0.21.1":
   version: 0.21.1
   resolution: "axios@npm:0.21.1"
@@ -4966,6 +4973,7 @@ fsevents@~2.3.1:
     "@services/predictit": "workspace:packages/@services/predictit"
     "@services/twilio": "workspace:packages/@services/twilio"
     "@services/utils": "workspace:packages/@services/utils"
+    awaity: ^1.0.0
     csvtojson: ^2.0.10
     deep-equal: ^2.0.5
     firebase: ^8.2.3
@@ -7929,7 +7937,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"puppeteer-extra-plugin-user-data-dir@npm:^2.2.12":
+"puppeteer-extra-plugin-user-data-dir@npm:*, puppeteer-extra-plugin-user-data-dir@npm:^2.2.12":
   version: 2.2.12
   resolution: "puppeteer-extra-plugin-user-data-dir@npm:2.2.12"
   dependencies:
@@ -7940,7 +7948,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"puppeteer-extra-plugin-user-preferences@npm:^2.2.12":
+"puppeteer-extra-plugin-user-preferences@npm:*, puppeteer-extra-plugin-user-preferences@npm:^2.2.12":
   version: 2.2.12
   resolution: "puppeteer-extra-plugin-user-preferences@npm:2.2.12"
   dependencies:

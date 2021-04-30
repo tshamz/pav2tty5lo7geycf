@@ -3,12 +3,12 @@ require('@services/env');
 const firebase = require('firebase');
 const admin = require('firebase-admin');
 
-if (!firebase.apps.length) {
-  const projectId = process.env.FIREBASE_PROJECT;
-  const credentials = admin.credential.applicationDefault();
-  const databaseAuthVariableOverride = { uid: 'superuser' };
-  const databaseURL = 'https://pav2tty5lo7geycf-default-rtdb.firebaseio.com';
+const projectId = process.env.FIREBASE_PROJECT;
+const credentials = admin.credential.applicationDefault();
+const databaseAuthVariableOverride = { uid: 'superuser' };
+const databaseURL = 'https://pav2tty5lo7geycf-default-rtdb.firebaseio.com';
 
+if (!admin.apps.length) {
   admin.initializeApp({
     credentials,
     projectId,
@@ -34,9 +34,4 @@ const functions = require('./functions');
 module.exports = {
   ...database,
   ...functions,
-  sdk: {
-    admin,
-    firebase,
-    functions,
-  },
 };

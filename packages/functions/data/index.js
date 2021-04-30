@@ -6,9 +6,6 @@ const updateContractPrice = require('./updateContractPrice');
 const updateTimespanData = require('./updateTimespanData');
 const updateOrderBooks = require('./updateOrderBooks');
 
-const HOURLY_TIMESPANS = ['24h'];
-const DAILY_TIMESPANS = ['7d', '30d', '90d'];
-
 // prettier-ignore
 exports.updateMarket = firebase.functions
   .https
@@ -35,26 +32,26 @@ exports.updateHourlyTimespanData = firebase.functions
   .runWith({ timeoutSeconds: 300, memory: '2GB' })
   .pubsub
   .schedule('every 60 mins')
-  .onRun(updateTimespanData(HOURLY_TIMESPANS));
+  .onRun(updateTimespanData('hourly'));
 
 // prettier-ignore
 exports.updateHourlyTimespanData__manual = firebase.functions
   .runWith({ timeoutSeconds: 300, memory: '2GB' })
   .https
-  .onRequest(updateTimespanData(HOURLY_TIMESPANS));
+  .onRequest(updateTimespanData('hourly'));
 
 // prettier-ignore
 exports.updateDailyTimespanData = firebase.functions
   .runWith({ timeoutSeconds: 300, memory: '2GB' })
   .pubsub
   .schedule('every day 16:05')
-  .onRun(updateTimespanData(DAILY_TIMESPANS));
+  .onRun(updateTimespanData('daily'));
 
 // prettier-ignore
 exports.updateDailyTimespanData__manual = firebase.functions
   .runWith({ timeoutSeconds: 300, memory: '2GB' })
   .https
-  .onRequest(updateTimespanData(DAILY_TIMESPANS));
+  .onRequest(updateTimespanData('daily'));
 
 // prettier-ignore
 exports.updateOrderBooks = firebase.functions
