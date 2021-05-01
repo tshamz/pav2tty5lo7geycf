@@ -6,7 +6,7 @@ module.exports = async (context, res) => {
     const orderBooks = await predictit.fetchOrderBooks();
 
     const remapKeys = (entry) => {
-      entry.contract = `${entry.contractId}`;
+      entry.contract = `${entry.contractId}` || null;
       delete entry.contractId;
       return entry;
     };
