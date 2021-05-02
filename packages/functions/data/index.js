@@ -4,7 +4,8 @@ const updateMarket = require('./updateMarket');
 const updateMarkets = require('./updateMarkets');
 const updateContractPrice = require('./updateContractPrice');
 const updateTimespanData = require('./updateTimespanData');
-const updateOrderBooks = require('./updateOrderBooks');
+// const updateOrderBooks = require('./updateOrderBooks');
+const updateContractOrderBook = require('./updateContractOrderBook');
 
 // prettier-ignore
 exports.updateMarket = firebase.functions
@@ -17,6 +18,22 @@ exports.updateContractPrice = firebase.functions
   .onCall(updateContractPrice);
 
 // prettier-ignore
+exports.updateContractOrderBook = firebase.functions
+  .https
+  .onCall(updateContractOrderBook);
+
+// // prettier-ignore
+// exports.updateOrderBooks = firebase.functions
+//   .pubsub
+//   .schedule('every 60 mins')
+//   .onRun(updateOrderBooks);
+
+// // prettier-ignore
+// exports.updateOrderBooks__manual = firebase.functions
+//   .https
+//   .onRequest(updateOrderBooks);
+
+// prettier-ignore
 exports.updateMarkets = firebase.functions
   .pubsub
   .schedule('every 10 mins')
@@ -26,17 +43,6 @@ exports.updateMarkets = firebase.functions
 exports.updateMarkets__manual = firebase.functions
   .https
   .onRequest(updateMarkets);
-
-// prettier-ignore
-exports.updateOrderBooks = firebase.functions
-  .pubsub
-  .schedule('every 60 mins')
-  .onRun(updateOrderBooks);
-
-// prettier-ignore
-exports.updateOrderBooks__manual = firebase.functions
-  .https
-  .onRequest(updateOrderBooks);
 
 // prettier-ignore
 exports.update1hTimespanData = firebase.functions

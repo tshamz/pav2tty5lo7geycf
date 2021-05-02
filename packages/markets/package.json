@@ -20,8 +20,10 @@
     "@services/express": "workspace:packages/@services/express",
     "@services/firebase": "workspace:packages/@services/firebase",
     "@services/logger": "workspace:packages/@services/logger",
+    "@services/predictit": "workspace:packages/@services/predictit",
     "@services/utils": "workspace:packages/@services/utils",
-    "@services/websocket": "workspace:packages/@services/websocket"
+    "@services/websocket": "workspace:packages/@services/websocket",
+    "wait": "^0.4.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

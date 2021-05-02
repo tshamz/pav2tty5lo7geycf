@@ -25,10 +25,11 @@ const triggerFunction = (name) => async (data) => {
 const callable = {
   createSession: triggerFunction('browser-createSession'),
   updateMarket: triggerFunction('data-updateMarket'),
-  // updateOpenOrders: triggerFunction('data-updateOpenOrders'),
   updateAccountFunds: triggerFunction('data-updateAccountFunds'),
-  // updateTradeHistory: triggerFunction('data-updateTradeHistory'),
   updateContractPrice: triggerFunction('data-updateContractPrice'),
+  updateContractOrderBook: triggerFunction('data-updateContractOrderBook'),
+  // updateOpenOrders: triggerFunction('data-updateOpenOrders'),
+  // updateTradeHistory: triggerFunction('data-updateTradeHistory'),
   // updateMarketPosition: triggerFunction('data-updateMarketPosition'),
   // updateContractPosition: triggerFunction('data-updateContractPosition'),
 };

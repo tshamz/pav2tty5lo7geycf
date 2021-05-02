@@ -19,6 +19,10 @@ module.exports = ({ data: rawMessage }) => {
     if (path.startsWith('contractStats')) {
       firebase.call.updateContractPrice(data);
     }
+
+    if (path.startsWith('contractOrderBook')) {
+      firebase.call.updateContractOrderBook(data);
+    }
   } catch (error) {
     console.log(error);
   }

@@ -12244,9 +12244,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@services/express", "workspace:packages/@services/express"],
             ["@services/firebase", "virtual:8df8d56db65ab8b9c3ccdfa4d9c7283e3784d1b85abe36ece0023f84bb3a9eee6b5f90fae243b7871a045619ec7270fb8189b3c2d746f89a8603b31d50569353#workspace:packages/@services/firebase"],
             ["@services/logger", "workspace:packages/@services/logger"],
+            ["@services/predictit", "workspace:packages/@services/predictit"],
             ["@services/utils", "workspace:packages/@services/utils"],
             ["@services/websocket", "workspace:packages/@services/websocket"],
-            ["nodemon", "npm:2.0.7"]
+            ["nodemon", "npm:2.0.7"],
+            ["wait", "npm:0.4.2"]
           ],
           "linkType": "SOFT",
         }]
