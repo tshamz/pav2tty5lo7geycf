@@ -20,7 +20,7 @@ module.exports = (connection) => async () => {
 
   ids.reduce(async (subscription, id) => {
     await subscription;
-    await wait(10000);
+    await wait(3000);
 
     firebase.logger.info(`Subscribing to contract: ${id}`);
 
