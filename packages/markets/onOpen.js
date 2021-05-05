@@ -1,7 +1,6 @@
 const wait = require('wait');
 
 const firebase = require('@services/firebase');
-const predictit = require('@services/predictit');
 
 module.exports = (connection) => async () => {
   const message = require('./message')(connection);
@@ -9,13 +8,6 @@ module.exports = (connection) => async () => {
   message.send({ a: 's', b: { c: { 'sdks.js.4-9-1': 1 } } });
   message.send({ a: 'q', p: '/marketStats' });
   message.send({ a: 'q', p: '/contractStats' });
-
-  // const markets = await predictit.fetchAllMarkets();
-  // markets
-  //   .flatMap(({ contracts }) => contracts)
-  //   .map(({ id }) => id)
-  //   .slice(0, 2)
-  //   .forEach(message.subscribe);
 
   const ids = [];
 
@@ -30,7 +22,8 @@ module.exports = (connection) => async () => {
     await subscription;
     await wait(10000);
 
-    console.log(`subscribing to id: ${id}`);
+    firebase.logger.info(`Subscribing to contract: ${id}`);
+
     message.subscribe(id);
   }, 0);
 };
